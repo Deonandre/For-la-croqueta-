@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Be My Valentine 💘</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      position: relative;
+    }
+
+    h1 {
+      color: #ff4d6d;
+      margin-bottom: 30px;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    #yesBtn {
+      background: #ff4d6d;
+      color: white;
+      margin-right: 20px;
+    }
+
+    #noBtn {
+      background: #ccc;
+      color: black;
+      position: absolute;
+    }
+
+    .celebration {
+      display: none;
+      font-size: 40px;
+      color: #ff4d6d;
+      margin-top: 20px;
+    }
+
+    .heart, .rose {
+      position: fixed;
+      bottom: -50px;
+      font-size: 30px;
+      animation: floatUp 4s linear forwards;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-110vh);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="box">
+    <h1>Will you be my Valentine? 💖</h1>
+    <button id="yesBtn">Yes 💕</button>
+    <button id="noBtn">No 😢</button>
+    <div class="celebration" id="celebrate">YAYYYYY!!! 💘🌹</div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const celebrate = document.getElementById("celebrate");
+
+    // Move "No" button away
+    noBtn.addEventListener("mouseover", () => {
+      const x = Math.random() * (window.innerWidth - 100);
+      const y = Math.random() * (window.innerHeight - 100);
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+    });
+
+    // Yes button celebration
+    yesBtn.addEventListener("click", () => {
+      celebrate.style.display = "block";
+
+      for (let i = 0; i < 30; i++) {
+        createFloating("❤️");
+        createFloating("🌹");
+      }
+    });
+
+    function createFloating(symbol) {
+      const el = document.createElement("div");
+      el.classList.add(symbol === "❤️" ? "heart" : "rose");
+      el.innerText = symbol;
+      el.style.left = Math.random() * 100 + "vw";
+      el.style.fontSize = Math.random() * 20 + 20 + "px";
+      document.body.appendChild(el);
+
+      setTimeout(() => {
+        el.remove();
+      }, 4000);
+    }
+  </script>
+
+</body>
+</html>
