@@ -1,0 +1,296 @@
+<title>Corps du devoir A.E.P.I.E.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,800;1,400;1,600&family=Archivo:wght@500;600;700&display=swap">
+<style>
+  :root{
+    --paper:#F4F6F1;
+    --surface:#FFFFFF;
+    --surface-2:#EAEEE4;
+    --ink:#161A15;
+    --ink-2:#3E453C;
+    --ink-soft:#6B7268;
+    --rule:#D8DED1;
+    --rule-strong:#B9C2B0;
+    --accent:#2E6B4C;
+    --accent-soft:#DDE9DF;
+    --mark:#A3322B;
+    --mark-soft:#F3E3E0;
+    --serif:"Spectral",Georgia,"Times New Roman",serif;
+    --sans:"Archivo","Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#111410; --surface:#181C17; --surface-2:#20261F;
+      --ink:#E9EEE4; --ink-2:#C2C9BB; --ink-soft:#8C9487;
+      --rule:#2B322A; --rule-strong:#3D463B;
+      --accent:#82C398; --accent-soft:#1E2A22;
+      --mark:#E28E81; --mark-soft:#2F2220;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#111410; --surface:#181C17; --surface-2:#20261F;
+    --ink:#E9EEE4; --ink-2:#C2C9BB; --ink-soft:#8C9487;
+    --rule:#2B322A; --rule-strong:#3D463B;
+    --accent:#82C398; --accent-soft:#1E2A22;
+    --mark:#E28E81; --mark-soft:#2F2220;
+  }
+
+  body{background:var(--paper);color:var(--ink);font-family:var(--serif);}
+  .page{
+    max-width:46rem;margin:0 auto;padding-inline:24px;padding-block:56px 72px;
+    display:flex;flex-direction:column;gap:44px;
+  }
+  h1,h2,h3{margin:0;text-wrap:balance;font-weight:600;}
+  p{margin:0;}
+  .eyebrow{
+    font-family:var(--sans);font-size:.688rem;font-weight:600;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--accent);
+  }
+
+  /* ---------- en-tête ---------- */
+  .masthead{display:flex;flex-direction:column;gap:14px;}
+  .masthead h1{font-size:clamp(2.1rem,7vw,3rem);line-height:1.05;font-weight:800;letter-spacing:-.015em;}
+  .masthead .lede{font-size:1.0625rem;line-height:1.6;color:var(--ink-2);max-width:34rem;}
+  .masthead .lede em{font-style:italic;}
+  .source{
+    display:flex;flex-wrap:wrap;gap:6px 14px;margin:4px 0 0;padding-top:14px;
+    border-top:1px solid var(--rule);
+    font-family:var(--sans);font-size:.75rem;letter-spacing:.02em;color:var(--ink-soft);
+  }
+  .source b{font-weight:700;color:var(--ink-2);letter-spacing:.06em;text-transform:uppercase;}
+
+  /* ---------- question d'orientation ---------- */
+  .question{
+    border-left:3px solid var(--accent);padding:2px 0 2px 20px;
+    display:flex;flex-direction:column;gap:8px;
+  }
+  .question p{font-size:1.0625rem;line-height:1.65;font-style:italic;color:var(--ink);}
+
+  /* ---------- formule + réglage ---------- */
+  .methode{display:flex;flex-direction:column;gap:18px;}
+  .formule{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px 6px;align-items:center;}
+  .formule li{display:flex;align-items:center;gap:7px;font-family:var(--sans);font-size:.75rem;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);font-weight:500;}
+  .formule li::after{content:"\2192";margin-left:4px;color:var(--rule-strong);}
+  .formule li:last-child::after{content:none;}
+  .tag{
+    font-family:var(--sans);font-size:.6875rem;font-weight:700;line-height:1;letter-spacing:.04em;
+    color:var(--mark);background:var(--mark-soft);padding:.32em .42em;border-radius:1px;
+  }
+  .reglage{
+    display:flex;align-items:center;gap:10px;font-family:var(--sans);font-size:.8125rem;color:var(--ink-2);
+    padding-top:16px;border-top:1px solid var(--rule);
+  }
+  .reglage label{cursor:pointer;}
+  .reglage input{accent-color:var(--accent);width:16px;height:16px;cursor:pointer;}
+  .reglage span{color:var(--ink-soft);}
+
+  /* ---------- paragraphes ---------- */
+  .corps{display:flex;flex-direction:column;gap:52px;}
+  .para{display:flex;flex-direction:column;gap:18px;}
+  .para-head{display:flex;flex-direction:column;gap:5px;}
+  .para-head h2{font-size:1.625rem;line-height:1.15;letter-spacing:-.01em;}
+  .axe{font-family:var(--sans);font-size:.75rem;color:var(--ink-soft);letter-spacing:.02em;}
+  .axe b{color:var(--ink-2);font-weight:600;}
+
+  .fiche{
+    list-style:none;margin:0;padding:0;display:grid;gap:1px;background:var(--rule);
+    grid-template-columns:repeat(3,1fr);border-block:1px solid var(--rule);
+  }
+  .fiche li{background:var(--paper);padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;}
+  .fiche b{
+    font-family:var(--sans);font-size:.625rem;font-weight:700;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--accent);
+  }
+  .fiche span{font-size:.9375rem;line-height:1.45;color:var(--ink-2);}
+
+  .devoir{
+    font-size:1.125rem;line-height:1.78;text-align:justify;hyphens:auto;
+    text-indent:1.6em;
+  }
+  .devoir .seg{scroll-margin-top:1rem;}
+  .mk{
+    font-family:var(--sans);font-size:.62em;font-weight:700;line-height:1;letter-spacing:.04em;
+    color:var(--mark);background:var(--mark-soft);padding:.34em .4em;border-radius:1px;
+    margin-right:.34em;vertical-align:.16em;text-indent:0;
+  }
+  .compte{
+    font-family:var(--sans);font-size:.75rem;color:var(--ink-soft);font-variant-numeric:tabular-nums;
+    display:flex;gap:10px;align-items:baseline;
+  }
+  .compte::before{content:"";flex:0 0 28px;height:1px;background:var(--rule-strong);transform:translateY(-.3em);}
+
+  /* ---------- note ---------- */
+  .note{
+    background:var(--mark-soft);padding:18px 20px;display:flex;flex-direction:column;gap:8px;
+    border-left:3px solid var(--mark);
+  }
+  .note .eyebrow{color:var(--mark);}
+  .note p{font-size:.9375rem;line-height:1.6;color:var(--ink-2);}
+  .note q{font-style:italic;}
+
+  /* ---------- checklist ---------- */
+  .controle{display:flex;flex-direction:column;gap:16px;}
+  .controle h2{font-size:1.25rem;}
+  .controle ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;}
+  .controle li{
+    display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--rule);
+  }
+  .controle li:first-child{border-top:1px solid var(--rule);}
+  .controle input{margin-top:.28em;accent-color:var(--accent);width:15px;height:15px;flex:none;cursor:pointer;}
+  .controle label{font-size:.9375rem;line-height:1.55;color:var(--ink-2);cursor:pointer;}
+  .controle label b{color:var(--ink);font-weight:600;}
+
+  footer{
+    padding-top:20px;border-top:1px solid var(--rule);
+    font-family:var(--sans);font-size:.75rem;color:var(--ink-soft);line-height:1.6;
+  }
+
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+  [data-reperes="off"] .mk,[data-reperes="off"] .fiche{display:none;}
+  [data-reperes="off"] .devoir{margin-top:4px;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+  @media (max-width:560px){
+    .fiche{grid-template-columns:1fr;}
+    .devoir{text-align:left;hyphens:manual;}
+  }
+</style>
+
+<main class="page" lang="fr">
+
+  <header class="masthead">
+    <p class="eyebrow">Épreuve 1 &middot; Français A : Langue et Littérature</p>
+    <h1>Corps du devoir</h1>
+    <p class="lede">Les trois paragraphes du développement, rédigés selon la méthode A.E.P.I.E., sur l’article <em>« Béton armé contre espaces verts : la bataille du climat au cœur des cités »</em>.</p>
+    <p class="source"><b>Le Monde</b> <span>Société &amp; Urbanisme</span> <span>Émilie Vasseur</span> <span>14 mai 2025</span></p>
+  </header>
+
+  <section class="question">
+    <p class="eyebrow">Question d’orientation</p>
+    <p>Analysez comment la mise en page, les choix lexicaux et la structure argumentative de cet article de presse concourent à sensibiliser le lecteur aux enjeux de l’urbanisme moderne.</p>
+  </section>
+
+  <section class="methode">
+    <p class="eyebrow">La formule, en 5 étapes</p>
+    <ul class="formule">
+      <li><span class="tag">A</span>Argument</li>
+      <li><span class="tag">E</span>Exemple</li>
+      <li><span class="tag">P</span>Procédé</li>
+      <li><span class="tag">I</span>Intention</li>
+      <li><span class="tag">E</span>Effet</li>
+    </ul>
+    <p class="reglage">
+      <input type="checkbox" id="reperes" checked>
+      <label for="reperes">Afficher les repères A.E.P.I.E.</label>
+      <span>— décoche pour lire la copie propre.</span>
+    </p>
+  </section>
+
+  <div class="corps">
+
+    <section class="para">
+      <header class="para-head">
+        <p class="eyebrow">Paragraphe 1</p>
+        <h2>L’impact visuel</h2>
+        <p class="axe">Répond au premier terme de la question : <b>la mise en page</b></p>
+      </header>
+      <ul class="fiche">
+        <li><b>Procédé</b><span>Juxtaposition d’images en diptyque, antithèse du titre, jeu de gras</span></li>
+        <li><b>Intention</b><span>Montrer visuellement le contraste entre le béton destructeur et la nature réparatrice</span></li>
+        <li><b>Effet</b><span>Un choc visuel direct, qui capte le lecteur avant même la lecture</span></li>
+      </ul>
+      <p class="devoir">
+        <span class="seg"><b class="mk">A</b>D’emblée, la mise en page de l’article organise la confrontation de deux mondes urbains et impose au lecteur une thèse avant même sa première ligne de texte.</span>
+        <span class="seg"><b class="mk">E</b>Les deux photographies sont en effet superposées dans la colonne de droite : la première montre une rue commerçante écrasée de soleil, bordée de façades de verre, où des piétons se protègent le visage ; la seconde, placée immédiatement au-dessous, donne à voir une coulée verte traversée d’un ruisseau, où des promeneurs marchent à l’ombre des arbres.</span>
+        <span class="seg"><b class="mk">P</b>Ce montage repose sur une <em>juxtaposition d’images</em> en diptyque, redoublée par l’<em>antithèse</em> du titre — « Béton armé contre espaces verts » — et par une <em>typographie</em> qui isole en gras, dans le chapeau, les groupes « réinventer leurs centres-villes » et « concilier modernité et nature ».</span>
+        <span class="seg"><b class="mk">I</b>À travers ce choix, la journaliste cherche à rendre visible, avant tout raisonnement, l’opposition entre un minéral destructeur et un végétal réparateur ; le média utilise ce procédé dans le but d’éveiller les consciences sur l’urgence d’un réaménagement des centres-villes.</span>
+        <span class="seg"><b class="mk">E</b>Cette mise en page provoque chez le lecteur un choc visuel direct : placé devant deux avenirs possibles d’une même ville, il éprouve d’abord un malaise face à la chaleur minérale, puis un apaisement immédiat en descendant vers la seconde image, si bien que son adhésion est acquise par le regard avant de l’être par l’argumentation.</span>
+      </p>
+      <p class="compte"><span>≈ 217 mots</span></p>
+    </section>
+
+    <section class="para">
+      <header class="para-head">
+        <p class="eyebrow">Paragraphe 2</p>
+        <h2>La stylisation spatiale</h2>
+        <p class="axe">Répond au deuxième terme de la question : <b>les choix lexicaux</b></p>
+      </header>
+      <ul class="fiche">
+        <li><b>Procédé</b><span>Métaphores et champs lexicaux antithétiques : « fournaises » contre « coulée verte »</span></li>
+        <li><b>Intention</b><span>Valoriser la transition écologique comme la seule solution d’urgence viable</span></li>
+        <li><b>Effet</b><span>Faire ressentir l’étouffement, puis le soulagement : l’adhésion passe par le corps</span></li>
+      </ul>
+      <p class="devoir">
+        <span class="seg"><b class="mk">A</b>Ce que la mise en page donne à voir, les choix lexicaux le font ensuite ressentir : la langue de l’article transforme le béton en agresseur et le végétal en refuge salvateur.</span>
+        <span class="seg"><b class="mk">E</b>Le premier paragraphe accumule ainsi les termes de la brûlure et de l’asphyxie — « Le bitume brûle sous les pas des piétons », « une chaleur étouffante », « de véritables fournaises à ciel ouvert » —, tandis que le suivant leur oppose « une coulée verte de deux hectares », « l’air redevenu respirable » et « le murmure de l’eau et [le] bruissement des feuilles ».</span>
+        <span class="seg"><b class="mk">P</b>Deux <em>champs lexicaux</em> antithétiques se répondent donc, celui de la fournaise et celui de la respiration, soutenus par la <em>métaphore hyperbolique</em> des « fournaises à ciel ouvert », par la <em>personnification</em> du bitume qui « brûle » et par la douceur des <em>sonorités</em> chuintantes de « murmure » et de « bruissement ».</span>
+        <span class="seg"><b class="mk">I</b>L’intention de la journaliste est de disqualifier le tout-minéral en le faisant éprouver comme une souffrance physique, et de valoriser la végétalisation non comme un agrément mais comme la seule issue viable : la conjonction adversative « Mais » et la « fracture visuelle » qui ouvrent le second paragraphe installent la transition écologique en solution d’urgence.</span>
+        <span class="seg"><b class="mk">E</b>Le lecteur traverse alors physiquement les deux espaces, éprouvant d’abord l’étouffement puis le soulagement ; cette expérience sensorielle, entièrement contrôlée par l’écriture, l’amène à adhérer au projet écologique comme à un besoin vital et non comme à un choix esthétique.</span>
+      </p>
+      <p class="compte"><span>≈ 222 mots</span></p>
+    </section>
+
+    <section class="para">
+      <header class="para-head">
+        <p class="eyebrow">Paragraphe 3</p>
+        <h2>La portée sociale</h2>
+        <p class="axe">Répond au troisième terme de la question : <b>la structure argumentative</b></p>
+      </header>
+      <ul class="fiche">
+        <li><b>Procédé</b><span>Argument d’autorité, discours rapporté direct et vocabulaire politique</span></li>
+        <li><b>Intention</b><span>Démontrer que les quartiers populaires sont abandonnés face au réchauffement</span></li>
+        <li><b>Effet</b><span>Une réflexion critique et un sentiment d’indignation face à l’injustice sociale</span></li>
+      </ul>
+      <p class="devoir">
+        <span class="seg"><b class="mk">A</b>Enfin, la structure argumentative dépasse la seule question climatique pour dénoncer une injustice sociale profonde : l’accès à la fraîcheur devient, dans l’article, un droit inégalement réparti.</span>
+        <span class="seg"><b class="mk">E</b>Après le constat sensible, la journaliste cède en effet la parole à un expert : « La ville de demain ne peut plus être une jungle de béton blindée contre la nature », explique Marc Delorme, urbaniste de l’Atelier Métropolitain, avant d’ajouter : « Nous devons réintroduire le végétal non comme un simple élément décoratif, mais comme une infrastructure vitale. »</span>
+        <span class="seg"><b class="mk">P</b>Ce recours au <em>discours rapporté direct</em> constitue un <em>argument d’autorité</em>, appuyé par la mention du nom, de la fonction et de l’institution du spécialiste ; il s’accompagne d’un <em>vocabulaire politique et technique</em> — « infrastructure vitale », « corridors écologiques », « îlots de fraîcheur » — et prolonge la <em>métaphore militaire</em> déjà inscrite dans le titre, du « Béton armé » et de la « bataille » jusqu’à la ville « blindée » contre la nature.</span>
+        <span class="seg"><b class="mk">I</b>À travers ce choix, la journaliste cherche à déplacer le débat du décor vers l’équipement public : si le végétal est une « infrastructure » au même titre qu’une route ou qu’un réseau d’eau, alors son absence dans certains quartiers n’est plus un défaut d’esthétique mais un abandon, et l’article démontre que les populations les plus modestes, logées loin des nouveaux corridors écologiques, seront les premières exposées au réchauffement.</span>
+        <span class="seg"><b class="mk">E</b>Ce glissement provoque chez le lecteur une réflexion critique et un sentiment d’indignation : il ne lit plus un reportage sur l’urbanisme, mais la description d’une inégalité concrète, et se trouve conduit à interroger la répartition du végétal dans sa propre ville.</span>
+      </p>
+      <p class="compte"><span>≈ 250 mots</span></p>
+    </section>
+
+  </div>
+
+  <aside class="note">
+    <p class="eyebrow">À vérifier dans ton exemplaire de l’article</p>
+    <p>Le tableau de plan cite l’expression <q>géographie des inégalités</q>, qui ne figure pas dans l’extrait reproduit sur le sujet. Si ton texte la contient, insère-la dans l’<b>Exemple</b> du paragraphe 3, juste après la citation de Marc Delorme : <q>…, avant de conclure que la métropole dessine désormais une véritable « géographie des inégalités ».</q> Elle renforcera l’étape <b>Procédé</b> comme relevé de vocabulaire politique. Si elle n’y figure pas, le paragraphe reste complet tel qu’il est rédigé : ne cite jamais un passage absent du texte.</p>
+  </aside>
+
+  <section class="controle">
+    <p class="eyebrow">Avant de rendre</p>
+    <h2>Contrôle des critères A et B</h2>
+    <ul>
+      <li><input type="checkbox" id="c1"><label for="c1">Chaque paragraphe s’ouvre sur un <b>argument</b> d’une seule phrase, relié à la question d’orientation.</label></li>
+      <li><input type="checkbox" id="c2"><label for="c2">Chaque <b>citation</b> est exacte, entre guillemets, et brève.</label></li>
+      <li><input type="checkbox" id="c3"><label for="c3">Le <b>procédé</b> est nommé — métaphore, champ lexical, antithèse, cadrage, typographie — et pas seulement décrit.</label></li>
+      <li><input type="checkbox" id="c4"><label for="c4">L’<b>intention</b> de la journaliste est formulée explicitement (« cherche à… », « dans le but de… »).</label></li>
+      <li><input type="checkbox" id="c5"><label for="c5">L’<b>effet sur le lecteur</b> ferme le paragraphe, jamais une citation seule.</label></li>
+      <li><input type="checkbox" id="c6"><label for="c6">Une <b>liaison</b> rattache chaque paragraphe au précédent (« Ce que… », « Enfin… »).</label></li>
+    </ul>
+  </section>
+
+  <footer>
+    Sujet d’entraînement pour l’Épreuve 1 — Français A : Langue et Littérature (Niveaux Moyen et Supérieur). Article : <em>Le Monde</em>, Société &amp; Urbanisme, Émilie Vasseur, 14 mai 2025.
+  </footer>
+
+</main>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var box = document.getElementById('reperes');
+    var KEY = 'aepie-reperes';
+    try {
+      if (localStorage.getItem(KEY) === 'off') { box.checked = false; }
+    } catch (e) {}
+    function apply() {
+      root.setAttribute('data-reperes', box.checked ? 'on' : 'off');
+      try { localStorage.setItem(KEY, box.checked ? 'on' : 'off'); } catch (e) {}
+    }
+    box.addEventListener('change', apply);
+    apply();
+  })();
+</script>
