@@ -1,0 +1,159 @@
+<title>Plan du développement A.E.P.I.E.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,800;1,400&family=Archivo:wght@500;600;700&display=swap">
+<style>
+  :root{
+    --paper:#F4F6F1;
+    --surface:#FFFFFF;
+    --ink:#161A15;
+    --ink-2:#3E453C;
+    --ink-soft:#6B7268;
+    --rule:#D8DED1;
+    --rule-strong:#B9C2B0;
+    --accent:#2E6B4C;
+    --mark:#A3322B;
+    --mark-soft:#F3E3E0;
+    --serif:"Spectral",Georgia,"Times New Roman",serif;
+    --sans:"Archivo","Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#111410; --surface:#181C17;
+      --ink:#E9EEE4; --ink-2:#C2C9BB; --ink-soft:#8C9487;
+      --rule:#2B322A; --rule-strong:#3D463B;
+      --accent:#82C398; --mark:#E28E81; --mark-soft:#2F2220;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#111410; --surface:#181C17;
+    --ink:#E9EEE4; --ink-2:#C2C9BB; --ink-soft:#8C9487;
+    --rule:#2B322A; --rule-strong:#3D463B;
+    --accent:#82C398; --mark:#E28E81; --mark-soft:#2F2220;
+  }
+
+  body{background:var(--paper);color:var(--ink);font-family:var(--serif);}
+  .page{
+    max-width:64rem;margin:0 auto;padding-inline:24px;padding-block:52px 64px;
+    display:flex;flex-direction:column;gap:32px;
+  }
+  h1{margin:0;font-size:clamp(1.9rem,5vw,2.5rem);line-height:1.08;font-weight:800;letter-spacing:-.015em;text-wrap:balance;}
+  p{margin:0;}
+  .eyebrow{
+    font-family:var(--sans);font-size:.688rem;font-weight:600;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--accent);
+  }
+  header{display:flex;flex-direction:column;gap:12px;}
+  header .sous{font-size:1.0625rem;line-height:1.6;color:var(--ink-2);max-width:38rem;}
+  .source{
+    display:flex;flex-wrap:wrap;gap:6px 14px;padding-top:14px;border-top:1px solid var(--rule);
+    font-family:var(--sans);font-size:.75rem;color:var(--ink-soft);
+  }
+  .source b{font-weight:700;color:var(--ink-2);letter-spacing:.06em;text-transform:uppercase;}
+
+  .tag{
+    font-family:var(--sans);font-size:.625rem;font-weight:700;line-height:1;letter-spacing:.04em;
+    color:var(--mark);background:var(--mark-soft);padding:.3em .38em;border-radius:1px;
+  }
+
+  .cadre{overflow-x:auto;}
+  table{
+    width:100%;min-width:52rem;border-collapse:collapse;table-layout:fixed;
+    background:var(--surface);
+  }
+  thead th{
+    vertical-align:bottom;text-align:left;padding:0 14px 12px;
+    border-bottom:1.5px solid var(--rule-strong);
+  }
+  .th-in{display:flex;flex-direction:column;gap:7px;align-items:flex-start;}
+  .th-in .tags{display:flex;gap:3px;}
+  .th-in span.nom{
+    font-family:var(--sans);font-size:.75rem;font-weight:700;letter-spacing:.07em;
+    text-transform:uppercase;color:var(--ink);line-height:1.35;
+  }
+  tbody tr+tr th,tbody tr+tr td{border-top:1px solid var(--rule);}
+  tbody th,tbody td{vertical-align:top;padding:18px 14px;text-align:left;}
+  tbody th{font-weight:400;}
+  .num{
+    display:block;font-family:var(--sans);font-size:.6875rem;font-weight:600;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:6px;
+  }
+  .nom-para{font-size:1.125rem;line-height:1.25;font-weight:600;letter-spacing:-.005em;}
+  tbody td{font-size:.9375rem;line-height:1.55;color:var(--ink-2);}
+  tbody td b{color:var(--ink);font-weight:600;}
+  tbody td em{font-style:italic;}
+
+  .renvoi{
+    display:flex;gap:10px;font-family:var(--sans);font-size:.75rem;line-height:1.6;color:var(--ink-soft);
+  }
+  .renvoi b{color:var(--mark);font-weight:700;}
+
+  @media (max-width:760px){
+    .cadre{overflow-x:visible;}
+    table{min-width:0;display:block;background:none;}
+    thead{display:none;}
+    tbody{display:block;}
+    tbody tr{display:block;background:var(--surface);padding:18px 16px 6px;}
+    tbody tr+tr{margin-top:12px;}
+    tbody th,tbody td{display:block;padding:0 0 16px;border:0!important;}
+    tbody th{padding-bottom:14px;}
+    tbody td::before{
+      content:attr(data-col);display:block;margin-bottom:5px;
+      font-family:var(--sans);font-size:.625rem;font-weight:700;letter-spacing:.12em;
+      text-transform:uppercase;color:var(--accent);
+    }
+  }
+</style>
+
+<main class="page" lang="fr">
+
+  <header>
+    <p class="eyebrow">Épreuve 1 &middot; Français A : Langue et Littérature</p>
+    <h1>Plan du développement</h1>
+    <p class="sous">Tableau récapitulatif des trois paragraphes A.E.P.I.E. du corps du devoir.</p>
+    <p class="source"><b>Le Monde</b> <span>Société &amp; Urbanisme</span> <span>Émilie Vasseur</span> <span>14 mai 2025</span> <span>« Béton armé contre espaces verts »</span></p>
+  </header>
+
+  <div class="cadre">
+    <table>
+      <colgroup>
+        <col style="width:18%"><col style="width:19%"><col style="width:24%"><col style="width:20%"><col style="width:19%">
+      </colgroup>
+      <thead>
+        <tr>
+          <th scope="col"><span class="th-in"><span class="nom">Paragraphe</span></span></th>
+          <th scope="col"><span class="th-in"><span class="tags"><span class="tag">A</span></span><span class="nom">Argument (idée)</span></span></th>
+          <th scope="col"><span class="th-in"><span class="tags"><span class="tag">E</span><span class="tag">P</span></span><span class="nom">Procédé &amp; exemple</span></span></th>
+          <th scope="col"><span class="th-in"><span class="tags"><span class="tag">I</span></span><span class="nom">Intention de l’auteur</span></span></th>
+          <th scope="col"><span class="th-in"><span class="tags"><span class="tag">E</span></span><span class="nom">Effet sur le lecteur</span></span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row"><span class="num">Paragraphe 1</span><span class="nom-para">L’impact visuel</span></th>
+          <td data-col="Argument">La mise en page oppose deux mondes urbains.</td>
+          <td data-col="Procédé &amp; exemple"><b>Juxtaposition d’images :</b> la ville grise surchauffée face au parc verdoyant.</td>
+          <td data-col="Intention de l’auteur">Montrer visuellement le contraste entre le béton destructeur et la nature réparatrice.</td>
+          <td data-col="Effet sur le lecteur">Créer un choc visuel direct qui capte l’attention du lecteur avant même la lecture du texte.</td>
+        </tr>
+        <tr>
+          <th scope="row"><span class="num">Paragraphe 2</span><span class="nom-para">La stylisation spatiale</span></th>
+          <td data-col="Argument">Le langage rend la nature salvatrice et le béton hostile.</td>
+          <td data-col="Procédé &amp; exemple"><b>Métaphores &amp; champ lexical :</b> <em>« Fournaises »</em> contre <em>« Coulée verte »</em> et <em>« Murmure de l’eau »</em>.</td>
+          <td data-col="Intention de l’auteur">Valoriser la transition écologique comme la seule solution d’urgence viable.</td>
+          <td data-col="Effet sur le lecteur">Faire ressentir l’étouffement puis le soulagement, suscitant l’adhésion au projet écologique.</td>
+        </tr>
+        <tr>
+          <th scope="row"><span class="num">Paragraphe 3</span><span class="nom-para">La portée sociale</span></th>
+          <td data-col="Argument">L’article dénonce une injustice sociale profonde.</td>
+          <td data-col="Procédé &amp; exemple"><b>Argument d’autorité &amp; vocabulaire politique :</b> citation de l’urbaniste et <em>« géographie des inégalités »</em>.</td>
+          <td data-col="Intention de l’auteur">Démontrer que les quartiers populaires sont abandonnés face au réchauffement.</td>
+          <td data-col="Effet sur le lecteur">Provoquer une réflexion critique et un sentiment d’indignation face à l’injustice sociale.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="renvoi"><b>*</b><span>L’expression « géographie des inégalités » ne figure pas dans l’extrait reproduit sur le sujet : vérifie-la dans ton exemplaire de l’article avant de la citer.</span></p>
+
+</main>
