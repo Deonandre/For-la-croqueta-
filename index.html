@@ -1,126 +1,464 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Be My Valentine 💘</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: 'Comic Sans MS', cursive, sans-serif;
-      overflow: hidden;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Croqueta Studio — Sites web pour commerçants et artisans</title>
+<meta name="description" content="Un site web professionnel pour votre commerce, livré en 7 jours. Visible sur Google, impeccable sur mobile, prêt à recevoir vos clients. À partir de 890 €.">
+<meta name="robots" content="index, follow">
 
-    .container {
-      text-align: center;
-      background: white;
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      position: relative;
-    }
+<meta property="og:type" content="website">
+<meta property="og:title" content="Croqueta Studio — Sites web pour commerçants et artisans">
+<meta property="og:description" content="Un site web professionnel pour votre commerce, livré en 7 jours. À partir de 890 €.">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
 
-    h1 {
-      color: #ff4d6d;
-      margin-bottom: 30px;
-    }
-
-    button {
-      padding: 15px 30px;
-      font-size: 18px;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    #yesBtn {
-      background: #ff4d6d;
-      color: white;
-      margin-right: 20px;
-    }
-
-    #noBtn {
-      background: #ccc;
-      color: black;
-      position: absolute;
-    }
-
-    .celebration {
-      display: none;
-      font-size: 40px;
-      color: #ff4d6d;
-      margin-top: 20px;
-    }
-
-    .heart, .rose {
-      position: fixed;
-      bottom: -50px;
-      font-size: 30px;
-      animation: floatUp 4s linear forwards;
-    }
-
-    @keyframes floatUp {
-      from {
-        transform: translateY(0);
-        opacity: 1;
-      }
-      to {
-        transform: translateY(-110vh);
-        opacity: 0;
-      }
-    }
-  </style>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🥐</text></svg>">
+<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
-  <div class="container" id="box">
-    <h1>Will you be my Valentine? 💖</h1>
-    <button id="yesBtn">Yes 💕</button>
-    <button id="noBtn">No 😢</button>
-    <div class="celebration" id="celebrate">YAYYYYY!!! 💘🌹</div>
+<header class="site-header">
+  <div class="wrap nav">
+    <a class="logo" href="#"><span data-cfg="marque">Croqueta Studio</span></a>
+    <nav class="nav-links">
+      <a href="#offre"    class="hide-sm">Ce que vous obtenez</a>
+      <a href="#methode"  class="hide-sm">Méthode</a>
+      <a href="#tarifs">Tarifs</a>
+      <a href="#faq"      class="hide-sm">Questions</a>
+      <a href="#contact" class="btn btn-primary btn-sm">Devis gratuit</a>
+    </nav>
   </div>
+</header>
 
-  <script>
-    const noBtn = document.getElementById("noBtn");
-    const yesBtn = document.getElementById("yesBtn");
-    const celebrate = document.getElementById("celebrate");
+<main>
 
-    // Move "No" button away
-    noBtn.addEventListener("mouseover", () => {
-      const x = Math.random() * (window.innerWidth - 100);
-      const y = Math.random() * (window.innerHeight - 100);
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
-    });
+<!-- ====================== HERO ====================== -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Livré en 7 jours</span>
+      <h1>Vos clients vous cherchent sur Google. Ils ne vous trouvent pas.</h1>
+      <p class="lead">
+        Je crée le site web de votre commerce : rapide, impeccable sur téléphone,
+        et trouvable quand quelqu'un tape votre métier suivi de « <span data-cfg="ville">votre ville</span> ».
+        Vous m'envoyez vos photos et vos horaires, je m'occupe du reste.
+      </p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-primary">Recevoir un devis gratuit</a>
+        <a href="#tarifs" class="btn btn-ghost">Voir les tarifs</a>
+      </div>
+      <div class="trust">
+        <span><svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor"><path d="M8 13.2 4.8 10l-1.1 1.1L8 15.4l8.4-8.4-1.1-1.1z"/></svg> Devis en 24 h</span>
+        <span><svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor"><path d="M8 13.2 4.8 10l-1.1 1.1L8 15.4l8.4-8.4-1.1-1.1z"/></svg> Prix fixe, annoncé à l'avance</span>
+        <span><svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor"><path d="M8 13.2 4.8 10l-1.1 1.1L8 15.4l8.4-8.4-1.1-1.1z"/></svg> Sans engagement</span>
+      </div>
+    </div>
 
-    // Yes button celebration
-    yesBtn.addEventListener("click", () => {
-      celebrate.style.display = "block";
+    <div class="browser" aria-hidden="true">
+      <div class="browser-bar">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="browser-url">boulangerie-martin.fr</span>
+      </div>
+      <div class="browser-body">
+        <div class="mock-title">Boulangerie Martin</div>
+        <div class="mock-sub">Artisan boulanger depuis 1987 · Ouvert jusqu'à 19 h 30</div>
+        <div class="mock-row">
+          <span class="mock-pill">Itinéraire</span>
+          <span class="mock-pill">Appeler</span>
+          <span class="mock-pill">Nos pains</span>
+        </div>
+        <div class="mock-bar w80"></div>
+        <div class="mock-bar w60"></div>
+        <div class="mock-bar w45"></div>
+        <div class="mock-cta">Commander pour ce soir</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-      for (let i = 0; i < 30; i++) {
-        createFloating("❤️");
-        createFloating("🌹");
-      }
-    });
+<!-- ====================== PROBLÈME ====================== -->
+<section class="alt">
+  <div class="wrap">
+    <div class="section-head center">
+      <h2>Ce que ça coûte de ne pas avoir de site</h2>
+      <p class="lead" style="margin-inline:auto">
+        Rien de dramatique au quotidien. Juste des clients qui vont ailleurs,
+        sans que vous le sachiez jamais.
+      </p>
+    </div>
+    <div class="grid grid-3">
+      <div class="card">
+        <div class="card-icon">🔎</div>
+        <h3>Le concurrent passe devant</h3>
+        <p>Quelqu'un cherche votre métier dans votre quartier. C'est l'adresse d'à côté qui s'affiche, parce qu'elle a un site et pas vous.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📱</div>
+        <h3>La page Facebook ne suffit plus</h3>
+        <p>Horaires perdus dans le fil, pas de menu lisible, impossible à trouver sur Google. Un réseau social n'est pas une vitrine.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📞</div>
+        <h3>Le téléphone sonne pour rien</h3>
+        <p>« Vous êtes ouverts ? », « C'est combien ? », « Vous êtes où ? ». Dix fois par jour. Un site répond à votre place.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-    function createFloating(symbol) {
-      const el = document.createElement("div");
-      el.classList.add(symbol === "❤️" ? "heart" : "rose");
-      el.innerText = symbol;
-      el.style.left = Math.random() * 100 + "vw";
-      el.style.fontSize = Math.random() * 20 + 20 + "px";
-      document.body.appendChild(el);
+<!-- ====================== OFFRE ====================== -->
+<section id="offre">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Ce que vous obtenez</span>
+      <h2>Un site fini, en ligne, qui vous appartient</h2>
+      <p class="lead">Pas une maquette à valider pendant six mois. Un site livré, en ligne, avec votre nom de domaine.</p>
+    </div>
+    <div class="grid grid-4">
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <h3>Rapide</h3>
+        <p>Chargement en moins de 2 secondes. Vos clients n'attendent pas, Google non plus.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📲</div>
+        <h3>Pensé mobile</h3>
+        <p>La majorité de vos visiteurs arrivent depuis leur téléphone. C'est là que je conçois le site en premier.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📍</div>
+        <h3>Trouvable</h3>
+        <p>Fiche Google Business configurée, adresse, horaires, avis, itinéraire. Le trio qui fait venir les gens.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔑</div>
+        <h3>À vous</h3>
+        <p>Le domaine et les accès sont à votre nom. Vous partez quand vous voulez, vous emportez tout.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-      setTimeout(() => {
-        el.remove();
-      }, 4000);
-    }
-  </script>
+<!-- ====================== MÉTHODE ====================== -->
+<section id="methode" class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Comment ça se passe</span>
+      <h2>Trois étapes, sept jours</h2>
+      <p class="lead">Votre temps de travail total : environ une heure.</p>
+    </div>
+    <div class="grid grid-3">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>On se parle 20 minutes</h3>
+        <p>Par téléphone ou sur place. Je note votre activité, vos horaires, ce que vous voulez que les gens fassent en arrivant sur le site : appeler, venir, commander.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Je construis</h3>
+        <p>Textes, mise en page, photos, formulaire, fiche Google. Vous recevez un lien privé sous 5 jours et vous me dites ce qui change.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Mise en ligne</h3>
+        <p>Deux séries de corrections comprises. Ensuite je publie, je vérifie que tout fonctionne, et je vous montre comment modifier vos horaires vous-même.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
+<!-- ====================== TARIFS ====================== -->
+<section id="tarifs">
+  <div class="wrap">
+    <div class="section-head center">
+      <span class="eyebrow">Tarifs</span>
+      <h2>Prix fixe, annoncé avant de commencer</h2>
+      <p class="lead" style="margin-inline:auto">
+        40 % à la commande, le solde à la mise en ligne. Pas de surprise en cours de route.
+      </p>
+    </div>
+
+    <div class="grid grid-3" style="align-items:stretch">
+
+      <div class="card price-card">
+        <h3>Essentiel</h3>
+        <div class="price">890 €<small> TTC</small></div>
+        <div class="price-note">Une page qui dit tout. Livré en 7 jours.</div>
+        <ul class="checklist">
+          <li>Site d'une page, complet</li>
+          <li>Coordonnées, horaires, plan d'accès</li>
+          <li>Formulaire de contact</li>
+          <li>Fiche Google Business créée</li>
+          <li>Nom de domaine + hébergement 1 an</li>
+          <li>1 série de corrections</li>
+        </ul>
+        <a href="#contact" class="btn btn-ghost btn-block" data-stripe="essentiel">Demander cette formule</a>
+      </div>
+
+      <div class="card price-card featured">
+        <span class="badge">Le plus choisi</span>
+        <h3>Pro</h3>
+        <div class="price">1 690 €<small> TTC</small></div>
+        <div class="price-note">Le vrai site de votre commerce. Livré en 14 jours.</div>
+        <ul class="checklist">
+          <li><strong>Tout l'Essentiel, plus :</strong></li>
+          <li>Jusqu'à 5 pages (carte, services, galerie…)</li>
+          <li>Référencement local travaillé</li>
+          <li>Textes rédigés par mes soins</li>
+          <li>Retouche de vos photos</li>
+          <li>Demande de devis ou réservation</li>
+          <li>2 séries de corrections</li>
+        </ul>
+        <a href="#contact" class="btn btn-primary btn-block" data-stripe="pro">Demander cette formule</a>
+      </div>
+
+      <div class="card price-card">
+        <h3>Premium</h3>
+        <div class="price">2 900 €<small> TTC</small></div>
+        <div class="price-note">Vendre ou faire réserver en ligne. 3 semaines.</div>
+        <ul class="checklist">
+          <li><strong>Tout le Pro, plus :</strong></li>
+          <li>Boutique ou réservation en ligne</li>
+          <li>Paiement par carte (Stripe)</li>
+          <li>Jusqu'à 10 pages</li>
+          <li>Séance photo de votre établissement</li>
+          <li>Formation 1 h pour gérer seul</li>
+          <li>Corrections illimitées pendant 30 jours</li>
+        </ul>
+        <a href="#contact" class="btn btn-ghost btn-block" data-stripe="premium">Demander cette formule</a>
+      </div>
+    </div>
+
+    <!-- Abonnement : c'est lui qui rend le business solide -->
+    <div class="card mt-32" style="display:flex;gap:30px;align-items:center;flex-wrap:wrap">
+      <div style="flex:1 1 320px">
+        <span class="eyebrow">Après la livraison</span>
+        <h3 style="font-size:1.35rem">Sérénité — 59 €/mois</h3>
+        <p style="margin-bottom:0">
+          Hébergement, nom de domaine, sauvegardes, mises à jour de sécurité,
+          et <strong>une modification par mois</strong> (horaires, photos, nouveau produit).
+          Vous m'écrivez, c'est fait sous 48 h. Sans engagement, résiliable à tout moment.
+        </p>
+      </div>
+      <a href="#contact" class="btn btn-primary" data-stripe="maintenance">Ajouter Sérénité</a>
+    </div>
+
+    <p class="center" style="margin-top:26px;color:var(--muted);font-size:.92rem">
+      Paiement en 3 fois sans frais possible · Facture fournie · Auto-entrepreneur, TVA non applicable
+    </p>
+  </div>
+</section>
+
+<!-- ====================== GARANTIE ====================== -->
+<section class="alt tight">
+  <div class="wrap">
+    <div class="grid grid-2" style="align-items:center;gap:44px">
+      <div>
+        <span class="eyebrow">Ma garantie</span>
+        <h2>Le site vous plaît, ou vous ne payez pas le solde</h2>
+        <p>
+          Vous versez 40 % pour réserver la semaine de production. Si le site livré
+          ne vous convient pas et que deux séries de corrections n'y changent rien,
+          vous ne payez pas les 60 % restants. Vous ne prenez aucun risque : moi si.
+        </p>
+        <p style="margin-bottom:0">C'est ce qui me pousse à bien faire du premier coup.</p>
+      </div>
+      <div class="grid grid-2" style="gap:16px">
+        <div class="card stat"><div class="num">7 j</div><div class="lbl">Délai de livraison</div></div>
+        <div class="card stat"><div class="num">1 h</div><div class="lbl">De votre temps</div></div>
+        <div class="card stat"><div class="num">40 %</div><div class="lbl">À la commande</div></div>
+        <div class="card stat"><div class="num">0 €</div><div class="lbl">Si ça ne vous plaît pas</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--
+  ========================================================================
+  EMPLACEMENT TÉMOIGNAGES — À REMPLIR UNIQUEMENT AVEC DE VRAIS CLIENTS.
+  Ne jamais inventer d'avis : c'est interdit (art. L121-2 code de la
+  consommation, pratique commerciale trompeuse) et ça se voit.
+  Dès le 1er client livré : demande une phrase + le nom du commerce,
+  décommente le bloc ci-dessous et remplis-le.
+
+  <section>
+    <div class="wrap">
+      <div class="section-head center"><h2>Ils m'ont fait confiance</h2></div>
+      <div class="grid grid-3">
+        <div class="card">
+          <p>« PHRASE EXACTE DU CLIENT. »</p>
+          <p style="margin:0;color:var(--muted);font-size:.9rem"><strong>Prénom Nom</strong><br>Nom du commerce, Ville</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  ========================================================================
+-->
+
+<!-- ====================== FAQ ====================== -->
+<section id="faq">
+  <div class="wrap" style="max-width:780px">
+    <div class="section-head center">
+      <span class="eyebrow">Questions fréquentes</span>
+      <h2>Ce qu'on me demande avant de signer</h2>
+    </div>
+
+    <details open>
+      <summary>Je n'y connais rien en informatique. C'est un problème ?</summary>
+      <p>Non, c'est même la situation normale. Vous me donnez vos informations par téléphone ou par SMS, j'écris tout le reste. À la fin je vous montre en 10 minutes comment changer vos horaires, et vous n'aurez jamais à toucher à autre chose.</p>
+    </details>
+
+    <details>
+      <summary>Combien ça coûte une fois le site en ligne ?</summary>
+      <p>La première année est comprise dans le prix. Ensuite, soit vous prenez l'abonnement Sérénité à 59 €/mois et je m'occupe de tout, soit vous payez seulement le domaine et l'hébergement, environ 80 € par an, et vous gérez vous-même.</p>
+    </details>
+
+    <details>
+      <summary>Est-ce que je serai premier sur Google ?</summary>
+      <p>Non, et méfiez-vous de quiconque vous le promet. Ce que je garantis : votre site est techniquement propre, votre fiche Google Business est correctement remplie, et vous apparaissez sur les recherches locales de votre métier. Être premier sur un mot-clé concurrentiel demande un travail de plusieurs mois, facturé à part et seulement si ça en vaut la peine pour vous.</p>
+    </details>
+
+    <details>
+      <summary>Et si je veux partir ?</summary>
+      <p>Vous partez. Le nom de domaine est enregistré à votre nom dès le départ, et je vous transmets tous les accès. Aucun site n'est retenu en otage ici.</p>
+    </details>
+
+    <details>
+      <summary>Vous travaillez seulement à <span data-cfg="ville">votre ville</span> ?</summary>
+      <p>Je me déplace dans <span data-cfg="zone">la région</span> pour le premier rendez-vous et les photos. Partout ailleurs en France, tout se fait très bien par téléphone et WhatsApp — c'est la majorité des projets.</p>
+    </details>
+
+    <details>
+      <summary>Pourquoi pas Wix ou un site gratuit ?</summary>
+      <p>Vous pouvez, sincèrement. Ça vous prendra deux à trois week-ends, le résultat ressemblera à un modèle générique, et la version gratuite affiche leur publicité sur votre vitrine. Vous me payez pour ne pas y passer vos dimanches et pour avoir un résultat qui ne fait pas amateur.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ====================== CONTACT ====================== -->
+<section id="contact" class="alt">
+  <div class="wrap grid grid-2" style="gap:48px;align-items:start">
+    <div>
+      <span class="eyebrow">Devis gratuit</span>
+      <h2>Dites-moi ce que vous faites, je vous dis ce que je peux faire</h2>
+      <p class="lead">
+        Réponse sous 24 h avec un prix ferme et un délai. Pas de relance commerciale,
+        pas d'abonnement caché. Si votre projet ne rentre pas dans mes formules, je vous le dis.
+      </p>
+      <ul class="checklist" style="margin-top:24px">
+        <li>Devis écrit, gratuit, sans engagement</li>
+        <li>Un interlocuteur unique du début à la fin</li>
+        <li>Réponse par téléphone ou par mail, comme vous préférez</li>
+      </ul>
+      <p style="margin-top:26px">
+        Vous préférez parler tout de suite ?<br>
+        <a data-href="telephone" href="#contact"><strong data-cfg="telephone">Téléphone à configurer</strong></a>
+        · <a data-href="email" href="#contact"><span data-cfg="email">Email à configurer</span></a>
+      </p>
+    </div>
+
+    <form class="form-card" id="devis-form" novalidate>
+      <div class="form-msg" id="form-msg" role="alert"></div>
+
+      <div class="field">
+        <label for="nom">Votre nom *</label>
+        <input type="text" id="nom" name="nom" required autocomplete="name">
+      </div>
+
+      <div class="field">
+        <label for="commerce">Nom et type de commerce *</label>
+        <input type="text" id="commerce" name="commerce" required placeholder="Ex. : Boulangerie Martin, boulangerie">
+      </div>
+
+      <div class="field">
+        <label for="email">Email *</label>
+        <input type="email" id="email" name="email" required autocomplete="email">
+      </div>
+
+      <div class="field">
+        <label for="tel">Téléphone</label>
+        <input type="tel" id="tel" name="telephone" autocomplete="tel">
+      </div>
+
+      <div class="field">
+        <label for="formule">Formule envisagée</label>
+        <select id="formule" name="formule">
+          <option>Je ne sais pas encore, conseillez-moi</option>
+          <option>Essentiel — 890 €</option>
+          <option>Pro — 1 690 €</option>
+          <option>Premium — 2 900 €</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="projet">Votre projet en deux lignes</label>
+        <textarea id="projet" name="projet" placeholder="Ce que vous vendez, ce que vous attendez du site, si vous avez déjà quelque chose en ligne…"></textarea>
+      </div>
+
+      <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <button type="submit" class="btn btn-primary btn-block">Recevoir mon devis gratuit</button>
+      <p class="form-note">
+        Vos informations servent uniquement à vous répondre. Elles ne sont ni revendues,
+        ni utilisées pour autre chose. <a href="confidentialite.html">Confidentialité</a>.
+      </p>
+    </form>
+  </div>
+</section>
+
+<!-- ====================== CTA FINAL ====================== -->
+<section class="tight">
+  <div class="wrap">
+    <div class="cta-band">
+      <h2>Votre concurrent a déjà un site</h2>
+      <p>Le vôtre peut être en ligne dans sept jours. Le devis ne coûte rien et ne vous engage à rien.</p>
+      <a href="#contact" class="btn btn-primary">Demander mon devis</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="logo" style="margin-bottom:12px"><span data-cfg="marque">Croqueta Studio</span></div>
+        <p style="color:var(--muted);max-width:34ch">
+          <span data-cfg="baseline">Sites web pour commerçants et artisans</span>.
+          Basé à <span data-cfg="ville">votre ville</span>, disponible partout en France.
+        </p>
+      </div>
+      <div>
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#offre">Ce que vous obtenez</a></li>
+          <li><a href="#methode">Méthode</a></li>
+          <li><a href="#tarifs">Tarifs</a></li>
+          <li><a href="#faq">Questions</a></li>
+          <li><a href="#contact">Devis gratuit</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact &amp; mentions</h4>
+        <ul>
+          <li><a data-href="email" href="#contact"><span data-cfg="email">Email</span></a></li>
+          <li><a data-href="telephone" href="#contact"><span data-cfg="telephone">Téléphone</span></a></li>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
+          <li><a href="cgv.html">Conditions de vente</a></li>
+          <li><a href="confidentialite.html">Confidentialité</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span data-year></span> <span data-cfg="marque">Croqueta Studio</span>. Tous droits réservés.</span>
+      <span><span data-cfg="legal.statut">Entrepreneur individuel</span> · SIRET <span data-cfg="legal.siret">à renseigner</span></span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /archive/
+Disallow: /merci.html
+
+Sitemap: https://deonandre.github.io/For-la-croqueta-/sitemap.xml
