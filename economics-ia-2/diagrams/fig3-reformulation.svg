@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 490" width="700" height="490" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="700" height="490" fill="#ffffff"/>
+  <defs>
+    <marker id="ax" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto">
+      <path d="M0,0 L8,3.5 L0,7 Z" fill="#1f2937"/>
+    </marker>
+    <marker id="gr" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto">
+      <path d="M0,0 L8,3.5 L0,7 Z" fill="#059669"/>
+    </marker>
+    <marker id="d1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6.5,3 L0,6 Z" fill="#111827"/>
+    </marker>
+  </defs>
+  <text x="350" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#111827">Figure 3: The market for reformulated low-sugar drinks</text>
+  <text x="350" y="45" text-anchor="middle" font-size="12.5" fill="#4b5563">A tiered levy is avoidable, so producers cut sugar and supply of reformulated drinks rises</text>
+  <line x1="95" y1="400" x2="645" y2="400" stroke="#1f2937" stroke-width="2" marker-end="url(#ax)"/>
+  <line x1="95" y1="400" x2="95" y2="58" stroke="#1f2937" stroke-width="2" marker-end="url(#ax)"/>
+  <text x="34" y="230" font-size="12.5" fill="#111827" transform="rotate(-90 34 230)" text-anchor="middle">Price (€ per litre)</text>
+  <text x="372" y="466" font-size="12.5" fill="#111827" text-anchor="middle">Quantity of reformulated low-sugar drinks (litres per year)</text>
+  <text x="89" y="415" font-size="12" fill="#111827" text-anchor="end">0</text>
+  <line x1="95" y1="234" x2="380" y2="234" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4 3"/>
+  <line x1="380" y1="234" x2="380" y2="400" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4 3"/>
+  <line x1="95" y1="262" x2="420" y2="262" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4 3"/>
+  <line x1="420" y1="262" x2="420" y2="400" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4 3"/>
+  <line x1="120" y1="380" x2="600" y2="110" stroke="#c2410c" stroke-width="2.6"/>
+  <line x1="210" y1="380" x2="645" y2="135" stroke="#059669" stroke-width="2.6"/>
+  <line x1="150" y1="70" x2="600" y2="390" stroke="#1d4ed8" stroke-width="2.6"/>
+  <text x="596" y="98" font-size="13" font-weight="bold" fill="#c2410c" text-anchor="end"><tspan>S</tspan><tspan font-size="9.5" dy="4">1</tspan><tspan dy="-4"></tspan></text>
+  <text x="640" y="124" font-size="13" font-weight="bold" fill="#059669" text-anchor="end"><tspan>S</tspan><tspan font-size="9.5" dy="4">2</tspan><tspan dy="-4"></tspan></text>
+  <text x="606" y="388" font-size="12.5" font-weight="bold" fill="#1d4ed8" text-anchor="start"><tspan>D</tspan></text>
+  <line x1="185" y1="348" x2="268" y2="348" stroke="#059669" stroke-width="2" marker-end="url(#gr)"/>
+  <text x="268" y="328" font-size="10.5" fill="#059669" text-anchor="middle"><tspan>supply rises</tspan></text>
+  <text x="215" y="84" font-size="11.5" fill="#6b7280" text-anchor="start"><tspan>UK levy: sugar content of soft drinks</tspan></text>
+  <text x="215" y="100" font-size="11.5" fill="#6b7280" text-anchor="start"><tspan>down 47% between 2015 and 2024</tspan></text>
+  <circle cx="380" cy="234" r="4.5" fill="#111827"/>
+  <circle cx="420" cy="262" r="4.5" fill="#111827"/>
+  <text x="89" y="238" font-size="12.5" font-weight="bold" fill="#111827" text-anchor="end"><tspan>P</tspan><tspan font-size="9.0" dy="4">1</tspan><tspan dy="-4"></tspan></text>
+  <text x="89" y="266" font-size="12.5" font-weight="bold" fill="#111827" text-anchor="end"><tspan>P</tspan><tspan font-size="9.0" dy="4">2</tspan><tspan dy="-4"></tspan></text>
+  <text x="378" y="418" font-size="12.5" font-weight="bold" fill="#111827" text-anchor="middle"><tspan>Q</tspan><tspan font-size="9.0" dy="4">1</tspan><tspan dy="-4"></tspan></text>
+  <text x="422" y="418" font-size="12.5" font-weight="bold" fill="#111827" text-anchor="middle"><tspan>Q</tspan><tspan font-size="9.0" dy="4">2</tspan><tspan dy="-4"></tspan></text>
+</svg>
