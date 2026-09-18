@@ -5,7 +5,7 @@ disruptions to the Strait of Hormuz contribute to global food-price inflation?
 
 | File | Purpose |
 |---|---|
-| `commentary.md` | The commentary itself — 800 words, DEEDE structure, key concept *scarcity*. |
+| `commentary.md` | The commentary itself — 799 words, DEEDE structure, key concept *scarcity*. |
 | `commentary.html` | Single-file print-ready version with the three diagrams inlined (open in a browser, then Print → Save as PDF). |
 | `diagrams/fig1-fertiliser-market.svg` | Global urea market: fall in supply against price-inelastic derived demand. |
 | `diagrams/fig2-wheat-market.svg` | Global wheat market: higher input costs contract supply; inelastic demand for a necessity. |
@@ -14,9 +14,16 @@ disruptions to the Strait of Hormuz contribute to global food-price inflation?
 The SVGs are vector files, so they can be dropped straight into a Word or Google document
 without losing sharpness.
 
+## Style
+
+Written as continuous prose with no section headings, following the house style of the
+sample commentary: the key concept is bolded on every use, figure references are bolded,
+and each paragraph closes on an implication. The DEEDE stages are still all present — the
+appendix in `commentary.md` maps each stage to the paragraphs that carry it.
+
 ## Word count
 
-800 words, counting the commentary body only. Following IB practice, the header table,
+799 words, counting the commentary body only. Following IB practice, the header table,
 section headings, figure captions and labels, the reference list and the appendix are
 excluded.
 

@@ -5,18 +5,27 @@ improve market outcomes in Germany?
 
 | File | Purpose |
 |---|---|
-| `commentary.md` | The commentary itself — 799 words, DEEDE structure, key concept *intervention*. |
+| `commentary.md` | The commentary itself — 800 words, DEEDE structure, key concept *intervention*. |
 | `commentary.html` | Single-file print-ready version with the three diagrams inlined (open in a browser, then Print → Save as PDF). |
-| `diagrams/fig1-externality.svg` | Negative externality of consumption: MPB above MSB by the marginal external cost, over-consumption at Qm, welfare loss. |
-| `diagrams/fig2-specific-tax.svg` | Specific tax: S₁ → S₂, consumer and producer incidence, tax revenue, Qm → Q*. |
+| `diagrams/fig1-externality.svg` | Negative externality of consumption: MPB above MSB by the marginal external cost, over-consumption at Qm, welfare loss area a. |
+| `diagrams/fig2-specific-tax.svg` | Specific tax: S₁ → S₂, consumer burden b and producer burden c, tax revenue b + c, Qm → Q*. |
 | `diagrams/fig3-reformulation.svg` | Market for reformulated low-sugar drinks: a tiered levy is avoidable, so supply shifts right. |
 
 The SVGs are vector files, so they drop into a Word or Google document without losing
 sharpness.
 
+## Style
+
+Written as continuous prose with no section headings, following the house style of the
+sample commentary: the key concept is bolded on every use, figure references are bolded,
+welfare areas are lettered and walked through in the text, and each paragraph closes on an
+implication. The DEEDE stages are still all present — the appendix in `commentary.md` maps
+each stage to the paragraphs that carry it. Figures 1 and 2 gained area labels (a, and
+b + c) so the prose can cite them; the curves and shifts are otherwise unchanged.
+
 ## Word count
 
-799 words, counting the commentary body only. Following IB practice, the header table,
+800 words, counting the commentary body only. Following IB practice, the header table,
 section headings, figure captions and labels, the reference list and the appendix are
 excluded.
 

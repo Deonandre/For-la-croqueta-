@@ -12,7 +12,7 @@
     </marker>
   </defs>
   <text x="350" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#111827">Figure 2: A specific tax on sugar-sweetened beverages</text>
-  <text x="350" y="45" text-anchor="middle" font-size="12.5" fill="#4b5563">The levy internalises the external cost; the shaded area is government tax revenue</text>
+  <text x="350" y="45" text-anchor="middle" font-size="12.5" fill="#4b5563">The levy internalises the external cost; tax revenue is areas b + c</text>
   <line x1="95" y1="400" x2="645" y2="400" stroke="#1f2937" stroke-width="2" marker-end="url(#ax)"/>
   <line x1="95" y1="400" x2="95" y2="58" stroke="#1f2937" stroke-width="2" marker-end="url(#ax)"/>
   <text x="34" y="230" font-size="12.5" fill="#111827" transform="rotate(-90 34 230)" text-anchor="middle">Price (€ per litre)</text>
@@ -42,6 +42,6 @@
   <text x="89" y="265" font-size="12.5" font-weight="bold" fill="#111827" text-anchor="end"><tspan>P</tspan><tspan font-size="9.0" dy="4">3</tspan><tspan dy="-4"></tspan></text>
   <text x="331" y="418" font-size="12.5" font-weight="bold" fill="#111827" text-anchor="middle"><tspan>Q*</tspan></text>
   <text x="380" y="418" font-size="12.5" font-weight="bold" fill="#111827" text-anchor="middle"><tspan>Q</tspan><tspan font-size="9.0" dy="4">m</tspan><tspan dy="-4"></tspan></text>
-  <text x="105" y="221" font-size="10.5" fill="#1e3a8a" text-anchor="start"><tspan>consumer burden</tspan></text>
-  <text x="105" y="251" font-size="10.5" fill="#7c2d12" text-anchor="start"><tspan>producer burden</tspan></text>
+  <text x="105" y="221" font-size="10.5" fill="#1e3a8a" text-anchor="start"><tspan>b  (consumer burden)</tspan></text>
+  <text x="105" y="251" font-size="10.5" fill="#7c2d12" text-anchor="start"><tspan>c  (producer burden)</tspan></text>
 </svg>
