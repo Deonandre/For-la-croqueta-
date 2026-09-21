@@ -1,0 +1,741 @@
+[
+ {
+  "i": 1,
+  "jc": null,
+  "runs": [
+   {
+    "t": "TITLE: ",
+    "b": true,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": null
+   },
+   {
+    "t": "Tobacco use falls fastest in South-East Asia, yet 322 million people still at risk",
+    "b": true,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": null
+   }
+  ]
+ },
+ {
+  "i": 2,
+  "jc": null,
+  "runs": [
+   {
+    "t": "SOURCE",
+    "b": true,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": null
+   },
+   {
+    "t": ":",
+    "b": true,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": null
+   },
+   {
+    "t": " ",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": null
+   },
+   {
+    "t": "World Health Organization (WHO)",
+    "b": true,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": null
+   },
+   {
+    "t": "\n",
+    "b": true,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": null
+   },
+   {
+    "t": " ",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": null
+   },
+   {
+    "t": "PUBLISHED DATE",
+    "b": true,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": null
+   },
+   {
+    "t": ":",
+    "b": true,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": null
+   },
+   {
+    "t": " 8 October 2025",
+    "b": true,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": null
+   },
+   {
+    "t": "\n",
+    "b": true,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": null
+   },
+   {
+    "t": " ",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": null
+   },
+   {
+    "t": "ACCESSED ON",
+    "b": true,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": null
+   },
+   {
+    "t": ":",
+    "b": true,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": null
+   },
+   {
+    "t": " ",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": null
+   },
+   {
+    "t": "26 January 2026",
+    "b": true,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": null
+   }
+  ]
+ },
+ {
+  "i": 3,
+  "jc": null,
+  "runs": [
+   {
+    "t": "ARTICLE",
+    "b": true,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": null
+   },
+   {
+    "t": " :",
+    "b": true,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": null
+   }
+  ]
+ },
+ {
+  "i": 4,
+  "jc": null,
+  "runs": [
+   {
+    "t": "The WHO South-East Asia Region has made the fastest progress globally in reducing tobacco use, according to the latest ‘WHO global report on trends in prevalence of tobacco use 2000-2024 and projections 2025-2030’. Yet, with more than 322 million adults and 8.6 million adolescents in the Region still using tobacco, stronger policies, higher taxes, expanded cessation services, and regulation of new nicotine products are urgently needed to protect people’s health.",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 5,
+  "jc": null,
+  "runs": [
+   {
+    "t": "“The progress is encouraging, but millions are still using tobacco and new nicotine products. We must accelerate actions to protect children and future generations,” said Dr Catharina Boehme, Officer-in-Charge, WHO South-East Asia.  “Countries of South-East Asia have shown what can be achieved with strong political commitment, comprehensive policies and community engagement,” she said as the latest trends showed the Region already achieved the global target of 30% reduction in tobacco use by 2021, four years ahead of schedule.",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 6,
+  "jc": null,
+  "runs": [
+   {
+    "t": "Once the global hotspot for tobacco consumption, the Region in 2000 reported the World’s highest tobacco use prevalence among men (70.1%) and women (38%). By 2024, prevalence had dropped to 37.4% among men and 9.3% among women, among the fastest declines ever recorded.",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 7,
+  "jc": null,
+  "runs": [
+   {
+    "t": "Despite the progress, the Region remains home to a quarter of the world’s tobacco users, including over 288 million smokeless tobacco users, 80% of the global total. In addition, there are an estimated 1.8 million adult and 500 000 adolescent electronic cigarette users in the Region.  While the numbers for e-cigarettes are indicative, the actual number may be much higher and present a growing health concern, especially among the youth.",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 8,
+  "jc": null,
+  "runs": [
+   {
+    "t": "“Tobacco use remains one of the leading preventable causes of disease, disability, and death in the Region. Governments must continue to implement comprehensive tobacco control measures based on the evidence-based policies advocated by WHO FCTC (Framework Convention on Tobacco Control) and the MPOWER package, including closing regulatory gaps, and preventing children and adolescents from being initiated into nicotine use,” said Dr Boehme.",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 9,
+  "jc": null,
+  "runs": [
+   {
+    "t": "WHO has been working with Member States in the Region advocating for access to cessation services, raising taxes on all tobacco products, enforcing smoke-free policies, strengthening graphic health warnings, enforcing the TAPS (tobacco advertising, promotion, and sponsorship) ban and regulating novel nicotine and tobacco products. These evidence-based interventions are critical to accelerating declines and protecting future generations from the devastating harms of tobacco.",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 10,
+  "jc": null,
+  "runs": [
+   {
+    "t": "Globally, tobacco use is projected to fall by 120 million users between 2010 and 2025, with the WHO South-East Asia Region accounting for more than half of this reduction, with 69 million fewer tobacco users.",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 11,
+  "jc": null,
+  "runs": [
+   {
+    "t": "Three countries- Bangladesh, India and Nepal - are on track to achieve at least a 30% relative reduction by 2025, while six others - Bhutan, DPR Korea, Maldives, Myanmar, Sri Lanka, and Thailand - are projected to see smaller declines.",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 12,
+  "jc": null,
+  "runs": []
+ },
+ {
+  "i": 13,
+  "jc": null,
+  "runs": [
+   {
+    "t": "INTRODUCTION:",
+    "b": true,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": null
+   }
+  ]
+ },
+ {
+  "i": 14,
+  "jc": null,
+  "runs": [
+   {
+    "t": "In an October 2025 post by the World Health Organization (WHO) titled “Despite large declines in tobacco consumption in Southeast Asia, 322 million people still consume tobacco products,” tobacco consumption in Southeast Asia has decreased considerably but there are still hundreds of millions of individuals who consume tobacco. There is evidence of significant market failure where society must absorb the externalities that are attributed to the consumption of tobacco. For example, some of the external costs to society created from tobacco consumption include the following: increased healthcare costs, reduced productivity, and shortened life expectancy.",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 15,
+  "jc": null,
+  "runs": [
+   {
+    "t": "Higher taxes on tobacco products represent a major public policy approach for reducing future tobacco consumption. From an economic standpoint, indirect taxation is a way for the government ",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   },
+   {
+    "t": "intervention ",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   },
+   {
+    "t": "to try and eliminate the external costs associated with tobacco consumption (or at least reduce them), reduce the over-consumption of tobacco products, and improve the efficiency of resource allocation (allocative efficiency). This paper will use economic theory to evaluate the ability of indirect taxes to eliminate the market failure created by the consumption of tobacco.",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 16,
+  "jc": null,
+  "runs": [
+   {
+    "t": "Diagram Analysis :",
+    "b": true,
+    "i": false,
+    "u": true,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 17,
+  "jc": null,
+  "runs": []
+ },
+ {
+  "i": 18,
+  "jc": null,
+  "runs": []
+ },
+ {
+  "i": 19,
+  "jc": null,
+  "runs": []
+ },
+ {
+  "i": 20,
+  "jc": null,
+  "runs": []
+ },
+ {
+  "i": 21,
+  "jc": null,
+  "runs": []
+ },
+ {
+  "i": 22,
+  "jc": null,
+  "runs": []
+ },
+ {
+  "i": 23,
+  "jc": null,
+  "runs": [
+   {
+    "t": "The first diagram illustrates a negative externality of consumption of tobacco. The marginal private benefit (MPB) curve lies above the marginal social benefit (MSB) curve because smokers do not consider the external costs imposed on third parties, such as higher healthcare expenditure, passive smoking and lost productivity. Since there are no external costs of production mentioned in the article, the marginal private cost (MPC) is equal to the marginal social cost (MSC). ",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 24,
+  "jc": null,
+  "runs": [
+   {
+    "t": "In a free market, equilibrium occurs where MPB intersects MPC at Qm, leading to overconsumption of tobacco. The socially optimal level of consumption occurs at Qs, where MSB equals MSC. The area between MSB and MSC from Qs to Qm represents the deadweight welfare loss to society due to allocative inefficiency.",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 25,
+  "jc": null,
+  "runs": []
+ },
+ {
+  "i": 26,
+  "jc": null,
+  "runs": []
+ },
+ {
+  "i": 27,
+  "jc": null,
+  "runs": []
+ },
+ {
+  "i": 28,
+  "jc": null,
+  "runs": []
+ },
+ {
+  "i": 29,
+  "jc": null,
+  "runs": []
+ },
+ {
+  "i": 30,
+  "jc": null,
+  "runs": []
+ },
+ {
+  "i": 31,
+  "jc": null,
+  "runs": [
+   {
+    "t": "Smoking is compounded by information asymmetries and the addictiveness of smoking, as many people underestimate their long-term health risks associated with smoking and this is another reason that there is excess consumption of tobacco vs. the socially optimal amount of tobacco consumed overall.",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 32,
+  "jc": null,
+  "runs": []
+ },
+ {
+  "i": 33,
+  "jc": null,
+  "runs": []
+ },
+ {
+  "i": 34,
+  "jc": null,
+  "runs": []
+ },
+ {
+  "i": 35,
+  "jc": null,
+  "runs": []
+ },
+ {
+  "i": 36,
+  "jc": null,
+  "runs": []
+ },
+ {
+  "i": 37,
+  "jc": null,
+  "runs": []
+ },
+ {
+  "i": 38,
+  "jc": null,
+  "runs": []
+ },
+ {
+  "i": 39,
+  "jc": null,
+  "runs": [
+   {
+    "t": "The second diagram shows the effect of an indirect tax on tobacco. The tax shifts the",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 40,
+  "jc": null,
+  "runs": [
+   {
+    "t": " supply curve vertically upward from MPC to MPC + tax, increasing the price paid by ",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 41,
+  "jc": null,
+  "runs": [
+   {
+    "t": "consumers from Pm to Pc and reducing the price received by producers to Pp. As a ",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 42,
+  "jc": null,
+  "runs": [
+   {
+    "t": "result, quantity demanded falls from Qm to Qt. Since Qt is closer to the socially ",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 43,
+  "jc": null,
+  "runs": [
+   {
+    "t": "optimal level Qs, the tax helps to internalise the negative externality of consumption ",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 44,
+  "jc": null,
+  "runs": [
+   {
+    "t": "and improves allocative efficiency. The vertical distance between Pc and Pp ",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 45,
+  "jc": null,
+  "runs": [
+   {
+    "t": "represents the tax per unit, while the shaded rectangle between them up to Qt shows ",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 46,
+  "jc": null,
+  "runs": [
+   {
+    "t": "the government’s tax revenue. Although the welfare loss is reduced, it is not ",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 47,
+  "jc": null,
+  "runs": [
+   {
+    "t": "completely eliminated because Qt does not fully reach Qs.",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 48,
+  "jc": null,
+  "runs": []
+ },
+ {
+  "i": 49,
+  "jc": null,
+  "runs": [
+   {
+    "t": "Evaluation of the policy response :",
+    "b": true,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   },
+   {
+    "t": " ",
+    "b": true,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 50,
+  "jc": null,
+  "runs": [
+   {
+    "t": "Indirect taxes imposed on tobacco represent effective means of ",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   },
+   {
+    "t": "intervention",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   },
+   {
+    "t": ", targeting market failure. Consumers are discouraged from consuming at higher prices, and empirical evidence substantiates that tobacco taxes are especially ",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   },
+   {
+    "t": "impactful in discouraging young people from smoking. Additionally, the government can invest the revenue derived from taxing tobacco products to benefit the public health system and improve society's welfare overall.",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 51,
+  "jc": null,
+  "runs": [
+   {
+    "t": "Despite these challenges, however, taxation remains a powerful tool for reducing tobacco use when paired with education and enforcement. ",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 52,
+  "jc": null,
+  "runs": [
+   {
+    "t": "Ultimately, however, the article points out that there is an ongoing versus a one-time market failure as a result of smokers' behaviour, despite recent histories demonstrating decreasing use. The article explains that smoking creates externalities that over-consume and represent a loss in social welfare. The government uses indirect taxes to help close the gap between the true costs of smoking and the actual cost borne by society",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 53,
+  "jc": null,
+  "runs": [
+   {
+    "t": "In conclusion, although taxation has some limitations, it is still a valid action to respond to the problem described in the article.",
+    "b": false,
+    "i": false,
+    "u": false,
+    "sz": "24",
+    "font": "Arial"
+   }
+  ]
+ },
+ {
+  "i": 54,
+  "jc": null,
+  "runs": []
+ },
+ {
+  "i": 55,
+  "jc": null,
+  "runs": []
+ }
+]

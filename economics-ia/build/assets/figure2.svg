@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 880" width="1240" height="880">
+  <rect width="1240" height="880" fill="#ffffff"/>
+  
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#000"/>
+    </marker>
+    <pattern id="dwl" width="14" height="14" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="0" y2="14" stroke="#000" stroke-width="2"/>
+    </pattern>
+    <pattern id="rev" width="16" height="16" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="0" y2="16" stroke="#000" stroke-width="2"/>
+    </pattern>
+  </defs>
+  
+  <line x1="140" y1="760" x2="140" y2="55" stroke="#000" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="140" y1="760" x2="980" y2="760" stroke="#000" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="140" y="38" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="29" text-anchor="middle">Price</text>
+  <text x="994" y="770" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="29">Quantity</text>
+
+  <!-- government tax revenue: (Pc - Pp) x Qt -->
+  <rect x="140" y="336.3" width="399.1" height="113.5" fill="url(#rev)" stroke="#000" stroke-width="2"/>
+
+  <!-- curves -->
+  <line x1="845.6" y1="129.3" x2="199" y2="566.2" stroke="#000" stroke-width="3"/>
+  <line x1="888.6" y1="206.5" x2="195.4" y2="689" stroke="#000" stroke-width="3"/>
+  <line x1="272.4" y1="119.4" x2="906.6" y2="635.1" stroke="#000" stroke-width="3"/>
+  <line x1="195.4" y1="218" x2="788.3" y2="702.5" stroke="#000" stroke-width="3"/>
+
+  <!-- guide lines -->
+  <line x1="140" y1="336.3" x2="539.1" y2="336.3" stroke="#000" stroke-width="2" stroke-dasharray="14 5 3 5"/>
+  <line x1="140" y1="397.4" x2="614.3" y2="397.4" stroke="#000" stroke-width="2" stroke-dasharray="14 5 3 5"/>
+  <line x1="140" y1="449.8" x2="539.1" y2="449.8" stroke="#000" stroke-width="2" stroke-dasharray="14 5 3 5"/>
+  <line x1="539.1" y1="336.3" x2="539.1" y2="760" stroke="#000" stroke-width="2" stroke-dasharray="14 5 3 5"/>
+  <line x1="614.3" y1="397.4" x2="614.3" y2="760" stroke="#000" stroke-width="2" stroke-dasharray="14 5 3 5"/>
+  <line x1="506.7" y1="472.3" x2="506.7" y2="760" stroke="#000" stroke-width="2" stroke-dasharray="14 5 3 5"/>
+
+  <!-- curve labels -->
+  <text x="857.6" y="131.3" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="29" font-weight="normal" text-anchor="start">MPC + tax</text>
+  <text x="900.6" y="214.5" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="29" font-weight="normal" text-anchor="start">S = MPC = MSC</text>
+  <text x="918.6" y="643.1" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="29" font-weight="normal" text-anchor="start">MPB</text>
+  <text x="800.3" y="714.5" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="29" font-weight="normal" text-anchor="start">MSB</text>
+
+  <!-- axis value labels -->
+  <text x="128" y="345.3" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="29" font-weight="normal" text-anchor="end">Pc</text>
+  <text x="128" y="406.4" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="29" font-weight="normal" text-anchor="end">Pm</text>
+  <text x="128" y="458.8" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="29" font-weight="normal" text-anchor="end">Pp</text>
+  <text x="494" y="798" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="27" font-weight="normal" text-anchor="middle">Qs</text>
+  <text x="546" y="798" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="27" font-weight="normal" text-anchor="middle">Qt</text>
+  <text x="618" y="798" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="27" font-weight="normal" text-anchor="middle">Qm</text>
+
+  
+  <text x="300" y="96" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="29" font-weight="bold" text-anchor="start">KEY</text>
+  <rect x="376" y="60" width="90" height="46" fill="url(#rev)" stroke="#000" stroke-width="2.5"/>
+  <text x="480" y="96" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="29" font-weight="bold" text-anchor="start">Government revenue</text>
+</svg>

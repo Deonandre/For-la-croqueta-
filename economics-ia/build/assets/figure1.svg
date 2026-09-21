@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 880" width="1240" height="880">
+  <rect width="1240" height="880" fill="#ffffff"/>
+  
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#000"/>
+    </marker>
+    <pattern id="dwl" width="14" height="14" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="0" y2="14" stroke="#000" stroke-width="2"/>
+    </pattern>
+    <pattern id="rev" width="16" height="16" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="0" y2="16" stroke="#000" stroke-width="2"/>
+    </pattern>
+  </defs>
+  
+  <line x1="140" y1="760" x2="140" y2="55" stroke="#000" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="140" y1="760" x2="980" y2="760" stroke="#000" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="140" y="38" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="29" text-anchor="middle">Price</text>
+  <text x="994" y="770" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="29">Quantity</text>
+
+  <!-- deadweight welfare loss triangle -->
+  <polygon points="502.7,466.1 610.2,391.2 610.2,554" fill="url(#dwl)" stroke="#000" stroke-width="2"/>
+
+  <!-- curves -->
+  <line x1="892.2" y1="195" x2="199" y2="677.5" stroke="#000" stroke-width="3"/>
+  <line x1="276" y1="119.4" x2="910.1" y2="635.1" stroke="#000" stroke-width="3"/>
+  <line x1="199" y1="218" x2="791.9" y2="702.5" stroke="#000" stroke-width="3"/>
+
+  <!-- guide lines -->
+  <line x1="140" y1="391.2" x2="610.2" y2="391.2" stroke="#000" stroke-width="2" stroke-dasharray="14 5 3 5"/>
+  <line x1="140" y1="466.1" x2="502.7" y2="466.1" stroke="#000" stroke-width="2" stroke-dasharray="14 5 3 5"/>
+  <line x1="610.2" y1="391.2" x2="610.2" y2="760" stroke="#000" stroke-width="2" stroke-dasharray="14 5 3 5"/>
+  <line x1="502.7" y1="466.1" x2="502.7" y2="760" stroke="#000" stroke-width="2" stroke-dasharray="14 5 3 5"/>
+
+  <!-- curve labels -->
+  <text x="904.2" y="201" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="29" font-weight="normal" text-anchor="start">S = MPC = MSC</text>
+  <text x="922.1" y="643.1" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="29" font-weight="normal" text-anchor="start">MPB</text>
+  <text x="803.9" y="714.5" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="29" font-weight="normal" text-anchor="start">MSB</text>
+
+  <!-- axis value labels -->
+  <text x="128" y="400.2" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="29" font-weight="normal" text-anchor="end">Pm</text>
+  <text x="128" y="475.1" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="29" font-weight="normal" text-anchor="end">Ps</text>
+  <text x="502.7" y="798" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="27" font-weight="normal" text-anchor="middle">Qs</text>
+  <text x="610.2" y="798" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="27" font-weight="normal" text-anchor="middle">Qm</text>
+
+  
+  <text x="300" y="96" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="29" font-weight="bold" text-anchor="start">KEY</text>
+  <rect x="376" y="60" width="90" height="46" fill="url(#dwl)" stroke="#000" stroke-width="2.5"/>
+  <text x="480" y="96" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="29" font-weight="bold" text-anchor="start">Deadweight welfare loss</text>
+</svg>
