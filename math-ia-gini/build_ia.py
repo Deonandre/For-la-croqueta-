@@ -431,9 +431,22 @@ CTX = dict(Z=Z, N=N, DZ=DZ, DN=DN, f=f, pct=pct, signed=signed, poly=poly, round
 CALC = re.compile(r"<!--calc-->.*?<!--/calc-->\n?", re.S)
 
 
+RQ = ("To what extent can cubic polynomial regression models and definite calculus integration of "
+      "Lorenz curves accurately estimate the Gini coefficient of inequality in South Africa compared "
+      "to Norway, using 2022 World Bank income and consumption distribution data?")
+PAGE_BREAK = '```{=openxml}\n<w:p><w:r><w:br w:type="page"/></w:r></w:p>\n```\n'
+
+
 def full_version(md):
-    """Everything, with the calculation markers removed."""
-    return re.sub(r"^<!--/?calc-->\n", "", md, flags=re.M)
+    """Everything, with a cover page, a table of contents and the calculation markers removed."""
+    md = re.sub(r"^<!--/?calc-->\n", "", md, flags=re.M)
+    front, body = md.split("\n---\n", 1)
+    cover = (front + "\n"
+             'abstract-title: "Research question"\n'
+             f'abstract: "*{RQ}*"\n'
+             'toc-title: "Table of contents"\n'
+             "---\n")
+    return cover + PAGE_BREAK + body
 
 
 def written_version(md):
@@ -450,16 +463,111 @@ def written_version(md):
     md = md.replace('subtitle: "IB Mathematics: Analysis and Approaches SL, Mathematical Exploration"',
                     'subtitle: "IB Mathematics: Analysis and Approaches SL, Mathematical Exploration (written text only)"')
     md = re.sub(r"\n{3,}", "\n\n", md)
-    # turn the remaining inline maths into ordinary text, so the document has no equation objects
-    plain = subprocess.run([PANDOC, "-f", "markdown", "-s", "-t",
-                            "markdown-tex_math_dollars-tex_math_single_backslash-raw_tex-raw_html"],
-                           input=md, capture_output=True, text=True, check=True).stdout
-    return plain
+    # a sentence that introduced a removed formula now ends the paragraph
+    md = re.sub(r"(?<=[A-Za-z0-9)$])(:|, and so| gives| is| are| and)[ \t]*\n\n", ".\n\n", md)
+    return md
 
 
-def to_docx(md_path, docx_path):
+def to_docx(md_path, docx_path, toc=False, plain_maths=False):
+    extra = ["--toc", "--toc-depth=2"] if toc else []
+    if plain_maths:
+        extra += ["--lua-filter", os.path.join(HERE, "draft", "math2text.lua")]
     subprocess.run([PANDOC, md_path, "-o", docx_path, "--resource-path", HERE,
-                    "--reference-doc", os.path.join(HERE, "draft", "reference.docx")], check=True)
+                    "--reference-doc", os.path.join(HERE, "draft", "reference.docx")] + extra, check=True)
+
+
+SOFFICE_PROFILE = "file:///tmp/ia_lo_profile"
+
+
+def toc_entries(md):
+    entries = []
+    for line in md.split("\n"):
+        m = re.match(r"^(#{1,2}) (.+)$", line)
+        if m:
+            text = m.group(2).replace("$R^2$", "R²")
+            text = re.sub(r'"(?=\S)', "\u201c", text).replace('"', "\u201d")   # curly quotes, as in the body
+            entries.append((len(m.group(1)), text))
+    return entries
+
+
+def toc_paragraphs(entries, pages):
+    from xml.sax.saxutils import escape
+    paras = []
+    for i, ((level, text), page) in enumerate(zip(entries, pages)):
+        ppr = ('<w:pPr><w:tabs><w:tab w:val="right" w:leader="dot" w:pos="9630"/></w:tabs>'
+               f'<w:spacing w:before="{120 if level == 1 else 0}" w:after="40"/>'
+               f'<w:ind w:left="{0 if level == 1 else 440}"/></w:pPr>')
+        begin = ('<w:r><w:fldChar w:fldCharType="begin"/></w:r>'
+                 '<w:r><w:instrText xml:space="preserve">TOC \\o "1-2" \\h \\z \\u</w:instrText></w:r>'
+                 '<w:r><w:fldChar w:fldCharType="separate"/></w:r>') if i == 0 else ""
+        rpr = "<w:rPr><w:b/></w:rPr>" if level == 1 else ""
+        runs = (f'<w:r>{rpr}<w:t xml:space="preserve">{escape(text)}</w:t></w:r>'
+                f'<w:r>{rpr}<w:tab/></w:r><w:r>{rpr}<w:t>{page}</w:t></w:r>')
+        end = '<w:r><w:fldChar w:fldCharType="end"/></w:r>' if i == len(entries) - 1 else ""
+        paras.append(f"<w:p>{ppr}{begin}{runs}{end}</w:p>")
+    return "".join(paras)
+
+
+def write_toc(docx_path, entries, pages):
+    import zipfile
+    with zipfile.ZipFile(docx_path) as z:
+        items = {n: z.read(n) for n in z.namelist()}
+    doc = items["word/document.xml"].decode("utf-8")
+    new, n = re.subn(r'<w:p><w:r><w:fldChar w:fldCharType="begin"[^>]*/><w:instrText[^>]*>TOC .*?</w:p>'
+                     r'|<w:p><w:pPr><w:tabs><w:tab w:val="right" w:leader="dot".*?w:fldCharType="end"/></w:r></w:p>',
+                     lambda m: toc_paragraphs(entries, pages), doc, count=1, flags=re.S)
+    assert n == 1, "table of contents field not found"
+    items["word/document.xml"] = new.encode("utf-8")
+    items["word/settings.xml"] = re.sub(rb"<w:updateFields[^>]*/>", b"", items["word/settings.xml"])
+    with zipfile.ZipFile(docx_path, "w", zipfile.ZIP_DEFLATED) as z:
+        for name, data in items.items():
+            z.writestr(name, data)
+
+
+def heading_pages(docx_path, entries):
+    """Render with LibreOffice and find the page on which each heading starts."""
+    import shutil
+    import tempfile
+    import pymupdf
+    tmp = tempfile.mkdtemp()
+    src = os.path.join(tmp, "ia.docx")
+    shutil.copy(docx_path, src)
+    subprocess.run(["soffice", f"-env:UserInstallation={SOFFICE_PROFILE}", "--headless",
+                    "--convert-to", "pdf", "--outdir", tmp, src], check=True, capture_output=True, timeout=300)
+    doc = pymupdf.open(os.path.join(tmp, "ia.pdf"))
+    def norm(s):
+        return " ".join(s.replace("\u201c", '"').replace("\u201d", '"').split())
+    lines = [[norm(l) for l in page.get_text().split("\n")] for page in doc]
+    pages, start = [], 2
+    for _, text in entries:
+        key = norm(text).split("²")[0][:22]      # superscripts are typeset separately
+        for p in range(start, len(lines)):
+            if any(l.startswith(key) for l in lines[p]):
+                pages.append(p + 1)
+                start = p
+                break
+        else:
+            raise SystemExit(f"heading not found in rendered document: {text}")
+    return pages, len(doc)
+
+
+def fill_toc(docx_path, md):
+    """Write real entries and page numbers into the table of contents, so it shows in every
+    editor (Word can still refresh it with Update Field)."""
+    import shutil
+    entries = toc_entries(md)
+    if not shutil.which("soffice"):
+        print("LibreOffice not found: the table of contents is left for Word to fill in")
+        return None
+    pages = ["0"] * len(entries)
+    for _ in range(3):
+        write_toc(docx_path, entries, pages)
+        found, total = heading_pages(docx_path, entries)
+        if found == pages:
+            return total
+        pages = found
+    write_toc(docx_path, entries, pages)
+    return heading_pages(docx_path, entries)[1]
 
 
 def main():
@@ -468,12 +576,16 @@ def main():
     assert "«" not in out and "»" not in out
     full_md = os.path.join(HERE, "draft", "IA_final.md")
     open(full_md, "w", encoding="utf-8").write(full_version(out))
-    to_docx(full_md, os.path.join(HERE, "IA_Complete_Gini_Lorenz_South_Africa_Norway.docx"))
+    full_docx = os.path.join(HERE, "IA_Complete_Gini_Lorenz_South_Africa_Norway.docx")
+    to_docx(full_md, full_docx, toc=True)
+    total = fill_toc(full_docx, open(full_md, encoding="utf-8").read())
+    if total:
+        print(f"table of contents filled; the complete IA has {total} pages")
     text_md = os.path.join(HERE, "draft", "IA_written_text_only.md")
     text = written_version(out)
-    assert "$" not in text and "<!--" not in text and "\\frac" not in text
+    assert "$$" not in text and "<!--" not in text
     open(text_md, "w", encoding="utf-8").write(text)
-    to_docx(text_md, os.path.join(HERE, "IA_Written_Text_Only.docx"))
+    to_docx(text_md, os.path.join(HERE, "IA_Written_Text_Only.docx"), plain_maths=True)
     print(f"{len(CHECKS)} worked calculations checked; wrote the complete IA and the written-text-only version")
 
 

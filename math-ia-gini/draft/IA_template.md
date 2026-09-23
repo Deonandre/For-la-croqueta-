@@ -85,7 +85,7 @@ So the gradient of a Lorenz curve tells us how well off each part of the populat
 
 ## 3.2 From area to the Gini formula
 
-If everyone had exactly the same welfare, the Lorenz curve would be the **line of perfect equality** $y = x$. The Gini coefficient $G$ is the area between $y = x$ and $L(x)$, divided by the whole area under $y = x$. The area under $y = x$ from 0 to 1 is a triangle with area $1/2$, so
+If everyone had exactly the same welfare, the Lorenz curve would be the **line of perfect equality** $y = x$. The Gini coefficient $G$ is the area between $y = x$ and $L(x)$, divided by the whole area under $y = x$. The area under $y = x$ from 0 to 1 is a triangle with area $1/2$, so the Gini coefficient is one minus twice the area under the Lorenz curve:
 $$G = \frac{\int_0^1 \big(x - L(x)\big)\,dx}{\int_0^1 x\,dx} = \frac{\frac12 - \int_0^1 L(x)\,dx}{\frac12} = 1 - 2\int_0^1 L(x)\,dx .$$
 I write $A$ for the area under the Lorenz curve, so that $G = 1 - 2A$. With perfect equality, $A$ is one half and $G = 0$; if one person held everything, $A$ would be close to 0 and $G$ close to 1. The limits of integration are 0 and 1 because $x$ runs from none of the population to all of it. Since I only know $L$ at 11 points, I cannot integrate it directly. I compare two ways of finding $A$: joining the points with straight lines (Section 4), and fitting a cubic polynomial and integrating it (Sections 5 and 6).
 
@@ -115,7 +115,7 @@ There is another way to understand this gap. If everyone *inside* each decile ha
 
 Model 1 is the general cubic $\hat L(x) = ax^3 + bx^2 + cx + d$, where the hat shows that it is a model of $L$. For each data point, the residual $e_k = L_k - \hat L(x_k)$ is the vertical gap between the data and the model. Least-squares regression chooses the coefficients $a$, $b$, $c$ and $d$ that make the sum of the squared residuals as small as possible:
 $$SS_{res} = \sum_{k=0}^{10} e_k^{\,2} .$$
-I used cubic regression on all 11 points, which is the same calculation as the cubic regression function on a GDC, and got
+I used cubic regression on all 11 points, which is the same calculation as the cubic regression function on a GDC. The fitted models were:
 $$\text{South Africa:}\quad \hat L(x) = «poly(Z.cubic.a, Z.cubic.b, Z.cubic.c, Z.cubic.d)»$$
 $$\text{Norway:}\quad \hat L(x) = «poly(N.cubic.a, N.cubic.b, N.cubic.c, N.cubic.d)»$$
 
@@ -143,7 +143,7 @@ I noticed that in both countries the residuals of Model 1 follow the same patter
 
 ## 5.2 Definite integration
 
-Integrating term by term,
+Integrating term by term gives the area under the cubic:
 $$\int_0^1 \big(ax^3 + bx^2 + cx + d\big)\,dx = \left[\frac{a}{4}x^4 + \frac{b}{3}x^3 + \frac{c}{2}x^2 + dx\right]_0^1 = \frac a4 + \frac b3 + \frac c2 + d .$$
 Calling this area $A_1$, the Gini estimate is $G_1 = 1 - 2A_1$.
 
@@ -176,11 +176,11 @@ This was the point where I stopped trusting $R^2$. I had expected an $R^2$ above
 
 ## 6.1 Applying the constraints
 
-Condition 1 gives $\hat L(0) = 0$, so $d = 0$, and $\hat L(1) = 1$, so $a + b + c = 1$ and $c = 1 - a - b$. Substituting,
+Condition 1 gives $\hat L(0) = 0$, so $d = 0$, and $\hat L(1) = 1$, so $a + b + c = 1$ and $c = 1 - a - b$. Substituting these into the cubic gives:
 $$\hat L(x) = ax^3 + bx^2 + (1 - a - b)x = x + a(x^3 - x) + b(x^2 - x).$$
-A GDC cannot fit a cubic with conditions like these, so I had to fit it by hand. To make this possible, I used the identity $x^3 - x = (x - 0.5)(x^2 - x) + 1.5(x^2 - x)$, which can be checked by expanding the right-hand side. This lets me rewrite the model as
+A GDC cannot fit a cubic with conditions like these, so I had to fit it by hand. To make this possible, I used the identity $x^3 - x = (x - 0.5)(x^2 - x) + 1.5(x^2 - x)$, which can be checked by expanding the right-hand side. This lets me rewrite the model in the following form:
 $$\hat L(x) = x + \beta\,v(x) + \alpha\,w(x), \qquad v(x) = x^2 - x, \quad w(x) = (x - 0.5)(x^2 - x),$$
-where $\beta = b + 1.5a$ and $\alpha = a$. It is the same family of cubics, just described with different coefficients.
+Here $\beta = b + 1.5a$ and $\alpha = a$. It is the same family of cubics, just described with different coefficients.
 
 The two parts have a useful symmetry about $x = 0.5$. Replacing $x$ by $1 - x$ leaves $v$ unchanged but changes the sign of $w$, so $v$ is symmetric about $x = 0.5$, while $w$ is positive on one side and negative on the other by exactly the same amount.
 
@@ -193,7 +193,7 @@ $$G_2 = 1 - 2A_2 = 1 - 2\left(\frac12 - \frac{\beta}{6}\right) = \frac{\beta}{3}
 
 ## 6.3 Fitting Model 2 by hand
 
-Let $z_k = L_k - x_k$, the gap between the data and the line of equality, and write $v_k = v(x_k)$ and $w_k = w(x_k)$. The residuals are $z_k - \beta v_k - \alpha w_k$. The key fact is that the sum of the products $v_k w_k$ is zero: because the decile points are symmetric about 0.5, these products cancel in pairs ($x = 0.1$ with $x = 0.9$, $x = 0.2$ with $x = 0.8$, and so on). This means the sum of squared residuals splits into one part that contains only β and another that contains only α. Each part is a quadratic, so I minimised it by differentiating and setting the derivative equal to zero, which gives
+Let $z_k = L_k - x_k$, the gap between the data and the line of equality, and write $v_k = v(x_k)$ and $w_k = w(x_k)$. The residuals are $z_k - \beta v_k - \alpha w_k$. The key fact is that the sum of the products $v_k w_k$ is zero: because the decile points are symmetric about 0.5, these products cancel in pairs ($x = 0.1$ with $x = 0.9$, $x = 0.2$ with $x = 0.8$, and so on). This means the sum of squared residuals splits into one part that contains only β and another that contains only α. Each part is a quadratic, so I minimised it by differentiating and setting the derivative equal to zero. This gives the two coefficients:
 $$\beta = \frac{\sum v_k z_k}{\sum v_k^2}, \qquad \alpha = \frac{\sum w_k z_k}{\sum w_k^2} .$$
 The sums $\sum v_k^2 = 0.3333$ and $\sum w_k^2 = 0.01188$ depend only on the $x$-values, so they are the same for both countries. The other two sums are worked out in Appendix B.
 

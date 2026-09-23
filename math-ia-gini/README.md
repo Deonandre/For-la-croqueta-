@@ -1,7 +1,7 @@
 # Maths IA (AA SL): Gini coefficient from cubic Lorenz-curve models
 
-- `IA_Complete_Gini_Lorenz_South_Africa_Norway.docx`: the complete IA (text, tables, formulas, 3 figures).
-- `IA_Written_Text_Only.docx`: the same text with no formulas, tables or figures.
+- `IA_Complete_Gini_Lorenz_South_Africa_Norway.docx`: the complete IA: cover page, table of contents, text, tables, formulas, 3 figures, references and appendices (preview: `IA_Complete_preview.pdf`).
+- `IA_Written_Text_Only.docx`: the same written text with no display formulas, tables or figures (short inline symbols are plain text).
 
 ## Files
 
@@ -14,7 +14,8 @@
 | `draft/IA_template.md` | The IA text, with every number written as a «formula» |
 | `draft/IA_final.md` | The complete IA text with the numbers filled in |
 | `draft/IA_written_text_only.md` | The written-only version |
-| `draft/reference.docx` | Word styles (A4, Calibri 11 pt, 2 cm margins, 9 pt tables) |
+| `draft/reference.docx` | Word styles (A4, Calibri 11 pt, black only, 2 cm margins, page numbers, 9 pt tables) |
+| `draft/math2text.lua` | Turns inline formulas into plain text for the written-only version |
 
 ## Rebuild
 
