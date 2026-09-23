@@ -476,6 +476,29 @@ def to_docx(md_path, docx_path, toc=False, plain_maths=False):
                     "--reference-doc", os.path.join(HERE, "draft", "reference.docx")] + extra, check=True)
 
 
+def keep_tables_together(docx_path):
+    """Stop tables breaking across pages: every row is kept with the next one."""
+    import zipfile
+    with zipfile.ZipFile(docx_path) as z:
+        items = {n: z.read(n) for n in z.namelist()}
+    doc = items["word/document.xml"].decode("utf-8")
+
+    def table(m):
+        rows = re.findall(r"<w:tr>.*?</w:tr>|<w:tr .*?</w:tr>", m.group(0), flags=re.S)
+        new = m.group(0)
+        for r in rows[:-1]:
+            kept = re.sub(r"(<w:pPr>(?:<w:pStyle [^>]*/>)?)", r"\1<w:keepNext/>", r)   # schema order
+            kept = re.sub(r"<w:p>", "<w:p><w:pPr><w:keepNext/></w:pPr>", kept)
+            new = new.replace(r, kept, 1)
+        return new
+
+    doc = re.sub(r"<w:tbl>.*?</w:tbl>", table, doc, flags=re.S)
+    items["word/document.xml"] = doc.encode("utf-8")
+    with zipfile.ZipFile(docx_path, "w", zipfile.ZIP_DEFLATED) as z:
+        for name, data in items.items():
+            z.writestr(name, data)
+
+
 SOFFICE_PROFILE = "file:///tmp/ia_lo_profile"
 
 
@@ -578,6 +601,7 @@ def main():
     open(full_md, "w", encoding="utf-8").write(full_version(out))
     full_docx = os.path.join(HERE, "IA_Complete_Gini_Lorenz_South_Africa_Norway.docx")
     to_docx(full_md, full_docx, toc=True)
+    keep_tables_together(full_docx)
     total = fill_toc(full_docx, open(full_md, encoding="utf-8").read())
     if total:
         print(f"table of contents filled; the complete IA has {total} pages")
