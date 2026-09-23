@@ -169,48 +169,6 @@ def analyse(shares, gini_official):
     return out
 
 
-def plot(results, outdir):
-    import matplotlib
-    matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
-
-    xs = np.linspace(0, 1, 400)
-    for iso, res in results.items():
-        cu, cc = res["cubic"], res["ccubic"]
-        fig, ax = plt.subplots(figsize=(6, 6))
-        ax.plot([0, 1], [0, 1], color="0.45", lw=1, ls="--", label="Line of equality $y = x$")
-        ax.plot(xs, np.polyval(cu["coef"], xs), color="#1f5fa8", lw=1.8,
-                label="Model 1: unconstrained cubic")
-        ax.plot(xs, cc["a"] * xs**3 + cc["b"] * xs**2 + cc["c"] * xs, color="#c0392b",
-                lw=1.8, ls="-.", label="Model 2: constrained cubic")
-        ax.scatter(res["x"], res["L"], color="black", zorder=5, s=24, label="Decile data points")
-        low = min(-0.02, min(np.polyval(cu["coef"], xs)) - 0.02)
-        ax.set_xlim(0, 1)
-        ax.set_ylim(low, 1.02)
-        ax.set_xlabel("Cumulative share of population, $x$")
-        ax.set_ylabel("Cumulative share of total welfare, $L(x)$")
-        ax.set_title(f"{res['name']}, {res['year']}")
-        ax.grid(alpha=0.3)
-        ax.legend(loc="upper left", fontsize=9)
-        fig.tight_layout()
-        fig.savefig(os.path.join(outdir, f"lorenz_{iso}.png"), dpi=200)
-        plt.close(fig)
-
-    fig, axes = plt.subplots(1, len(results), figsize=(5.2 * len(results), 4))
-    for ax, (iso, res) in zip(np.atleast_1d(axes), results.items()):
-        ax.axhline(0, color="0.45", lw=1)
-        ax.plot(res["x"], res["cubic"]["residuals"], "o-", color="#1f5fa8", label="Model 1")
-        ax.plot(res["x"], res["ccubic"]["residuals"], "s--", color="#c0392b", label="Model 2")
-        ax.set_title(f"Residuals, {res['name']}")
-        ax.set_xlabel("Cumulative share of population, $x$")
-        ax.set_ylabel("Residual $L_k - \\hat{L}(x_k)$")
-        ax.grid(alpha=0.3)
-        ax.legend(fontsize=9)
-    fig.tight_layout()
-    fig.savefig(os.path.join(outdir, "residuals.png"), dpi=200)
-    plt.close(fig)
-
-
 def selftest():
     """Synthetic curves with known answers; no real data involved."""
     # exact Lorenz curve L = x^3: constrained cubic fits exactly, G = 1 - 2(1/4) = 0.5
@@ -249,7 +207,6 @@ def main(argv):
         results[iso] = res
     with open(os.path.join(outdir, "results.json"), "w") as f:
         json.dump(results, f, indent=2, default=float)
-    plot(results, outdir)
     for iso, r in results.items():
         print(f"{iso}: reported {r['gini_official']:.4f} | trapezium {r['trap']['gini']:.4f} | "
               f"model 1 {r['cubic']['gini']:.4f} | model 2 {r['ccubic']['gini']:.4f} | "
