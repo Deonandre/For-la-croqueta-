@@ -1,0 +1,7 @@
+Spearman via Pearson-on-ranks: 0.753043
+Spearman via pandas:           0.753043
+OLS intercept 6.2102, slope 2.0485e-05, R2 0.6119
+2015-2024 rs -0.6848; Monte-Carlo p = 0.0332 (exact 0.0347)
+First-difference Spearman (pandas): -0.069170
+Loss vs LUC Spearman (pandas): -0.191304
+rs crit (t, n=24): 0.4044; normal approx: 0.4087
