@@ -428,16 +428,53 @@ CTX = dict(Z=Z, N=N, DZ=DZ, DN=DN, f=f, pct=pct, signed=signed, poly=poly, round
            n_zaf=sum(r["country_code"] == "ZAF" for r in ROWS))
 
 
+CALC = re.compile(r"<!--calc-->.*?<!--/calc-->\n?", re.S)
+
+
+def full_version(md):
+    """Everything, with the calculation markers removed."""
+    return re.sub(r"^<!--/?calc-->\n", "", md, flags=re.M)
+
+
+def written_version(md):
+    """Only the prose: no calculations, display maths, tables or figures."""
+    md = CALC.sub("", md)
+    md = re.sub(r"\$\$.*?\$\$", "", md, flags=re.S)
+    keep = []
+    for line in md.split("\n"):
+        s = line.strip()
+        if s.startswith("|") or s.startswith("Table:") or s.startswith("!["):
+            continue
+        keep.append(line)
+    md = "\n".join(keep)
+    md = md.replace('subtitle: "IB Mathematics: Analysis and Approaches SL, Mathematical Exploration"',
+                    'subtitle: "IB Mathematics: Analysis and Approaches SL, Mathematical Exploration (written text only)"')
+    md = re.sub(r"\n{3,}", "\n\n", md)
+    # turn the remaining inline maths into ordinary text, so the document has no equation objects
+    plain = subprocess.run([PANDOC, "-f", "markdown", "-s", "-t",
+                            "markdown-tex_math_dollars-tex_math_single_backslash-raw_tex-raw_html"],
+                           input=md, capture_output=True, text=True, check=True).stdout
+    return plain
+
+
+def to_docx(md_path, docx_path):
+    subprocess.run([PANDOC, md_path, "-o", docx_path, "--resource-path", HERE,
+                    "--reference-doc", os.path.join(HERE, "draft", "reference.docx")], check=True)
+
+
 def main():
     src = open(os.path.join(HERE, "draft", "IA_template.md"), encoding="utf-8").read()
     out = re.sub("«(.+?)»", lambda m: str(eval(m.group(1), CTX)), src)
     assert "«" not in out and "»" not in out
-    md = os.path.join(HERE, "draft", "IA_final.md")
-    open(md, "w", encoding="utf-8").write(out)
-    docx = os.path.join(HERE, "IA_Gini_Lorenz_South_Africa_Norway.docx")
-    subprocess.run([PANDOC, md, "-o", docx, "--resource-path", HERE,
-                    "--reference-doc", os.path.join(HERE, "draft", "reference.docx")], check=True)
-    print(f"{len(CHECKS)} worked calculations checked; wrote {md} and {docx}")
+    full_md = os.path.join(HERE, "draft", "IA_final.md")
+    open(full_md, "w", encoding="utf-8").write(full_version(out))
+    to_docx(full_md, os.path.join(HERE, "IA_Complete_Gini_Lorenz_South_Africa_Norway.docx"))
+    text_md = os.path.join(HERE, "draft", "IA_written_text_only.md")
+    text = written_version(out)
+    assert "$" not in text and "<!--" not in text and "\\frac" not in text
+    open(text_md, "w", encoding="utf-8").write(text)
+    to_docx(text_md, os.path.join(HERE, "IA_Written_Text_Only.docx"))
+    print(f"{len(CHECKS)} worked calculations checked; wrote the complete IA and the written-text-only version")
 
 
 if __name__ == "__main__":
