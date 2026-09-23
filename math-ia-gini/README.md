@@ -13,7 +13,7 @@
 | `build_ia.py` | Fills `draft/IA_template.md` with the results and builds the Word file; re-checks every worked calculation and every numerical claim in the text |
 | `draft/IA_template.md` | The IA text, with every number written as a «formula» |
 | `draft/IA_final.md` | The IA text with the numbers filled in |
-| `draft/reference.docx` | Word styles (A4, 11 pt text, 9 pt tables) |
+| `draft/reference.docx` | Word styles (A4, Calibri 11 pt, 2 cm margins, 9 pt tables) |
 
 ## Rebuild
 

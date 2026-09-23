@@ -191,6 +191,7 @@ assert Z.cubic.pct_err > N.cubic.pct_err and Z.ccubic.pct_err > N.ccubic.pct_err
 assert 2.8 < max(abs(v) for v in Z.cubic.residuals) / max(abs(v) for v in N.cubic.residuals) < 3.5
 assert N.cubic.r2 > Z.cubic.r2 and N.cubic.abs_err < Z.cubic.abs_err
 assert N.cquad.checks.d2L0 > 0 and Z.cquad.checks.d2L0 > 0
+assert N.cquad.r2 < N.ccubic.r2 and all(C[i]['cubic']['r2'] > max(C[i][k]['r2'] for k in ('quad', 'cquad', 'ccubic')) for i in C)
 assert N.cquad.checks.negative_on is None and N.cquad.checks.decreasing_on is None and N.ccubic.checks.d2L0 < 0
 
 
@@ -347,6 +348,30 @@ def T_errors():
     return "\n".join(lines)
 
 
+def T_summary():
+    lines = [row("Country", "Published $G_{\\text{WB}}$", "Trapezium $G_T$", "Model 1 $G_1$", "Model 2 $G_2$"),
+             sep(14, 14, 14, 14, 14)]
+    for iso, name in (("ZAF", "South Africa"), ("NOR", "Norway")):
+        r = C[iso]
+        lines.append(row(name, f(r["gini_official"], 4), f(r["trap"]["gini"], 4), f(r["cubic"]["gini"], 4),
+                         f(r["ccubic"]["gini"], 4)))
+    return "\n".join(lines)
+
+
+def T_err_compare():
+    lines = [row("Country", "Method", "Estimated Gini", "Absolute error $\\left|G_{\\text{est}} - G_{\\text{WB}}\\right|$",
+                 "Relative percentage error"),
+             "|" + "-" * 12 + "|" + "-" * 24 + "|" + "-" * 12 + ":|" + "-" * 24 + ":|" + "-" * 16 + ":|"]
+    for iso, name in (("ZAF", "South Africa"), ("NOR", "Norway")):
+        r = C[iso]
+        lines.append(row(name, "World Bank (published)", f(r["gini_official"], 4), "–", "–"))
+        for key, mname in (("trap", "Trapezoidal rule"), ("cubic", "Model 1 (unconstrained cubic)"),
+                           ("ccubic", "Model 2 (constrained cubic)")):
+            m = r[key]
+            lines.append(row(name, mname, f(m["gini"], 4), f(m["abs_err"], 4), pct(m["pct_err"])))
+    return "\n".join(lines)
+
+
 def T_decomp():
     lines = [row("Country", "Method", "Grouping error $G_T - G$", "Model error $G_{\\text{model}} - G_T$",
                  "Total error $G_{\\text{model}} - G$"), sep(12, 10, 18, 22, 20)]
@@ -397,7 +422,7 @@ def years(iso):
 
 CTX = dict(Z=Z, N=N, DZ=DZ, DN=DN, f=f, pct=pct, signed=signed, poly=poly, round=round, abs=abs,
            T_meta=T_meta, T_cum=T_cum, T_grad=T_grad, T_m1=T_m1, T_checks=T_checks,
-           T_m2_sums=T_m2_sums, T_symm=T_symm, T_errors=T_errors, T_decomp=T_decomp, T_ends=T_ends,
+           T_m2_sums=T_m2_sums, T_symm=T_symm, T_errors=T_errors, T_err_compare=T_err_compare, T_summary=T_summary, T_decomp=T_decomp, T_ends=T_ends,
            T_raw=T_raw, T_m2_resid=T_m2_resid, years=years, n_rows=len(ROWS),
            n_nor=sum(r["country_code"] == "NOR" for r in ROWS),
            n_zaf=sum(r["country_code"] == "ZAF" for r in ROWS))
