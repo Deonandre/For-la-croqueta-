@@ -180,6 +180,13 @@ a_hand = ym - b_hand * xm
 assert abs(slope - b_hand) < 1e-15 and abs(intercept - a_hand) < 1e-9
 resid = co2 - (intercept + slope * loss)
 results["pearson_loss_co2"] = {"r": float(r_lib), "p": float(p_r), "r2": float(r_lib ** 2)}
+Sxx = float(np.sum((loss - xm) ** 2))
+Syy = float(np.sum((co2 - ym) ** 2))
+Sxy = float(np.sum((loss - xm) * (co2 - ym)))
+results["regression_working"] = {
+    "x_mean": float(xm), "y_mean": float(ym), "Sxx": Sxx, "Syy": Syy, "Sxy": Sxy,
+    "b": Sxy / Sxx, "a": float(ym - (Sxy / Sxx) * xm), "r": Sxy / np.sqrt(Sxx * Syy),
+}
 results["regression_co2_on_loss"] = {
     "slope_Mt_per_ha": float(slope), "slope_Mt_per_100000ha": float(slope * 1e5),
     "intercept_Mt": float(intercept), "r2": float(r_lib ** 2),

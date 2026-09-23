@@ -1,0 +1,39 @@
+PASS min loss 2001-2012 (23,003)
+PASS max loss 2001-2012 (57,992)
+PASS max loss (204,198 in 2023)
+PASS 2014 loss 181,851
+PASS 2014 more than doubled
+PASS 2015 fall 102,881
+PASS 2014 and 2015 CO2 rose
+PASS 2007 loss rise 9,931
+PASS LUC 2008-10 = 54.9/81.9/51.2
+PASS loss 2008-10 range 35,141-57,992
+PASS CO2 2015-2024 range 9.582-9.965
+PASS CO2 2015-2024 spread 0.383 (~4%)
+PASS Δloss 2002 = −10,437
+PASS 10! = 3,628,800
+PASS Σd² 568 → 3,408 / 13,800
+PASS 1 − rs² ≈ 0.433
+PASS five highest-loss years below line
+PASS GFW emissions ≈ 7 × mean fossil CO2
+PASS 31.5 Mha extent, 2.23 Mha loss
+PASS ±0.5/10.3 ≈ 5%, ±0.7/1.3 ≈ 54%
+PASS two CO2 steps 2006-07 and 2013-15
+PASS citation Alemagi et al. 2014: cited=True listed=True
+PASS citation Dkamela 2011: cited=True listed=True
+PASS citation Dkamela et al. 2014: cited=True listed=True
+PASS citation Friedlingstein et al. 2026: cited=True listed=True
+PASS citation Gibbs et al. 2025: cited=True listed=True
+PASS citation Global Forest Watch 2024: cited=True listed=True
+PASS citation Global Forest Watch 2026: cited=True listed=True
+PASS citation Hansen et al. 2013: cited=True listed=True
+PASS citation Harris et al. 2021: cited=True listed=True
+PASS citation Millennium Ecosystem Assessment 2005: cited=True listed=True
+PASS citation Our World in Data 2026: cited=True listed=True
+PASS citation Republic of Cameroon 2019: cited=True listed=True
+PASS citation Sims et al. 2025: cited=True listed=True
+PASS citation United Nations 2015: cited=True listed=True
+PASS citation World Bank n.d.: cited=True listed=True
+PASS citation World Bank Group 2022: cited=True listed=True
+PASS reference list has 16 entries, 16 expected
+PASS stray markup: []

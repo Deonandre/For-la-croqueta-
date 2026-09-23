@@ -1,20 +1,25 @@
 {
-  "counted_words": 2879,
+  "counted_words": 2884,
+  "count_without_captions_and_citations": 2646,
   "counted_by_section": {
-    "1. Research question and inquiry": 476,
-    "2. Strategy: REDD+ in Cameroon": 311,
-    "3. Method": 504,
-    "4. Treatment of data": 485,
-    "5. Analysis and conclusion": 717,
-    "6. Evaluation": 386
+    "1. Introduction and context": 433,
+    "2. Scientific rationale": 116,
+    "3. Research question": 236,
+    "4. Methodology: secondary data collection": 498,
+    "5. Data presentation and processing": 132,
+    "6. Statistical analysis": 466,
+    "7. Analysis and discussion": 487,
+    "8. Conclusion": 156,
+    "9. Evaluation": 360
   },
   "excluded_words_by_category": {
-    "Cover page": 45,
-    "Headings": 111,
+    "Cover page": 42,
+    "Headings": 158,
     "Data tables": 595,
-    "Equations and calculations": 81,
-    "References": 400,
-    "Declaration": 35,
-    "Statement": 53
-  }
+    "Equations and calculations": 153,
+    "References": 413,
+    "Declaration of AI assistance": 32,
+    "Appendix A": 141
+  },
+  "toc_pages_used": true
 }
