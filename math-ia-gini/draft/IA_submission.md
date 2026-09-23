@@ -374,9 +374,16 @@ What constrains this estimation ability is the existence of three critical limit
 
 ## 8.5 Declaration of tools used
 
-The dataset has been acquired from the World Bank's PIP database resource online. Coefficients, summations, errors, and integral evaluations were all performed through a custom built Python script, additionally utilized to produce all graphical representations. The regression coefficients for Model 1 can be precisely reproduced using the cubic regression function of a GDC: with reference to the data set in Table 2, one may verify that indeed the coefficient values are an exact match of the output given by a GDC cubic regression. An artificial intelligence assistant, Claude (Anthropic), was employed throughout the completion process in tasks such as World Bank database cross-referencing, code writing, document typesetting and written explanation.
+The dataset has been acquired from the World Bank's PIP database resource online (World Bank, 2026). Coefficients, summations, errors, and integral evaluations were all performed through a Python script written with the help of Claude (Anthropic, 2026), additionally utilized to produce all graphical representations. The regression coefficients for Model 1 can be precisely reproduced using the cubic regression function of a GDC: with reference to the data set in Table 2, one may verify that indeed the coefficient values are an exact match of the output given by a GDC cubic regression. Claude, an artificial intelligence assistant, was also employed throughout the completion process in tasks such as World Bank database cross-referencing, code writing, suggesting parts of the mathematical method, document typesetting and drafting written explanations, which I then rewrote in my own words.
+
+```{=openxml}
+<w:p><w:r><w:br w:type="page"/></w:r></w:p>
+```
 
 # References
+
+::: {custom-style="Bibliography"}
+Anthropic. (2026). *Claude* [Large language model]. https://claude.ai/
 
 Hasell, J., & Arriagada, P. (n.d.). *Data on poverty by the World Bank Poverty and Inequality Platform* [Dataset documentation]. Our World in Data. https://github.com/owid/poverty-data/blob/main/datasets/pip_README.md
 
@@ -389,6 +396,7 @@ Statistics South Africa. (2025). *Income & Expenditure Survey (IES) 2022/2023*. 
 World Bank. (2022). *Poverty and Inequality Platform methodology handbook* (Version 2022-04). https://worldbank.github.io/PIP-Methodology-2022-04/
 
 World Bank. (2026). *Poverty and Inequality Platform* (Version September 2026) [Data set]. Retrieved September 23, 2026, from https://api.worldbank.org/pip/v1/pip?country=ZAF,NOR&year=all&povline=3&fill_gaps=false&format=csv
+:::
 
 # Appendix A. The 2022 data
 

@@ -44,7 +44,7 @@ def submission_as_text(md):
     skip = calc_lines()
     md = "\n".join(l for l in md.split("\n") if l not in skip)
     md = written_version(md)
-    md = md.split("```\n", 2)[-1]                       # drop the cover and its page break
+    md = md.split("```\n", 1)[-1]                       # drop the cover and its page break
     tmp = tempfile.mkdtemp()
     with open(os.path.join(tmp, "text.md"), "w", encoding="utf-8") as fh:
         fh.write(md)
