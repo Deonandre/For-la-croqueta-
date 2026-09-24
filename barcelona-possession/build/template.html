@@ -1,0 +1,917 @@
+<title>The Possession Paradox</title>
+<meta name="description" content="Does having the ball win Barcelona matches? A statistical investigation of 524 La Liga matches using StatsBomb event data.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap">
+<style>
+:root{
+  --bg:#f2f4f8; --surface:#fbfbfd; --surface-2:#eaeef5; --ink:#0d1a33; --ink-2:#43506a; --muted:#6f7a92;
+  --grid:#e1e5ee; --axis:#bcc4d4; --rule:rgba(13,26,51,.13); --shadow:0 1px 2px rgba(13,26,51,.06),0 8px 28px rgba(13,26,51,.06);
+  --blau:#1b4e9e; --grana:#9c1f4c; --gold:#a8790a; --on-accent:#ffffff;
+  --w:#2a6fd6; --d:#e0a100; --l:#b8325a;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#4a3aa7;
+  --seq-0:#eef3fb; --seq-1:#0d366b; --div-mid:#eceef3;
+  --pitch-line:rgba(13,26,51,.28); --pitch-fill:#f5f7fb;
+  --display:"Big Shoulders Display","Arial Narrow","Roboto Condensed",Impact,sans-serif;
+  --serif:"Literata",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0a1022; --surface:#10182d; --surface-2:#172139; --ink:#e9edf6; --ink-2:#b1bacf; --muted:#8490aa;
+    --grid:#1e2843; --axis:#36425f; --rule:rgba(233,237,246,.13); --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.25);
+    --blau:#83a9f5; --grana:#f07199; --gold:#d9a21b; --on-accent:#0a1022;
+    --w:#4d8ff0; --d:#c08a10; --l:#e0527c;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#9085e9;
+    --seq-0:#141d35; --seq-1:#9cc0ff; --div-mid:#222c46;
+    --pitch-line:rgba(233,237,246,.26); --pitch-fill:#0e1629;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0a1022; --surface:#10182d; --surface-2:#172139; --ink:#e9edf6; --ink-2:#b1bacf; --muted:#8490aa;
+  --grid:#1e2843; --axis:#36425f; --rule:rgba(233,237,246,.13); --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.25);
+  --blau:#83a9f5; --grana:#f07199; --gold:#d9a21b; --on-accent:#0a1022;
+  --w:#4d8ff0; --d:#c08a10; --l:#e0527c;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#9085e9;
+  --seq-0:#141d35; --seq-1:#9cc0ff; --div-mid:#222c46;
+  --pitch-line:rgba(233,237,246,.26); --pitch-fill:#0e1629;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.66;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:var(--blau);text-underline-offset:3px;text-decoration-thickness:1px}
+a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:2px solid var(--blau);outline-offset:2px;border-radius:4px}
+h1,h2,h3,h4{text-wrap:balance;margin:0}
+p{margin:0}
+strong{font-weight:600}
+
+/* progress: a possession bar for the reader */
+.progress{position:fixed;top:0;left:0;right:0;height:4px;z-index:50;background:color-mix(in srgb,var(--grana) 30%,transparent);padding-top:env(safe-area-inset-top,0px)}
+.progress i{display:block;height:4px;width:0;background:var(--blau);transition:width .15s linear}
+
+/* layout */
+.shell{overflow-x:clip;max-width:1260px;margin:0 auto;padding-inline:clamp(16px,4vw,44px);padding-block:0 96px}
+.layout{display:grid;grid-template-columns:210px minmax(0,1fr);gap:clamp(28px,4vw,64px)}
+@media (max-width:1100px){.layout{grid-template-columns:minmax(0,1fr)}.toc{display:none}}
+
+/* hero */
+.hero{padding-block:clamp(40px,7vw,88px) 28px;display:grid;gap:22px}
+.eyebrow{font-family:var(--sans);font-size:12.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.hero h1{font-family:var(--display);font-weight:900;font-size:clamp(58px,11.5vw,148px);line-height:.86;letter-spacing:-.01em;text-transform:uppercase}
+.hero h1 span{color:var(--grana)}
+.dek{font-size:clamp(19px,2.2vw,24px);line-height:1.5;color:var(--ink-2);max-width:60ch}
+.byline{font-family:var(--sans);font-size:14px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 18px}
+.statstrip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-top:6px}
+.statstrip>div{padding:16px 18px 16px 0;display:grid;gap:4px}
+.statstrip>div+div{padding-left:18px;border-left:1px solid var(--rule)}
+.statstrip b{font-family:var(--sans);font-weight:600;font-size:clamp(26px,3.4vw,38px);line-height:1.05;letter-spacing:-.01em}
+.statstrip span{font-family:var(--sans);font-size:13px;color:var(--muted);line-height:1.35}
+@media (max-width:720px){.statstrip{grid-template-columns:repeat(2,minmax(0,1fr))}.statstrip>div:nth-child(3){padding-left:0;border-left:0}.statstrip>div:nth-child(n+3){border-top:1px solid var(--rule)}}
+
+/* table of contents */
+.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 28px);align-self:start;max-height:calc(100vh - 56px);overflow:auto;font-family:var(--sans);font-size:13.5px;padding-top:8px}
+.toc .eyebrow{margin-bottom:12px}
+.toc ol{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.toc a{display:grid;grid-template-columns:24px 1fr;gap:6px;padding:5px 8px;border-radius:6px;color:var(--ink-2);text-decoration:none;line-height:1.3}
+.toc a span:first-child{color:var(--muted);font-variant-numeric:tabular-nums}
+.toc a:hover{background:var(--surface-2);color:var(--ink)}
+.toc a.on{background:var(--surface-2);color:var(--ink);font-weight:600}
+.toc .readout{margin-top:16px;padding-top:12px;border-top:1px solid var(--rule);color:var(--muted);font-size:12.5px;display:grid;gap:6px}
+.toc .bar{height:6px;border-radius:3px;background:color-mix(in srgb,var(--grana) 35%,transparent);overflow:hidden}
+.toc .bar i{display:block;height:100%;width:0;background:var(--blau)}
+.mtoc{display:none;font-family:var(--sans);border:1px solid var(--rule);border-radius:10px;background:var(--surface);margin-block:8px 28px}
+.mtoc summary{cursor:pointer;padding:12px 16px;font-weight:600;font-size:15px}
+.mtoc ol{margin:0;padding:0 16px 14px 36px;font-size:15px;line-height:1.9}
+@media (max-width:1100px){.mtoc{display:block}}
+
+/* chapters */
+article{min-width:0}
+.chapter{padding-block:56px 8px;border-top:1px solid var(--rule);display:grid;gap:22px}
+.chapter:first-of-type{border-top:0}
+.ch-head{display:grid;gap:8px;margin-bottom:6px}
+.ch-num{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:.06em;color:var(--grana)}
+.chapter h2{font-family:var(--display);font-weight:800;font-size:clamp(40px,5.6vw,66px);line-height:.95;text-transform:uppercase;letter-spacing:.005em}
+.chapter h3{font-family:var(--sans);font-weight:600;font-size:21px;line-height:1.3;margin-top:18px}
+.prose{display:grid;gap:18px;max-width:68ch}
+.prose p,.prose li{color:var(--ink)}
+.lede{font-size:21px;line-height:1.55;color:var(--ink-2)}
+.prose ul,.prose ol{margin:0;padding-left:1.25em;display:grid;gap:10px}
+.num{font-family:var(--sans);font-variant-numeric:tabular-nums;font-weight:500;white-space:nowrap}
+.muted{color:var(--muted)}
+.small{font-size:15px}
+
+/* findings */
+.findings{list-style:none;margin:0;padding:0;display:grid;gap:0;max-width:78ch;border-top:1px solid var(--rule)}
+.findings li{display:grid;grid-template-columns:52px 1fr;gap:14px;padding:18px 0;border-bottom:1px solid var(--rule)}
+.findings .k{font-family:var(--display);font-weight:800;font-size:34px;line-height:1;color:var(--blau)}
+.findings b{font-family:var(--sans);font-weight:600;font-size:18px;display:block;margin-bottom:4px;line-height:1.35}
+.findings p{font-size:17px;color:var(--ink-2)}
+.verdict{max-width:78ch;padding:22px 24px;background:var(--surface);border:1px solid var(--rule);border-radius:12px;box-shadow:var(--shadow);display:grid;gap:10px}
+.verdict .eyebrow{color:var(--grana)}
+.verdict p{font-size:19px;line-height:1.55}
+
+/* figures */
+.fig{overflow:hidden;margin:10px 0 14px;background:var(--surface);border:1px solid var(--rule);border-radius:14px;box-shadow:var(--shadow);padding:18px clamp(14px,2.2vw,24px) 16px;display:grid;gap:12px;min-width:0}
+.fig-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 16px}
+.fig-title{display:grid;gap:3px;min-width:0}
+.fig-no{font-family:var(--sans);font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--grana)}
+.fig h4{font-family:var(--sans);font-weight:600;font-size:17px;line-height:1.35;color:var(--ink)}
+.fig figcaption{font-family:var(--sans);font-size:13.5px;line-height:1.55;color:var(--ink-2);max-width:92ch}
+.fig figcaption b{color:var(--ink)}
+.chart{position:relative;width:100%;min-height:40px}
+.chart svg{display:block;overflow:visible}
+.chart text,.scroll text{font-family:var(--sans)}
+.scroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}
+.scroll>.chart{min-width:600px}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:var(--sans)}
+.btn{font-family:var(--sans);font-size:13px;font-weight:500;padding:6px 13px;border-radius:999px;border:1px solid var(--rule);background:var(--surface);color:var(--ink);cursor:pointer;line-height:1.3;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{background:var(--surface-2)}
+.btn.primary{background:var(--blau);color:var(--on-accent);border-color:transparent}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn svg{width:11px;height:11px}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:999px;padding:2px;background:var(--surface-2);flex-wrap:wrap}
+.seg button{font-family:var(--sans);font-size:12.5px;font-weight:500;padding:5px 11px;border:0;border-radius:999px;background:transparent;color:var(--ink-2);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-family:var(--sans);font-size:13px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.legend i.ln{width:16px;height:2.5px;border-radius:2px}
+.legend i.sq{border-radius:2px}
+.readout{font-family:var(--sans);display:flex;flex-wrap:wrap;gap:6px 22px;font-size:13px;color:var(--muted)}
+.readout b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+input[type=range]{accent-color:var(--blau);width:min(360px,100%)}
+.slider{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;font-family:var(--sans);font-size:14px;color:var(--ink-2)}
+.big{font-family:var(--sans);font-weight:600;font-size:40px;line-height:1;color:var(--ink);letter-spacing:-.01em}
+.bigwrap{display:flex;flex-wrap:wrap;gap:12px 36px;align-items:flex-end}
+.bigwrap div{display:grid;gap:6px}
+.bigwrap span{font-family:var(--sans);font-size:13px;color:var(--muted)}
+
+/* two-up */
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+@media (max-width:760px){.two{grid-template-columns:minmax(0,1fr)}}
+.panel-t{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px}
+
+/* tables */
+.tblwrap{overflow-x:auto;border:1px solid var(--rule);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-family:var(--sans);font-size:14px;font-variant-numeric:tabular-nums}
+th,td{padding:9px 11px;text-align:right;border-bottom:1px solid var(--grid);white-space:nowrap}
+th{white-space:normal;vertical-align:bottom;line-height:1.3}
+td.l{white-space:normal;min-width:200px}
+th.l{text-align:left}
+th{font-weight:600;color:var(--muted);font-size:12px;letter-spacing:.04em;text-transform:uppercase;background:var(--surface-2)}
+td:first-child,th:first-child{text-align:left}
+tr:last-child td{border-bottom:0}
+td.l{text-align:left}
+.pill{display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:12px;padding:2px 8px;border-radius:999px;background:var(--surface-2);color:var(--ink)}
+.pill i{width:8px;height:8px;border-radius:50%}
+.minibar{display:inline-block;height:8px;border-radius:0 4px 4px 0;background:var(--s1);vertical-align:middle;margin-right:8px}
+
+/* pipeline diagram */
+.pipe{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;align-items:stretch}
+.pipewrap .node{background:var(--surface-2);border:1px solid var(--rule);border-radius:12px;padding:14px;display:grid;gap:6px;align-content:start;font-family:var(--sans)}
+.pipewrap .node b{font-size:14px;font-weight:600;color:var(--ink);line-height:1.3}
+.pipewrap .node span{font-size:12.5px;color:var(--ink-2);line-height:1.45}
+.pipewrap .node .n{font-family:var(--display);font-weight:800;font-size:28px;line-height:1;color:var(--blau)}
+.pipe .link{position:relative;height:100%;min-height:30px}
+.pipewrap{display:grid;grid-template-columns:1fr 26px 1fr 26px 1fr 26px 1fr 26px 1fr;align-items:stretch}
+.flow{align-self:center;height:2px;background-image:linear-gradient(90deg,var(--blau) 50%,transparent 50%);background-size:10px 2px;animation:flow 1s linear infinite}
+@keyframes flow{to{background-position:10px 0}}
+@media (prefers-reduced-motion: reduce){.flow{animation:none}}
+@media (max-width:900px){.pipewrap{grid-template-columns:minmax(0,1fr)}.flow{width:2px;height:22px;justify-self:center;background-image:linear-gradient(180deg,var(--blau) 50%,transparent 50%);background-size:2px 10px;animation-name:flowv}}
+@keyframes flowv{to{background-position:0 10px}}
+
+/* scoreboard */
+.scoreboard{display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;font-family:var(--sans)}
+.score{display:flex;align-items:center;gap:14px;font-weight:600;font-size:20px}
+.score .n{font-family:var(--display);font-weight:900;font-size:40px;line-height:1;min-width:1ch;text-align:center}
+.clock{font-family:var(--display);font-weight:800;font-size:28px;color:var(--grana);min-width:3.2ch}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{font-family:var(--sans);font-size:12.5px;padding:6px 11px;border-radius:8px;border:1px solid var(--rule);background:var(--surface);color:var(--ink-2);cursor:pointer;text-align:left;line-height:1.3}
+.chips button[aria-pressed="true"]{border-color:var(--blau);color:var(--ink);box-shadow:inset 0 0 0 1px var(--blau)}
+.chips button small{display:block;color:var(--muted);font-size:11.5px}
+
+/* math */
+.math{overflow-x:auto;overflow-y:hidden;padding:6px 0;color:var(--ink)}
+.math svg{max-width:none}
+.mathcard{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:14px 18px;display:grid;gap:6px;max-width:78ch}
+.mathcard .cap{font-family:var(--sans);font-size:13px;color:var(--muted)}
+.defs{display:grid;gap:0;max-width:78ch;border-top:1px solid var(--rule)}
+.defs>div{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:16px;padding:12px 0;border-bottom:1px solid var(--rule);font-size:16px}
+.defs dt,.defs .t{font-family:var(--sans);font-weight:600;font-size:14px}
+@media (max-width:620px){.defs>div{grid-template-columns:1fr;gap:4px}}
+
+/* tooltip */
+.tip{position:fixed;z-index:60;pointer-events:none;background:var(--ink);color:var(--bg);font-family:var(--sans);font-size:12.5px;line-height:1.45;padding:8px 10px;border-radius:8px;max-width:260px;box-shadow:0 6px 20px rgba(0,0,0,.25);opacity:0;transition:opacity .12s}
+.tip b{font-weight:600}
+.tip .r{display:flex;justify-content:space-between;gap:14px}
+
+footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--rule);font-family:var(--sans);font-size:13.5px;color:var(--muted);display:grid;gap:8px;max-width:90ch}
+.note{font-family:var(--sans);font-size:14px;color:var(--ink-2);background:var(--surface-2);border-radius:10px;padding:12px 16px;max-width:78ch;line-height:1.55}
+</style>
+
+<div class="progress" aria-hidden="true"><i id="prog"></i></div>
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<div class="shell">
+<header class="hero">
+  <div class="eyebrow">FC Barcelona · La Liga 2004/05 – 2020/21 · StatsBomb event data</div>
+  <h1>The Possession <span>Paradox</span></h1>
+  <p class="dek">Barça had the ball for roughly two thirds of every league match they played with Messi. Does knowing exactly how much of it they had tell you whether they won? An investigation built from 551,928 passes, a hand-built Elo rating system and more than a dozen statistical models.</p>
+  <div class="byline"><span>524 matches · 17 seasons · 8 head coaches</span><span>Research question: to what extent can possession percentage model the probability of an FC Barcelona win?</span></div>
+
+  <figure class="fig" id="fig-hero" style="margin-top:10px">
+    <div class="fig-head">
+      <div class="fig-title"><span class="fig-no">Fig. 1</span><h4>Every match, placed by Barcelona's share of the passes</h4></div>
+      <div class="controls"><button class="btn" data-replay="hero" type="button"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0 L9 5 L1 10Z" fill="currentColor"/></svg>Replay 17 seasons</button></div>
+    </div>
+    <div class="legend" data-legend="wdl"></div>
+    <div class="chart" data-chart="hero" style="min-height:320px"></div>
+    <figcaption>One dot per match. The vertical line marks 50%, the halfway line of possession: Barça had more of the ball in <b>97.7%</b> of these matches. Wins, draws and defeats are spread along the whole range. The match with the most possession of all (82.3%, at Cádiz in December 2020) was a <b>defeat</b>. The match with the least (44.0%, at Real Betis in March 2019) was a <b>4–1 win</b>. Hover a dot for details.</figcaption>
+  </figure>
+
+  <div class="statstrip">
+    <div><b>524</b><span>league matches with full event data</span></div>
+    <div><b>65.9%</b><span>average possession (pass share)</span></div>
+    <div><b>73.7%</b><span>of matches won (386 W · 86 D · 52 L)</span></div>
+    <div><b>r = −0.04</b><span>correlation between possession and winning</span></div>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="toc" aria-label="Chapters">
+  <div class="eyebrow">Contents</div>
+  <ol id="toc"></ol>
+  <div class="readout"><span id="readpct">You have read 0% of the report</span><div class="bar"><i id="readbar"></i></div></div>
+</nav>
+
+<article>
+<details class="mtoc"><summary>Contents</summary><ol id="mtoc"></ol></details>
+
+<!-- 1 -->
+<section class="chapter" id="summary" data-title="The short answer">
+  <div class="ch-head"><span class="ch-num">Chapter 1</span><h2>The short answer</h2></div>
+  <div class="prose">
+    <p class="lede">The question sounds simple: if you know how much of the ball Barcelona had, how well can you predict whether they won? For this team, in these seasons, the answer is that you can't. The reasons why are more interesting than the answer itself.</p>
+    <p>This report follows the question from raw event data to a final verdict. It starts with the obvious test, builds the logistic regression model you would expect, finds nothing, and then keeps going. The rest of the report explains why possession looks useless, what is hiding underneath it, and what actually separated Barça's wins from their draws and defeats.</p>
+  </div>
+  <ol class="findings">
+    <li><span class="k">1</span><div><b>On its own, possession has no link with winning.</b><p>The correlation is −0.04. A logistic model gives an odds ratio of 0.89 per extra 10 percentage points of possession (95% CI 0.68–1.16). Tested season by season on unseen data, it predicts slightly worse than simply guessing Barça's usual win rate.</p></div></li>
+    <li><span class="k">2</span><div><b>The scoreline drives possession, not the other way round.</b><p>Barça had 63.0% of the passes while leading, 68.2% while level and 70.2% while trailing. After scoring, their share fell from 67.8% to 64.4%. After conceding, it rose from 62.6% to 67.6%.</p></div></li>
+    <li><span class="k">3</span><div><b>Two forces cancel each other out.</b><p>Against weaker teams Barça kept more of the ball and won more often, which makes possession look good. Score effects push the other way. Hold opponent strength fixed and more possession goes with a <em>lower</em> chance of winning (odds ratio 0.65, p = 0.006).</p></div></li>
+    <li><span class="k">4</span><div><b>Cleaner measures don't rescue it.</b><p>Possession before the first goal, or while the score is level, looks mildly positive. That signal disappears when the last minute before each goal is removed. The passing move that produced the goal was doing all the work.</p></div></li>
+    <li><span class="k">5</span><div><b>Chance quality wins matches.</b><p>xG difference (r = +0.47) and the shots-on-target difference (r = +0.43) are by far the strongest links to winning. In cross-validation, an xG model beats the base rate by 24%. Possession beats it by −0.5%.</p></div></li>
+  </ol>
+  <div class="verdict"><span class="eyebrow">Verdict</span><p>For Messi-era Barcelona, possession was a symptom of superiority and a defensive shield. Opponents who couldn't get the ball couldn't shoot. It was never a dial that turned wins up or down by itself. Knowing a match's possession figure tells you almost nothing about its result.</p></div>
+</section>
+
+<!-- 2 -->
+<section class="chapter" id="data" data-title="The data">
+  <div class="ch-head"><span class="ch-num">Chapter 2</span><h2>The data</h2></div>
+  <div class="prose">
+    <p class="lede">Most possession studies start from a single number per match copied from a stats website. This one starts from every individual touch of the ball.</p>
+    <h3>Source</h3>
+    <p>StatsBomb publishes a free open-data release on GitHub. It includes every La Liga match Lionel Messi played for Barcelona between 2004/05 and 2020/21: <span class="num">524</span> matches. Each match is a JSON file of about 3,000 to 4,000 events. Every pass, carry, pressure, tackle and shot is logged with a timestamp, the player, pitch coordinates and the outcome. Together the files come to 1.7 GB of raw data.</p>
+    <p>Because every event is recorded, possession can be measured in several ways, split by scoreline, or measured only up to the first goal. A single final percentage can't do any of that, and those splits turn out to be the key to the whole question.</p>
+  </div>
+
+  <figure class="fig">
+    <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 2</span><h4>From raw events to a verdict: the analysis pipeline</h4></div></div>
+    <div class="pipewrap">
+      <div class="node pipe-n"><span class="n">1.7 GB</span><b>StatsBomb open data</b><span>524 match files downloaded from GitHub, 1,973,010 events</span></div>
+      <div class="flow" aria-hidden="true"></div>
+      <div class="node pipe-n"><span class="n">524/524</span><b>Event parser</b><span>Goals rebuilt from shots and own goals. Every scoreline matched the official result.</span></div>
+      <div class="flow" aria-hidden="true"></div>
+      <div class="node pipe-n"><span class="n">57</span><b>Match features</b><span>Possession three ways, game states, xG, shots, pressing, territory, pass maps</span></div>
+      <div class="flow" aria-hidden="true"></div>
+      <div class="node pipe-n"><span class="n">27,335</span><b>Elo engine</b><span>Every La Liga match since 1929, used to rate each opponent before kick-off</span></div>
+      <div class="flow" aria-hidden="true"></div>
+      <div class="node pipe-n"><span class="n">15+</span><b>Models</b><span>Logistic, Poisson, bootstrap, permutation, Monte Carlo, cross-validation</span></div>
+    </div>
+    <figcaption>Every number in this report is computed from the raw event files. Nothing is copied from a published table.</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3>Coverage and its bias</h3>
+    <p>Barcelona played <span class="num">646</span> league matches across these 17 seasons. The open data covers <span class="num">524</span> of them (81%), the ones Messi played in. That creates a selection effect. In this sample Barça won 73.7% of the time, compared with 70.6% across all 646 matches (456 wins). The findings describe Barcelona <em>with Messi</em>, which was a slightly better team than Barcelona overall. The early seasons are thin: 2004/05 has only seven matches, from when Messi was 17.</p>
+    <h3>Measuring possession</h3>
+    <p>"Possession" sounds like one number, but it can be calculated in different ways. Broadcasters and most data providers use <strong>pass share</strong>: a team's passes as a fraction of all passes in the match. This report uses that as its main measure.</p>
+  </div>
+  <div class="mathcard"><div class="math">{{M:poss}}</div><span class="cap">Main possession measure, calculated from every Pass event in the match (open play and set pieces).</span></div>
+  <div class="prose">
+    <p>The alternative is <strong>in-play time</strong>. StatsBomb groups events into possession sequences, and summing how long each team held the ball in live play gives a time-based share. The two measures agree closely (r = 0.94), and every key test in this report gives the same answer with either one.</p>
+  </div>
+
+  <div class="two">
+    <figure class="fig">
+      <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 3</span><h4>Two definitions, one story</h4></div></div>
+      <div class="chart" data-chart="defs"></div>
+      <figcaption>Pass-share possession against in-play-time possession for all 524 matches. The line is <i>y = x</i>. Correlation: <b>r = 0.94</b>.</figcaption>
+    </figure>
+    <figure class="fig">
+      <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 4</span><h4>The StatsBomb pitch and the zones used later</h4></div></div>
+      <div class="chart" data-chart="zones"></div>
+      <figcaption>StatsBomb's coordinate system is 120 × 80 units, and every event is recorded as if the team is attacking left to right. <b>Field tilt</b> is a team's share of passes in the final third (x ≥ 80). <b>PPDA</b> counts the opponent's passes in their own 60% of the pitch for each Barça defensive action there. Lower PPDA means more intense pressing.</figcaption>
+    </figure>
+  </div>
+
+  <div class="prose">
+    <h3>Rating the opponents</h3>
+    <p>Beating Almería is not the same as beating Real Madrid. To account for this, I built an Elo rating system from scratch. It uses all <span class="num">27,335</span> top-flight Spanish matches since 1929, from the open <i>engsoccerdata</i> archive. Each team gains or loses points after every match, depending on the result, the margin and how surprising the result was. The settings were tuned so the ratings predict results as well as possible: K = 15, a home advantage of 90 points, a 20% pull back towards average each summer, and promoted teams starting at 1450. The formulas are in the appendix.</p>
+    <p>Before an average match in this sample, Barça were rated <span class="num">1725</span> and their opponent <span class="num">1491</span>. Including home advantage, that is an edge of 234 points, which Elo turns into an expected score of 0.79.</p>
+  </div>
+  <figure class="fig">
+    <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 5</span><h4>Barcelona's Elo rating before every league match, 2004–2021</h4></div></div>
+    <div class="chart" data-chart="elo"></div>
+    <figcaption>Barcelona's rating across all 646 league matches (not only the 524 in the event data). Shaded bands mark each head coach. The rating peaks in the Guardiola and Luis Enrique years and declines through 2019–21.</figcaption>
+  </figure>
+  <div class="note">Data validation: the goals rebuilt from shot and own-goal events matched the official score in all 524 matches. Every one of the 524 matches was also linked to its row in the Elo archive by date, venue and score.</div>
+</section>
+
+<!-- 3 -->
+<section class="chapter" id="world" data-title="Barça's possession world">
+  <div class="ch-head"><span class="ch-num">Chapter 3</span><h2>Barça's possession world</h2></div>
+  <div class="prose">
+    <p class="lede">Before testing anything, it helps to see what "normal" looked like. For this team, dominating the ball wasn't an occasional tactic. It happened almost every week.</p>
+    <p>Across the 524 matches, Barcelona's pass share averaged <span class="num">65.9%</span>, with a median of <span class="num">66.8%</span> and a standard deviation of <span class="num">7.4</span> percentage points. The lowest was 44.0% and the highest 82.3%. They had less of the ball than the opponent in only 12 matches. That narrow range matters later: nearly every observation sits between 55% and 78%, so there is limited variation to explain anything with.</p>
+  </div>
+  <figure class="fig">
+    <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 6</span><h4>How often each level of possession occurred, split by result</h4></div></div>
+    <div class="legend" data-legend="wdl"></div>
+    <div class="chart" data-chart="hist"></div>
+    <figcaption>Stacked counts in 2-percentage-point bins. If possession drove results, the blue share would grow from left to right. It doesn't.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>Split by result, the averages are almost identical. Wins averaged <span class="num">65.7%</span>, draws <span class="num">66.3%</span> and defeats <span class="num">66.4%</span>. If anything, Barça had slightly <em>more</em> of the ball in the matches they lost.</p>
+  </div>
+  <figure class="fig">
+    <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 7</span><h4>Possession distributions for wins, draws and defeats</h4></div></div>
+    <div class="legend" data-legend="wdl"></div>
+    <div class="chart" data-chart="kde"></div>
+    <figcaption>Kernel density estimates, each scaled to an area of 1. The ticks along the bottom mark each group's mean. The three curves lie almost on top of each other.</figcaption>
+  </figure>
+  <div class="prose">
+    <h3>Seventeen seasons</h3>
+    <p>Possession peaked under Guardiola in 2010/11 at <span class="num">70.7%</span> and reached its lowest point in Valverde's first season, 2017/18, at <span class="num">62.3%</span>. Win rates moved around just as much, but not with possession. Valverde's lower-possession 2017/18 side won 75% of its matches in this sample and did not lose any of its 36. Koeman's 2020/21 side had more of the ball and won just 63%.</p>
+  </div>
+  <figure class="fig">
+    <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 8</span><h4>Possession and win rate, season by season</h4></div></div>
+    <div class="chart" data-chart="seasons"></div>
+    <figcaption>Top: mean possession per season. Bottom: share of matches won. Shaded bands mark the head coaches. The two panels share the season axis but have separate scales. Season 2004/05 has only 7 matches.</figcaption>
+  </figure>
+  <h3 style="font-family:var(--sans);font-weight:600;font-size:21px">The extremes</h3>
+  <div class="two">
+    <div><div class="panel-t">Six highest-possession matches</div><div class="tblwrap"><table id="t-high"></table></div></div>
+    <div><div class="panel-t">Six lowest-possession matches</div><div class="tblwrap"><table id="t-low"></table></div></div>
+  </div>
+  <div class="prose"><p class="small muted">Of the six matches with the most possession, Barça won three. Of the six with the least, they won four, all of them by three goals or more.</p></div>
+</section>
+
+<!-- 4 -->
+<section class="chapter" id="naive" data-title="The obvious test">
+  <div class="ch-head"><span class="ch-num">Chapter 4</span><h2>The obvious test</h2></div>
+  <div class="prose">
+    <p class="lede">Group the matches by possession and count the wins. If possession helps, win rates should rise from left to right.</p>
+  </div>
+  <figure class="fig">
+    <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 9</span><h4>Win rate by possession band, with 95% Wilson intervals</h4></div></div>
+    <div class="chart" data-chart="bins"></div>
+    <figcaption>Each dot is the share of matches won in that band, and the whiskers show the 95% Wilson score interval. The horizontal line is the overall win rate of 73.7%. Every interval overlaps it.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>The win rate goes <span class="num">72.1%</span> → <span class="num">72.0%</span> → <span class="num">77.5%</span> → <span class="num">73.9%</span> → <span class="num">74.4%</span> → <span class="num">66.7%</span> from the lowest band to the highest. There is no trend, and the highest band is the worst. The Wilson interval is used instead of the textbook ±1.96·SE because it behaves properly with proportions near 1 and small groups.</p>
+  </div>
+  <div class="mathcard"><div class="math">{{M:wilson}}</div><span class="cap">Wilson score interval for a proportion p̂ from n matches (z = 1.96 for 95%).</span></div>
+  <div class="prose">
+    <h3>A battery of tests</h3>
+    <p>One test could be unlucky, so I ran seven. They cover different assumptions: linear or ranked, parametric or not, win/no-win or the full win/draw/loss outcome. They all agree.</p>
+  </div>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Test</th><th>What it asks</th><th>Statistic</th><th>p-value</th></tr></thead>
+    <tbody>
+      <tr><td>Point-biserial correlation</td><td class="l">Linear link between possession and win (1/0)</td><td>r = −0.038</td><td>0.39</td></tr>
+      <tr><td>Spearman rank correlation</td><td class="l">Monotonic link, robust to outliers</td><td>ρ = −0.038</td><td>0.38</td></tr>
+      <tr><td>Mann–Whitney U</td><td class="l">Do wins have higher possession than non-wins?</td><td>U = 25,292</td><td>0.38</td></tr>
+      <tr><td>Kruskal–Wallis</td><td class="l">Does possession differ across W / D / L?</td><td>H = 0.77</td><td>0.68</td></tr>
+      <tr><td>One-way ANOVA</td><td class="l">Same, comparing means</td><td>F = 0.37</td><td>0.69</td></tr>
+      <tr><td>χ² test of independence</td><td class="l">Possession quintile × win, 5 × 2 table</td><td>χ² = 2.57 (df 4)</td><td>0.63</td></tr>
+      <tr><td>Cramér's V</td><td class="l">Strength of that association (0 to 1)</td><td>V = 0.07</td><td>–</td></tr>
+    </tbody></table></div>
+  <div class="two">
+    <div class="mathcard"><div class="math">{{M:pb}}</div><span class="cap">Point-biserial r: difference in mean possession between wins (1) and non-wins (0), scaled by the spread.</span></div>
+    <div class="mathcard"><div class="math">{{M:chi}}</div><span class="cap">χ² compares observed counts O with the counts E expected if possession and winning were independent.</span></div>
+  </div>
+  <figure class="fig">
+    <div class="fig-head"><div class="fig-title"><span class="fig-no">Table 1</span><h4>Observed vs expected wins by possession quintile</h4></div></div>
+    <div class="tblwrap"><table id="t-chi"></table></div>
+    <figcaption>Each quintile holds about 105 matches. Expected counts assume the same 73.7% win rate everywhere. The largest gap is 6.4 fewer wins than expected, in the <b>highest</b> quintile.</figcaption>
+  </figure>
+  <div class="prose">
+    <h3>What about whole seasons?</h3>
+    <p>Match results are noisy, so maybe the link only shows up across a season. It doesn't. Across the 17 seasons, mean possession and win rate correlate at <span class="num">r = −0.01</span> (p = 0.96), and possession and points per game at <span class="num">r = −0.02</span>.</p>
+  </div>
+  <figure class="fig">
+    <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 10</span><h4>Seasons: more possession did not mean more wins</h4></div></div>
+    <div class="chart" data-chart="seasonScatter"></div>
+    <figcaption>Each dot is one season. Dot size shows how many matches that season has in the data. The flat line is the least-squares fit.</figcaption>
+  </figure>
+</section>
+
+<!-- 5 -->
+<section class="chapter" id="logit" data-title="Building the logistic model">
+  <div class="ch-head"><span class="ch-num">Chapter 5</span><h2>Building the logistic model</h2></div>
+  <div class="prose">
+    <p class="lede">The standard tool for predicting a yes/no outcome from a number is logistic regression. Here it is built step by step and fitted to the data.</p>
+    <h3>Why logistic?</h3>
+    <p>A straight line can predict probabilities below 0 or above 1. The logistic function turns any value into a probability between 0 and 1, and its S-shape matches how probabilities usually behave: changes matter most in the middle and flatten near certainty. The model says the <em>log-odds</em> of winning are a straight-line function of possession.</p>
+  </div>
+  <div class="two">
+    <div class="mathcard"><div class="math">{{M:logistic}}</div><span class="cap">The model: probability of a win given possession x (in percentage points).</span></div>
+    <div class="mathcard"><div class="math">{{M:logit}}</div><span class="cap">Equivalent form: the log-odds are linear in x. β₁ is the change in log-odds per percentage point.</span></div>
+  </div>
+  <div class="prose">
+    <h3>Fitting by maximum likelihood</h3>
+    <p>For each candidate pair (β₀, β₁), the model gives every match a win probability p<sub>i</sub>. The <strong>likelihood</strong> measures how well those probabilities agree with what actually happened. Maximum likelihood picks the pair that makes the observed results most probable. Working with the log of the likelihood turns the product into a sum.</p>
+  </div>
+  <div class="mathcard"><div class="math">{{M:ll}}</div><span class="cap">Log-likelihood over n = 524 matches, where y<sub>i</sub> = 1 for a win and 0 otherwise.</span></div>
+  <div class="prose">
+    <p>There is no closed-form solution, so it's solved numerically. <strong>Gradient ascent</strong> repeatedly takes a small step uphill. <strong>Newton–Raphson</strong> also uses the curvature of the surface, and reaches the peak in a handful of jumps. The animation below runs both from the same deliberately poor starting point: a steep curve claiming possession is hugely important.</p>
+  </div>
+  <div class="mathcard"><div class="math">{{M:grad}}</div><span class="cap">The gradient: the direction of steepest increase in log-likelihood.</span></div>
+  <div class="mathcard"><div class="math">{{M:newton}}</div><span class="cap">Newton–Raphson update, which uses the curvature through the weight matrix W.</span></div>
+  <figure class="fig" id="fig-fit">
+    <div class="fig-head">
+      <div class="fig-title"><span class="fig-no">Fig. 11 · animated</span><h4>Watch the model learn that possession doesn't matter</h4></div>
+      <div class="controls">
+        <div class="seg" role="group" aria-label="Algorithm"><button type="button" aria-pressed="true" data-alg="gd">Gradient ascent</button><button type="button" aria-pressed="false" data-alg="newton">Newton–Raphson</button></div>
+        <button class="btn primary" type="button" id="fit-play"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0 L9 5 L1 10Z" fill="currentColor"/></svg>Play</button>
+      </div>
+    </div>
+    <div class="readout" id="fit-readout"></div>
+    <div class="two">
+      <div><div class="panel-t">Log-likelihood surface and the path taken</div><div class="chart" data-chart="fitSurface"></div></div>
+      <div><div class="panel-t">The fitted curve against the data</div><div class="chart" data-chart="fitCurve"></div></div>
+    </div>
+    <figcaption>Left: contours of ℓ over the intercept and slope. For numerical stability both are measured with possession centred at 66% and scaled per 10 points. The dot shows the current estimate. Right: wins sit on the top row and draws or defeats on the bottom, with a small vertical jitter. The curve is the model's current P(win). At rest the figure shows the final answer: a nearly flat line.</figcaption>
+  </figure>
+  <div class="prose">
+    <h3>The result</h3>
+    <p>The maximum-likelihood estimates are <strong>β₀ = 1.798</strong> (SE 0.898) and <strong>β₁ = −0.0117</strong> per percentage point (SE 0.0135, z = −0.86, p = 0.39). The slope is slightly negative and far from significant. Converted to an odds ratio for a +10-point change in possession:</p>
+  </div>
+  <div class="mathcard"><div class="math">{{M:or10}}</div><span class="cap">OR₁₀ = e<sup>10 × (−0.0117)</sup> = <b>0.89</b>, 95% CI 0.68 to 1.16. Ten more points of possession go with about 11% <em>lower</em> odds of winning, but the interval includes "no effect" (1.0) comfortably.</span></div>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Fit statistic</th><th>Value</th><th>Reading</th></tr></thead>
+    <tbody>
+      <tr><td>Likelihood-ratio test vs intercept-only</td><td>Λ = 0.75, p = 0.39</td><td class="l">Adding possession does not improve the fit</td></tr>
+      <tr><td>McFadden pseudo-R²</td><td>0.001</td><td class="l">0.1% of the "uncertainty" explained. Values of 0.2–0.4 indicate a good model</td></tr>
+      <tr><td>AUC (in-sample)</td><td>0.525</td><td class="l">0.5 is a coin flip; 1.0 is perfect separation</td></tr>
+      <tr><td>Brier score</td><td>0.1937 vs 0.1940</td><td class="l">Barely better than predicting 73.7% for every match</td></tr>
+    </tbody></table></div>
+  <div class="two">
+    <div class="mathcard"><div class="math">{{M:lr}}</div><span class="cap">Likelihood-ratio test: twice the gain in log-likelihood, compared with a χ² distribution.</span></div>
+    <div class="mathcard"><div class="math">{{M:mcf}}</div><span class="cap">McFadden's R²: the proportional improvement over a model with no predictors.</span></div>
+  </div>
+  <figure class="fig">
+    <div class="fig-head">
+      <div class="fig-title"><span class="fig-no">Fig. 12 · interactive</span><h4>Ask the model: what is Barça's chance of winning at a given possession?</h4></div>
+      <div class="seg" role="group" aria-label="Model"><button type="button" aria-pressed="true" data-pm="whole">Whole-match possession</button><button type="button" aria-pressed="false" data-pm="pre">Possession before the first goal</button></div>
+    </div>
+    <div class="slider"><label for="poss-slider">Possession</label><input type="range" id="poss-slider" min="45" max="82" step="0.5" value="66"><span class="num" id="poss-val">66.0%</span></div>
+    <div class="bigwrap"><div><span>Model P(win)</span><b class="big" id="pw-val">–</b></div><div><span>95% confidence band</span><b class="num" id="pw-ci" style="font-size:20px">–</b></div><div><span>Barça's overall win rate</span><b class="num" style="font-size:20px">73.7%</b></div></div>
+    <div class="chart" data-chart="predictor"></div>
+    <figcaption>Drag the slider. The shaded band is the 95% confidence interval for the curve, from the delta method. Under the whole-match model, going from 50% to 80% possession moves the predicted win probability from 77% to 70%. The model for possession before the first goal is explained in Chapter 8.</figcaption>
+  </figure>
+  <div class="prose">
+    <h3>Is the relationship curved?</h3>
+    <p>A straight line on the log-odds scale could miss a "sweet spot". Adding a squared term doesn't improve the fit significantly (likelihood-ratio p = 0.15). A LOWESS smoother lets the data draw its own curve. It rises gently to about 76% near 64% possession and then falls to about 62% at 80%. The bootstrap band is wide, though, and a flat line fits comfortably inside it.</p>
+  </div>
+  <figure class="fig">
+    <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 13</span><h4>Three ways to draw the curve</h4></div></div>
+    <div class="legend" data-legend="curves"></div>
+    <div class="chart" data-chart="lowess"></div>
+    <figcaption>LOWESS (span 0.6) with a 95% band from 400 bootstrap resamples, alongside the quadratic and linear logistic fits. The time-based possession measure gives the same picture (β₁ = −0.006, p = 0.64).</figcaption>
+  </figure>
+</section>
+
+<!-- 6 -->
+<section class="chapter" id="score" data-title="Why possession lies">
+  <div class="ch-head"><span class="ch-num">Chapter 6</span><h2>Why possession lies</h2></div>
+  <div class="prose">
+    <p class="lede">A final possession figure summarises 90 minutes in which the score kept changing. The score changes how teams play, so it also changes who has the ball.</p>
+    <p>Think about what happens after Barça go 1–0 up. The opponent now has to attack, and Barça can afford to defend a lead. Possession drifts towards the team that is losing. When Barça fall behind, the opposite happens: the opponent sits deep, and Barça keep circulating the ball looking for a way through. So <strong>results partly cause possession</strong>, which is the reverse of the question being asked.</p>
+  </div>
+  <figure class="fig">
+    <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 14 · diagram</span><h4>What causes what: the possession feedback loop</h4></div></div>
+    <div class="scroll"><div class="chart" data-chart="dag" style="min-width:640px"></div></div>
+    <figcaption>A causal diagram. Team strength raises both possession and the chance of winning, so it's a <b>confounder</b>. Goals change the score state, and the score state feeds back into possession (the animated loop). Possession measured over a whole match mixes all of these paths together.</figcaption>
+  </figure>
+  <div class="prose">
+    <h3>Possession by score state</h3>
+    <p>Splitting every match into the periods when Barça were leading, level or trailing makes this directly visible. Across all matches, Barça had <span class="num">63.0%</span> of the passes while leading, <span class="num">68.2%</span> while level and <span class="num">70.2%</span> while trailing. By in-play time the figures are 62.0%, 69.2% and 70.7%.</p>
+    <p>The within-match comparison is the most convincing. There were 423 matches with both a leading and a level period. In those, Barça's share was <strong>5.7 points lower</strong> while leading (paired t = −14.3, p ≈ 10<sup>−38</sup>), and lower in 76% of the matches. In the 129 matches with both a trailing and a level period, it was <strong>4.7 points higher</strong> while trailing (p ≈ 10<sup>−8</sup>).</p>
+  </div>
+  <figure class="fig">
+    <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 15</span><h4>Barça's possession depends on the scoreline</h4></div></div>
+    <div class="legend" data-legend="twodef"></div>
+    <div class="chart" data-chart="states"></div>
+    <figcaption>Mean possession during each score state, averaged across matches that spent enough time in that state (at least 40 passes by pass share, or 2 minutes of in-play time). Average minutes per match spent in each state: leading 47, level 38, trailing 10.</figcaption>
+  </figure>
+  <div class="prose">
+    <h3>What happens the moment a goal goes in</h3>
+    <p>An <strong>event study</strong> lines up all <span class="num">1,387</span> Barça goals and all <span class="num">438</span> goals they conceded at minute zero. It then measures pass share minute by minute for the 15 minutes before and after. Each window is cut off at any neighbouring goal, so every minute is measured in a single score state.</p>
+  </div>
+  <figure class="fig" id="fig-es">
+    <div class="fig-head">
+      <div class="fig-title"><span class="fig-no">Fig. 16 · animated</span><h4>Possession around goals: the scoreline reshapes the game</h4></div>
+      <div class="controls"><button class="btn" data-replay="events" type="button"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0 L9 5 L1 10Z" fill="currentColor"/></svg>Replay</button></div>
+    </div>
+    <div class="legend" data-legend="goals"></div>
+    <div class="chart" data-chart="events"></div>
+    <figcaption>After a Barça goal their average share drops from <b>67.8%</b> (15 minutes before) to <b>64.4%</b> (15 minutes after). After conceding, it jumps from <b>62.6%</b> to <b>67.6%</b>. Two spikes stand out. At minute −1 is the build-up: <b>77.9%</b> of passes are Barça's in the minute before they score, and 40.5% in the minute before they concede. At minute 0 is the restart, because the team that conceded kicks off. The build-up spike becomes important in Chapter 8.</figcaption>
+  </figure>
+  <div class="prose">
+    <h3>Across the 90 minutes</h3>
+    <p>The same pattern shows over the whole match. In games Barça went on to win, they started with about 70% of the passes and finished on 56%, as they protected leads and opponents pushed forward. In draws and defeats their share stayed between 61% and 72% throughout, because they were still chasing.</p>
+  </div>
+  <figure class="fig">
+    <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 17</span><h4>Possession through the match, by final result</h4></div></div>
+    <div class="legend" data-legend="wdl"></div>
+    <div class="chart" data-chart="minutes"></div>
+    <figcaption>Pooled pass share in 5-minute blocks of match time, including stoppage time; the last block covers minutes 95+. Wins fall steadily after half-time.</figcaption>
+  </figure>
+  <figure class="fig">
+    <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 18</span><h4>Where the minutes went: time spent leading, level and trailing</h4></div></div>
+    <div class="legend" data-legend="state"></div>
+    <div class="chart" data-chart="stateMin"></div>
+    <figcaption>Average minutes per match in each score state, by final result. In defeats Barça spent 52 minutes behind, and trailing is when they have the most of the ball. So defeats end up with high possession figures.</figcaption>
+  </figure>
+  <div class="prose">
+    <h3>Four matches, minute by minute</h3>
+    <p>Four matches show the effect clearly. Choose one and press play: the possession flow, the score and every shot build up in match time.</p>
+  </div>
+  <figure class="fig" id="fig-replay">
+    <div class="fig-head">
+      <div class="fig-title"><span class="fig-no">Fig. 19 · animated replay</span><h4>Match replays: possession flow, score and shots</h4></div>
+      <div class="controls"><button class="btn primary" type="button" id="rp-play"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0 L9 5 L1 10Z" fill="currentColor"/></svg>Play</button><div class="seg" role="group" aria-label="Speed"><button type="button" aria-pressed="false" data-speed="0.5">½×</button><button type="button" aria-pressed="true" data-speed="1">1×</button><button type="button" aria-pressed="false" data-speed="2">2×</button></div></div>
+    </div>
+    <div class="chips" id="rp-chips"></div>
+    <div class="scoreboard"><div class="score" id="rp-score"></div><div class="clock" id="rp-clock"></div><div class="readout" id="rp-read"></div></div>
+    <div class="chart" data-chart="replayFlow"></div>
+    <div class="chart" data-chart="replayShots"></div>
+    <figcaption id="rp-cap">Top: Barça's share of passes over a rolling 5-minute window. Above the 50% line they are on the ball more; below it the opponent is. Markers show goals. Bottom: every shot, with Barça attacking to the right and the opponent to the left. Circle area is proportional to xG, and filled circles are goals.</figcaption>
+  </figure>
+</section>
+
+<!-- 7 -->
+<section class="chapter" id="strength" data-title="The two forces">
+  <div class="ch-head"><span class="ch-num">Chapter 7</span><h2>The two forces</h2></div>
+  <div class="prose">
+    <p class="lede">If score effects push the possession–win link downwards, something must be pushing it back up, because the raw correlation is zero rather than negative. That something is the quality of the opponent.</p>
+    <p>Against strong teams Barça had less of the ball: possession falls with opponent Elo (r = −0.32, p ≈ 10<sup>−14</sup>). They also won less often. Against weak teams they had more of the ball and won more. Opponent strength therefore creates a <strong>positive</strong> link between possession and winning. At the same time, score effects create a <strong>negative</strong> one. The two roughly cancel.</p>
+  </div>
+  <div class="mathcard"><div class="math">{{M:forces}}</div><span class="cap">The raw correlation is close to zero because two opposite effects are added together.</span></div>
+  <figure class="fig">
+    <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 20</span><h4>Stronger opponents took more of the ball</h4></div></div>
+    <div class="legend" data-legend="wdl"></div>
+    <div class="chart" data-chart="eloScatter"></div>
+    <figcaption>Opponent's pre-match Elo rating against Barça's possession. Line: least squares, r = −0.32. Against the strongest third of opponents (Elo above 1505), Barça averaged 62.8% possession and won 64.6%. Against the weakest third (below 1449), they averaged 68.6% and won 81.1%.</figcaption>
+  </figure>
+  <div class="prose">
+    <h3>Holding opponent strength fixed</h3>
+    <p>Split the opponents into thirds by Elo, then split each third into Barça's low, middle and high possession matches. Within the same level of opponent, the positive strength effect is removed and the negative score effect is left. Against the weakest third, Barça won <strong>91.5%</strong> of their lowest-possession matches and just <strong>63.8%</strong> of their highest-possession matches. When a weak side kept Barça out, Barça ended up with lots of the ball and no goal to show for it.</p>
+  </div>
+  <figure class="fig">
+    <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 21</span><h4>Win rate by opponent strength and possession tercile</h4></div></div>
+    <div class="scroll"><div class="chart" data-chart="tiers"></div></div>
+    <figcaption>Rows: opponents split into thirds by pre-match Elo. Columns: Barça's possession tercile within that group, with the group's mean possession in brackets. Cell shade and label show the win rate, with the number of matches below it.</figcaption>
+  </figure>
+  <div class="prose">
+    <h3>Adding controls one at a time</h3>
+    <p>The clearest way to see the two forces is to add the confounders to the logistic model one by one and follow the possession coefficient. Adding venue changes little. Adding the Elo edge makes possession significantly <strong>negative</strong>, with an odds ratio of 0.65 per 10 points (p = 0.006). This is the score effect with the strength effect removed. Adding how many minutes Barça spent trailing, and then leading, brings the coefficient back to 1.08 (p = 0.72). Once the model knows how strong the opponent was and how the scoreline developed, possession adds nothing.</p>
+  </div>
+  <figure class="fig" id="fig-path">
+    <div class="fig-head">
+      <div class="fig-title"><span class="fig-no">Fig. 22 · step-through</span><h4>The possession effect as each control is added</h4></div>
+      <div class="controls"><button class="btn primary" type="button" id="path-play"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0 L9 5 L1 10Z" fill="currentColor"/></svg>Step through</button></div>
+    </div>
+    <div class="chart" data-chart="path"></div>
+    <figcaption>Odds ratio for +10 points of possession, with 95% confidence intervals, on a log scale. Each row adds one variable to the row above it. The vertical line at 1 means no effect.</figcaption>
+  </figure>
+</section>
+
+<!-- 8 -->
+<section class="chapter" id="clean" data-title="Cleaning the measurement">
+  <div class="ch-head"><span class="ch-num">Chapter 8</span><h2>Cleaning the measurement</h2></div>
+  <div class="prose">
+    <p class="lede">If the scoreline contaminates possession, measure possession before the scoreline can affect it. This chapter tries that. It seems to work at first, and then it doesn't.</p>
+    <h3>Two cleaner measures</h3>
+    <p><strong>Possession before the first goal</strong> uses only the passes played while the match was 0–0. For a stable estimate, matches needed at least 100 passes before the first goal (454 of 524). <strong>Possession while level</strong> uses every period when the scores were equal.</p>
+    <p>Both measures now point the expected way. Pre-goal possession gives an odds ratio of <span class="num">1.27</span> per 10 points (p = 0.053). Possession while level gives <span class="num">1.35</span> (p = 0.011). Scoring first is the likely route: Barça opened the scoring in 75% of matches with a goal, and pre-goal possession strongly predicts who scores first (odds ratio <span class="num">1.64</span> per 10 points, p = 0.0002).</p>
+  </div>
+  <figure class="fig">
+    <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 23 · diagram</span><h4>The first goal decides a lot</h4></div></div>
+    <div class="scroll"><div class="chart" data-chart="sankey" style="min-width:620px"></div></div>
+    <figcaption>All 524 matches, split by who scored first, then by final result. Band widths are proportional to the number of matches. When Barça scored first they won <b>87.4%</b> and lost 3.4%. When they conceded first they won <b>42.5%</b> and lost 30.7%. 17 matches finished 0–0.</figcaption>
+  </figure>
+  <div class="prose">
+    <h3>The catch: the goal's own build-up</h3>
+    <p>The event study in Fig. 16 shows a problem. In the minute before Barça score, they have 77.9% of the passes, because the move that creates a goal is a passing move. Any "possession before the first goal" measure therefore includes the build-up to that goal. A team whose first goal came from a long passing move automatically gets a higher pre-goal possession figure <em>and</em> scores first. Part of the link is built into the measurement.</p>
+    <p>The fix is simple. Remove the last <i>g</i> minutes before the first goal (or before every goal, for the "while level" measure) and see what's left.</p>
+  </div>
+  <div class="mathcard"><div class="math">{{M:pregap}}</div><span class="cap">Possession before the first goal at time t₁, excluding a gap of g minutes of build-up.</span></div>
+  <figure class="fig" id="fig-gap">
+    <div class="fig-head">
+      <div class="fig-title"><span class="fig-no">Fig. 24 · interactive</span><h4>Remove one minute of build-up and the effect disappears</h4></div>
+      <div class="seg" role="group" aria-label="Adjustment"><button type="button" aria-pressed="true" data-gapmode="raw">Unadjusted</button><button type="button" aria-pressed="false" data-gapmode="elo">Adjusted for Elo + venue</button></div>
+    </div>
+    <div class="legend" data-legend="gap"></div>
+    <div class="chart" data-chart="gap"></div>
+    <figcaption>Odds ratios per +10 points of possession, with 95% intervals (derived from each Wald p-value), plotted against the number of minutes removed before goals. With no gap, the "win" and "scores first" effects look real. Removing a single minute cuts the win effects to 1.15 and 1.16, with p-values of 0.28 and 0.22. After adjusting for Elo and venue, every win effect sits at about 1.0.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>The build-up drove most of the apparent effect. Once it's removed, possession before the first goal and possession while level carry no reliable information about the result. A small trace remains in who scores first (odds ratio 1.31 at a 1-minute gap, p = 0.046), but that also disappears after adjusting for Elo (1.12, p = 0.43). In the end, the better team kept the ball <em>and</em> scored first. Possession was a symptom of that, not the cause.</p>
+    <p class="small muted">Threshold check: requiring 0, 50, 100, 150, 200, 300 or 400 pre-goal passes gives unadjusted odds ratios between 1.23 and 1.66. With no threshold the effect is strongest (1.37, p = 0.0005), because very early goals make pre-goal possession almost entirely build-up.</p>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="chapter" id="wins" data-title="What actually wins">
+  <div class="ch-head"><span class="ch-num">Chapter 9</span><h2>What actually wins</h2></div>
+  <div class="prose">
+    <p class="lede">If possession isn't the answer, what is? I ranked 20 match statistics by their correlation with winning.</p>
+  </div>
+  <figure class="fig">
+    <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 25</span><h4>Correlation with winning for 20 match statistics</h4></div></div>
+    <div class="chart" data-chart="leader"></div>
+    <figcaption>Point-biserial correlation with a win (1) vs draw or defeat (0), with 95% Fisher-z intervals. Possession measures are highlighted. Measures of chance quality and volume lead the ranking. Whole-match possession sits near zero, alongside field tilt and passes into the box.</figcaption>
+  </figure>
+  <div class="prose">
+    <h3>Possession as defence</h3>
+    <p>Possession did change one thing: how much the <em>opponent</em> could do. More possession went with fewer opponent shots (r = −0.46) and less xG conceded (r = −0.25). It had almost no link with Barça's own xG (r = +0.06, p = 0.19). Opponents can't shoot without the ball, so for Barça possession worked as a shield more than a weapon.</p>
+  </div>
+  <figure class="fig">
+    <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 26</span><h4>More possession: similar attack, quieter defence</h4></div></div>
+    <div class="two">
+      <div><div class="panel-t">xG created</div><div class="chart" data-chart="xgFor"></div></div>
+      <div><div class="panel-t">xG conceded</div><div class="chart" data-chart="xgAg"></div></div>
+    </div>
+    <figcaption>Each dot is one match, and the lines are least-squares fits. Attack stays flat (r = +0.06) while defence improves (r = −0.25). The link is correlational: very high possession tends to come against weak opponents.</figcaption>
+  </figure>
+  <figure class="fig">
+    <div class="fig-head"><div class="fig-title"><span class="fig-no">Table 2</span><h4>Barça's matches in four possession quartiles</h4></div></div>
+    <div class="tblwrap"><table id="t-quart"></table></div>
+    <figcaption>From the lowest to the highest possession quartile, Barça played about 240 more passes per match, but their xG rose by only 0.17. Efficiency fell from 0.33 to 0.26 xG per 100 passes. Opponents fell from 11.7 to 6.7 shots. High-possession matches also came against weaker opponents, and included <i>more</i> time spent trailing.</figcaption>
+  </figure>
+  <div class="prose">
+    <h3>How the statistics relate to each other</h3>
+  </div>
+  <figure class="fig">
+    <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 27</span><h4>Correlation matrix of 14 match statistics</h4></div></div>
+    <div class="scroll"><div class="chart" data-chart="corr" style="min-width:600px"></div></div>
+    <figcaption>Pearson correlations: blue is positive, red negative, grey near zero. Possession clusters tightly with field tilt (0.76) and passes into the box (0.44), and has almost no link to goals scored (0.02). Goals track xG (0.60) and shots on target (0.58).</figcaption>
+  </figure>
+  <div class="prose">
+    <h3>Possession alongside shots on target</h3>
+    <p>What about a model that combines possession with shots on target? With Barça's shots on target alone, the possession coefficient is −0.028 per point (p = 0.059). Adding the opponent's shots on target makes it −0.061 (odds ratio 0.54 per 10 points, p = 0.0003). For the same number of shots at both ends, <em>more</em> possession means <em>lower</em> chances of winning. If Barça needed more of the ball to create the same chances, they were usually chasing the game.</p>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="chapter" id="contest" data-title="The prediction contest">
+  <div class="ch-head"><span class="ch-num">Chapter 10</span><h2>The prediction contest</h2></div>
+  <div class="prose">
+    <p class="lede">Fitting a model and checking it on the same data flatters every model. The fair test is prediction on matches the model has never seen.</p>
+    <p>I used <strong>leave-one-season-out cross-validation</strong>. Each model is trained on 16 seasons and asked to predict every match of the 17th, and this repeats 17 times. Predictions are scored three ways. The <strong>Brier score</strong> is the mean squared error of the probabilities. <strong>Log loss</strong> penalises confident mistakes heavily. <strong>AUC</strong> is the chance that a randomly chosen win gets a higher predicted probability than a randomly chosen non-win. The Brier skill score compares each model with guessing the training-set win rate every time.</p>
+  </div>
+  <div class="two">
+    <div class="mathcard"><div class="math">{{M:brier}}</div><span class="cap">Brier score and Brier skill score against a reference forecast.</span></div>
+    <div class="mathcard"><div class="math">{{M:logloss}}</div><span class="cap">Log loss (cross-entropy). Lower is better.</span></div>
+  </div>
+  <figure class="fig">
+    <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 28</span><h4>Out-of-sample skill: how much each model beats guessing the base rate</h4></div></div>
+    <div class="chart" data-chart="ladder"></div>
+    <figcaption>Brier skill score from leave-one-season-out cross-validation. Bars below zero are worse than guessing. AUC is shown on the right. Models marked * use the 454 matches with at least 100 passes before the first goal. Their skill is measured against the base rate for those same matches.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>Both possession-only models lose to the base rate (skill −0.5%, AUC 0.48 and 0.45). Pre-goal possession scrapes +0.4%. The best <em>pre-match</em> model, Elo edge plus venue, reaches +6.0%. Models using in-match chance statistics do far better: shots on target +20.0%, xG for and against +23.7%, and everything combined +31.6% (AUC 0.84). The in-match models explain results after the fact, since you only know a match's xG once it's over. Even so, possession comes last among them too.</p>
+  </div>
+  <div class="two">
+    <figure class="fig">
+      <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 29 · animated</span><h4>ROC curves (out-of-fold)</h4></div><div class="controls"><button class="btn" data-replay="roc" type="button"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0 L9 5 L1 10Z" fill="currentColor"/></svg>Draw</button></div></div>
+      <div class="legend" data-legend="roc"></div>
+      <div class="chart" data-chart="roc"></div>
+      <figcaption>True-positive rate against false-positive rate as the decision threshold varies. The diagonal is guessing. The possession curve follows it.</figcaption>
+    </figure>
+    <figure class="fig">
+      <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 30</span><h4>Calibration: are the probabilities honest?</h4></div></div>
+      <div class="legend" data-legend="cal"></div>
+      <div class="chart" data-chart="cal"></div>
+      <figcaption>Predictions grouped into eighths, comparing mean predicted probability with the actual win rate. Points on the diagonal are perfectly calibrated. The possession model can only ever predict about 74%, so its points sit in one clump.</figcaption>
+    </figure>
+  </div>
+  <div class="mathcard"><div class="math">{{M:auc}}</div><span class="cap">AUC as a probability: how often the model ranks a real win above a real non-win.</span></div>
+</section>
+
+<!-- 11 -->
+<section class="chapter" id="space" data-title="Where the ball goes">
+  <div class="ch-head"><span class="ch-num">Chapter 11</span><h2>Where the ball goes</h2></div>
+  <div class="prose">
+    <p class="lede">Possession is also about where on the pitch the passes happen. Mapping them shows what high possession actually looked like for Barça.</p>
+    <p>In high-possession matches (the top quartile, 71.3–82.3%), Barça played <span class="num">817</span> passes on average against <span class="num">579</span> in low-possession matches (44.0–60.6%). The extra passes weren't spread evenly. Only 16.0% were in Barça's own third, compared with 25.8% in low-possession games, and 28.9% were in the final third, compared with 21.5%. Opponents in those matches were pushed back: 34.9% of their passes came from their own third, against 26.4%.</p>
+  </div>
+  <figure class="fig" id="fig-heat">
+    <div class="fig-head">
+      <div class="fig-title"><span class="fig-no">Fig. 31 · interactive</span><h4>Pass maps: share of passes by zone</h4></div>
+      <div class="seg" role="group" aria-label="Comparison"><button type="button" aria-pressed="true" data-heat="bar">Barça: low vs high possession</button><button type="button" aria-pressed="false" data-heat="opp">Opponents: low vs high</button><button type="button" aria-pressed="false" data-heat="res">Barça: wins vs defeats</button></div>
+    </div>
+    <div class="three chart" data-chart="heat"></div>
+    <figcaption id="heat-cap">Average share of a team's passes starting in each 10 × 10 zone, with the team attacking to the right. The third map shows the difference between the two: blue where the second group has a larger share, red where it has a smaller one.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>Comparing wins with defeats, the pass maps look very similar. In defeats a slightly larger share of Barça's passes were in the final third (27.5% against 24.8%), which fits a team spending those matches chasing. The shot maps show a clearer difference. Barça took almost as many shots in defeats (14.6 per match) as in wins (15.9), but those shots were worth only <span class="num">1.32</span> xG against <span class="num">2.03</span>. The gap comes mostly from the central zone in and around the box.</p>
+  </div>
+  <figure class="fig" id="fig-shots">
+    <div class="fig-head">
+      <div class="fig-title"><span class="fig-no">Fig. 32 · interactive</span><h4>Shot quality by zone: xG per match</h4></div>
+      <div class="seg" role="group" aria-label="Shot comparison"><button type="button" aria-pressed="true" data-shot="bar">Barça shots: wins vs defeats</button><button type="button" aria-pressed="false" data-shot="opp">Opponent shots: Barça low vs high possession</button></div>
+    </div>
+    <div class="chart" data-chart="shots"></div>
+    <figcaption id="shot-cap">The attacking half of the pitch (x from 60 to 120) in 10 × 10 zones, attacking to the right. Shade and label show non-penalty xG per match from each zone.</figcaption>
+  </figure>
+</section>
+
+<!-- 12 -->
+<section class="chapter" id="eras" data-title="Eras and coaches">
+  <div class="ch-head"><span class="ch-num">Chapter 12</span><h2>Eras and coaches</h2></div>
+  <div class="prose">
+    <p class="lede">Eight head coaches, one tradition of keeping the ball. Each one's possession and results show the same mismatch.</p>
+    <p>Guardiola's teams had 67.6% of the ball, won 77.9% of their matches and lost only 6.6%. Setién's short spell in 2020 had the highest possession of any coach (69.2%) and won 68.4%. Valverde's teams had the lowest possession since Rijkaard (63.1%), yet lost the smallest share of matches of anyone: 4.8%. Koeman's 2020/21 team kept 65.3% of the ball but lost 20% of its matches in this sample, the highest of any coach.</p>
+  </div>
+  <figure class="fig">
+    <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 33</span><h4>Head coaches: possession against win rate</h4></div></div>
+    <div class="chart" data-chart="mgr"></div>
+    <figcaption>Circle area is proportional to the number of matches in the data. Rijkaard's figures cover only the 77 matches Messi played between 2004 and 2008. Tito Vilanova's 2012/13 season includes the matches led by Jordi Roura during Vilanova's illness.</figcaption>
+  </figure>
+  <div class="tblwrap"><table id="t-mgr"></table></div>
+  <div class="prose">
+    <h3>How the style changed</h3>
+    <p>The way Barça used the ball changed more than the amount of it. The average passing sequence grew from 5.2 passes in 2004/05 to 8.4 in 2020/21, and sequences of 10 or more passes almost doubled, from 15 to 28 a match. At the same time pressing got less intense: PPDA rose from 9.4 to 15.8. Later Barça teams kept the ball longer and chased it less. xG conceded roughly doubled over the same period, from 0.52 to 1.01 per match.</p>
+  </div>
+  <figure class="fig">
+    <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 34</span><h4>Style indicators by season</h4></div></div>
+    <div class="chart" data-chart="style"></div>
+    <figcaption>Four small charts, each with its own scale. PPDA is opponent passes allowed per Barça defensive action in the opponent's 60% of the pitch, so a higher value means less pressing.</figcaption>
+  </figure>
+</section>
+
+<!-- 13 -->
+<section class="chapter" id="robust" data-title="Stress tests">
+  <div class="ch-head"><span class="ch-num">Chapter 13</span><h2>Stress tests</h2></div>
+  <div class="prose">
+    <p class="lede">A conclusion that "nothing is there" deserves the same scrutiny as a positive one. Here the key estimates go through resampling, shuffling and ten alternative analysis choices.</p>
+    <h3>Bootstrap</h3>
+    <p>The <strong>bootstrap</strong> resamples the 524 matches with replacement, refits the model and repeats this 2,000 times. The spread of the refitted odds ratios shows how much the estimate could vary by chance, without relying on formulas that assume normality.</p>
+  </div>
+  <figure class="fig" id="fig-boot">
+    <div class="fig-head">
+      <div class="fig-title"><span class="fig-no">Fig. 35 · animated</span><h4>2,000 bootstrap resamples of the possession odds ratio</h4></div>
+      <div class="controls"><button class="btn" data-replay="boot" type="button"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0 L9 5 L1 10Z" fill="currentColor"/></svg>Resample</button></div>
+    </div>
+    <div class="chart" data-chart="boot"></div>
+    <figcaption>Each panel is a histogram of 2,000 bootstrap odds ratios for +10 points of possession, with the 95% percentile interval shaded. <b>Raw</b>: 0.67 to 1.18, and 80% of resamples fall below 1. <b>Adjusted for Elo + venue</b>: 0.46 to 0.88, and 99.6% fall below 1. <b>While level</b>: 1.08 to 1.72, but this figure still includes the build-up bias from Chapter 8.</figcaption>
+  </figure>
+  <div class="prose">
+    <h3>Permutation test</h3>
+    <p>A <strong>permutation test</strong> asks how often a correlation this large would appear if possession and results were completely unrelated. Shuffle the win labels at random, recompute the correlation, and repeat 5,000 times. The share of shuffled correlations at least as large as the real one is the p-value. It needs no distributional assumptions at all.</p>
+  </div>
+  <div class="mathcard"><div class="math">{{M:perm}}</div><span class="cap">Two-sided permutation p-value from B = 5,000 shuffles.</span></div>
+  <figure class="fig" id="fig-perm">
+    <div class="fig-head">
+      <div class="fig-title"><span class="fig-no">Fig. 36 · animated</span><h4>Real correlations against 5,000 shuffled ones</h4></div>
+      <div class="controls"><button class="btn" data-replay="perm" type="button"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0 L9 5 L1 10Z" fill="currentColor"/></svg>Shuffle</button></div>
+    </div>
+    <div class="chart" data-chart="perm"></div>
+    <figcaption>Whole-match possession: observed r = −0.038, permutation p = 0.39, so shuffled data beats it 39% of the time. Possession while level: r = +0.113, p = 0.011, but this measure includes the build-up to goals.</figcaption>
+  </figure>
+  <div class="prose">
+    <h3>Ten alternative analyses</h3>
+    <p>The whole-match result doesn't depend on any single choice of subset, measure or outcome. No version gives a significantly positive effect. The only significant one is negative, once team strength is controlled.</p>
+  </div>
+  <figure class="fig">
+    <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 37</span><h4>Sensitivity analysis: odds ratio per +10 points of possession</h4></div></div>
+    <div class="chart" data-chart="sens"></div>
+    <figcaption>Each row refits the logistic model with a different subset, measure or outcome. The log scale is centred on 1, which means no effect. "Avoid defeat" treats draws as successes.</figcaption>
+  </figure>
+</section>
+
+<!-- 14 -->
+<section class="chapter" id="sim" data-title="Simulating seasons">
+  <div class="ch-head"><span class="ch-num">Chapter 14</span><h2>Simulating seasons</h2></div>
+  <div class="prose">
+    <p class="lede">A win/no-win model throws away draws and scorelines. A goals model keeps both. It can then simulate whole seasons under different possession levels.</p>
+    <h3>A Poisson goals model</h3>
+    <p>Goals in football are rare, roughly independent events, which is what a Poisson distribution describes. I fitted one Poisson regression for goals scored and one for goals conceded. Each used possession, Elo edge and venue. The data suit the model well: the dispersion ratios are 0.99 and 0.96, where 1.0 is a perfect Poisson fit.</p>
+  </div>
+  <div class="mathcard"><div class="math">{{M:pois}}</div><span class="cap">Goals for; goals against use the same form with their own coefficients (mean μ).</span></div>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Term</th><th>Goals for: effect</th><th>p</th><th>Goals against: effect</th><th>p</th></tr></thead>
+    <tbody>
+      <tr><td>Possession (+10 points)</td><td>×0.93 goals</td><td>0.068</td><td>×0.96 goals</td><td>0.53</td></tr>
+      <tr><td>Elo edge (+100 points)</td><td>×1.18 goals</td><td>&lt;0.001</td><td>×0.85 goals</td><td>0.003</td></tr>
+      <tr><td>Home venue</td><td>×0.98</td><td>0.83</td><td>×1.04</td><td>0.78</td></tr>
+    </tbody></table></div>
+  <div class="prose"><p>Combining the two Poisson distributions gives the probability of every scoreline, and adding those up gives P(win), P(draw) and P(loss).</p></div>
+  <div class="mathcard"><div class="math">{{M:wdl}}</div><span class="cap">Result probabilities from independent Poisson goal counts with means λ (Barça) and μ (opponent).</span></div>
+  <div class="two">
+    <figure class="fig">
+      <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 38</span><h4>Does the Poisson model fit?</h4></div></div>
+      <div class="legend" data-legend="gd"></div>
+      <div class="chart" data-chart="goaldist"></div>
+      <figcaption>Observed number of matches with each goal count (bars) against the model's expected number (dots), for goals scored and conceded.</figcaption>
+    </figure>
+    <figure class="fig">
+      <div class="fig-head"><div class="fig-title"><span class="fig-no">Fig. 39</span><h4>Win, draw and loss probability across possession</h4></div></div>
+      <div class="legend" data-legend="wdl"></div>
+      <div class="chart" data-chart="wdlArea"></div>
+      <figcaption>From the Poisson model, at the median Elo edge and a neutral venue. The three bands barely change across 37 points of possession.</figcaption>
+    </figure>
+  </div>
+  <div class="prose">
+    <h3>Monte Carlo: 10,000 seasons per scenario</h3>
+    <p>Fix Barça's possession at 55%, 65% or 75%. Draw 38 opponents at random from the real schedule (with their real Elo gaps and venues), simulate each scoreline from the Poisson model, and add up the points. Repeat 10,000 times. The three scenarios produce <span class="num">92.1</span>, <span class="num">90.4</span> and <span class="num">88.9</span> points on average. That is a gap of about 3 points, and each distribution has a spread of about ±6.6 points. For reference, Barça's actual rate across these matches works out to 90.2 points per 38 games.</p>
+  </div>
+  <figure class="fig" id="fig-mc">
+    <div class="fig-head">
+      <div class="fig-title"><span class="fig-no">Fig. 40 · live simulation</span><h4>Simulate your own seasons</h4></div>
+      <div class="controls"><button class="btn primary" type="button" id="mc-run"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0 L9 5 L1 10Z" fill="currentColor"/></svg>Simulate 2,000 seasons</button></div>
+    </div>
+    <div class="slider"><label for="mc-slider">Barça possession in every match</label><input type="range" id="mc-slider" min="45" max="85" step="1" value="65"><span class="num" id="mc-val">65%</span></div>
+    <div class="readout" id="mc-read"></div>
+    <div class="legend" data-legend="mc"></div>
+    <div class="chart" data-chart="mc"></div>
+    <figcaption>Lines: the distribution of season points for 10,000 simulated seasons in each preset scenario. Bars: your own simulation, run in your browser with the same fitted coefficients. These are associations, not causal effects. "Setting" possession is a thought experiment, since in reality possession responds to the scoreline.</figcaption>
+  </figure>
+</section>
+
+<!-- 15 -->
+<section class="chapter" id="conclusion" data-title="Conclusions">
+  <div class="ch-head"><span class="ch-num">Chapter 15</span><h2>Conclusions</h2></div>
+  <div class="prose">
+    <h3>Answering the research question</h3>
+    <p><em>To what extent can possession percentage be used to model the probability of FC Barcelona winning a match?</em> In the 524 La Liga matches Messi played between 2004 and 2021, <strong>almost not at all</strong>. A logistic model built on possession is statistically indistinguishable from a flat line. In fair out-of-sample testing it does worse than guessing Barça's usual win rate. That holds whether possession is measured by passes or by time, whether draws count as failures or successes, and in every era and subset tested.</p>
+    <h3>Why the model fails</h3>
+    <ol>
+      <li><strong>Reverse causation.</strong> The scoreline shapes possession. Leading teams give up the ball and trailing teams chase it, so a defeat produces a high possession figure.</li>
+      <li><strong>Confounding.</strong> Opponent quality lowers both Barça's possession and their chance of winning. That creates a positive link that happens to cancel the negative one.</li>
+      <li><strong>Measurement leakage.</strong> Possession measured "before the goal" includes the goal's own build-up. Removing a single minute removes the apparent effect.</li>
+      <li><strong>Restricted range.</strong> Barça had more of the ball in 97.7% of matches. Almost all the variation is between 55% and 78%, so there is little room for possession to separate outcomes.</li>
+    </ol>
+    <h3>What possession was for</h3>
+    <p>The data points to possession as <strong>defence</strong> for this team. Every extra point of possession meant fewer opponent shots, and Barça's own chance creation stayed about the same. It was also a <strong>sign of superiority</strong>: better Barça teams against weaker opponents kept more of the ball. What decided matches was the quality of chances at each end. That's why xG difference and shots-on-target difference top every ranking.</p>
+    <h3>Limitations</h3>
+    <ul>
+      <li><strong>Selection.</strong> Only matches Messi played are covered (81% of league games). A Barça without Messi might show different patterns.</li>
+      <li><strong>One team.</strong> Barcelona is an outlier that almost always had the ball. Across a whole league, where possession varies from 30% to 70%, the relationship can look different.</li>
+      <li><strong>Correlation, not causation.</strong> Every model here is observational. The simulations in Chapter 14 are thought experiments, not predictions of what a tactical change would do.</li>
+      <li><strong>Measurement choices.</strong> Possession is pass share or sequence time, xG is StatsBomb's model, and the Elo ratings are built from results only. Each is reasonable but not unique.</li>
+      <li><strong>Binary outcome.</strong> The main model treats draws and defeats as the same. The Poisson model and the "avoid defeat" check address this, with the same conclusion.</li>
+    </ul>
+    <h3>Where to go next</h3>
+    <p>Natural extensions would be to compute possession value (expected threat) instead of possession volume, model every La Liga team with a multilevel model, and use StatsBomb 360 freeze frames to measure <em>where the opponent's players were</em> when Barça had the ball. The question those would answer is not "how much ball?" but "how dangerous was the ball?".</p>
+  </div>
+  <div class="verdict"><span class="eyebrow">One sentence</span><p>For Messi's Barcelona, possession was the outcome of dominance and the scoreline, not a predictor of the result: the ball followed the game.</p></div>
+</section>
+
+<!-- appendix -->
+<section class="chapter" id="appendix" data-title="Appendix">
+  <div class="ch-head"><span class="ch-num">Appendix</span><h2>Methods, tables and data</h2></div>
+  <div class="prose"><h3>A. Elo rating system</h3>
+    <p>Each team has a rating R. Before a match, the expected score of the home team A against B (win = 1, draw = ½, loss = 0) is:</p></div>
+  <div class="mathcard"><div class="math">{{M:eloE}}</div><span class="cap">H = 90 home-advantage points.</span></div>
+  <div class="mathcard"><div class="math">{{M:eloU}}</div><span class="cap">Update after the match with actual score S, K = 15 and a goal-difference multiplier G. At each new season ratings move 20% towards 1500, and newly promoted teams start at 1450.</span></div>
+  <div class="prose"><p>The parameters were chosen by grid search (K ∈ {15, 20, 25, 30}, H ∈ {50, 70, 90}, regression ∈ {0.1, 0.2, 0.3}, new-team rating ∈ {1400, 1450}) to minimise the Brier score of expected scores across every La Liga match from 1990 onwards. The best setting reached 0.154.</p>
+  <h3>B. Regression tables</h3></div>
+  <div class="tblwrap"><table id="t-reg"></table></div>
+  <div class="prose"><p class="small muted">Coefficients are on the log-odds scale. P = whole-match possession, Ppre = possession before the first goal, Plev = possession while level (all in percentage points), E = Elo edge per 100 points, home = 1 for home matches. sot and opp_sot are shots on target for and against; xg and xga are xG for and against.</p>
+  <h3>C. Data dictionary</h3></div>
+  <div class="defs" id="dict"></div>
+  <div class="prose"><h3>D. Reproducibility</h3>
+    <p>The analysis runs in Python (pandas, NumPy, SciPy, statsmodels, scikit-learn) on data pulled directly from <a href="https://github.com/statsbomb/open-data" target="_blank" rel="noopener">github.com/statsbomb/open-data</a> and <a href="https://github.com/jalapic/engsoccerdata" target="_blank" rel="noopener">github.com/jalapic/engsoccerdata</a>. The scripts that download the events, extract features, build the Elo ratings and fit every model are saved with this report. Random seeds are fixed, so the bootstrap, permutation and Monte Carlo figures reproduce exactly.</p>
+  </div>
+  <footer>
+    <span>Data: StatsBomb Open Data (free for non-commercial use, with attribution to StatsBomb) and engsoccerdata by James Curley. Analysis and visualisation built for personal study.</span>
+    <span>All probabilities, tests and charts are computed from the event data. Figures marked "animated" can be replayed; motion is turned off if your device asks for reduced motion.</span>
+  </footer>
+</section>
+</article>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script id="report-data" type="application/json">__DATA__</script>
+<script>
+__APP__
+</script>
