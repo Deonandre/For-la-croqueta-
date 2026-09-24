@@ -27,7 +27,8 @@ human_sources:
     lang: en
     limit: 1500
 
-# Human documents scanned for false positives during hard-negative mining (defaults to human_sources).
+# Human documents scanned for false positives during hard-negative mining. Default: human_sources with each
+# limit x3 (`mine --pool-factor`); documents already in the dataset are always skipped.
 mining_pool: null
 
 generation:

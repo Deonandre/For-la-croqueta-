@@ -14,9 +14,17 @@ from .data.human import HumanDoc
 from .predictor import Predictor
 
 
-def mine(predictor: Predictor, docs, out_path: str | Path, top_k: int = 500) -> list[tuple[float, str]]:
+def mine(predictor: Predictor, docs, out_path: str | Path, top_k: int = 500,
+         exclude_ids: set[str] | frozenset[str] = frozenset()) -> list[tuple[float, str]]:
+    """Score human ``docs`` and save the ``top_k`` most flagged ones.
+
+    ``exclude_ids`` are documents already in the dataset: ``build`` would skip them anyway, and val/test
+    documents must not come back as training data.
+    """
     scored = []
     for doc in docs:
+        if doc.id in exclude_ids:
+            continue
         s = analyze(doc.text, predictor)["summary"]
         score = s["ai"] + s["rephrased"]
         if score > 0:

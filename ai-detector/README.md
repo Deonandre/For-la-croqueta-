@@ -43,12 +43,13 @@ It uses the same recipe as the strongest commercial detectors (Pangram), special
 pip install -r requirements.txt
 export OPENROUTER_API_KEY=...          # in the environment settings, never in code
 
+python -m aidetect doctor              # what this machine is missing (key, network hosts, GPU, data)
 python -m aidetect models              # which generator models will be used
 python -m aidetect build               # human docs -> labelled dataset (data/examples.jsonl), budget-capped
 python -m aidetect baseline            # fast CPU baseline (models/baseline.joblib): the number to beat
 python -m aidetect train               # transformer (models/plume); a GPU is strongly recommended
 python -m aidetect eval --model models/plume          # reports/latest/report.md
-python -m aidetect mine --model models/plume          # data/hard_negatives.jsonl
+python -m aidetect mine --model models/plume          # data/hard_negatives.jsonl (skips docs already in the dataset)
 python -m aidetect build --human-jsonl data/hard_negatives.jsonl   # next round, then train again
 python -m aidetect serve --model models/plume         # web app on http://127.0.0.1:8000
 python -m aidetect analyze essay.docx --model models/plume         # coloured output in the terminal
@@ -56,6 +57,13 @@ python -m aidetect analyze essay.docx --model models/plume         # coloured ou
 
 Everything is configured in `configs/default.yaml` (sources, generator families, budget, variants,
 training settings).
+
+Rough costs: a first `build --max-docs 200` is about $8 of OpenRouter credit; the full build stops at
+`budget_usd` ($60, about 1,500 human documents). Sources are interleaved, so a small build still mixes
+French and English, academic and encyclopaedic text (local essays always come first).
+
+Without a GPU, `train --base-model intfloat/multilingual-e5-small` runs on CPU (hours for a 200-document
+dataset). The full dataset with `xlm-roberta-base` needs a GPU.
 
 ## Web app
 
@@ -75,6 +83,9 @@ Texts are analysed in memory and never stored. A demo with a made-up example is 
 pytest
 ```
 
+CI runs the same suite on every push touching `ai-detector/` (`.github/workflows/plume-tests.yml` at the
+repository root, where GitHub looks for workflows).
+
 The suite includes an end-to-end run: it builds fake data, trains a tiny transformer on CPU,
 calibrates it, evaluates it and analyzes an essay. It proves the plumbing works, not the accuracy.
 Accuracy comes from real data and is measured by `aidetect eval`.
@@ -91,5 +102,6 @@ aidetect/smoothing.py     Viterbi smoothing into passages
 aidetect/analyze.py       full analysis -> JSON for the UI
 aidetect/evaluate.py      metrics and reports
 aidetect/mine.py          hard-negative mining
+aidetect/doctor.py        pre-flight check of key, network, GPU and data
 app/                      FastAPI server + web interface
 ```

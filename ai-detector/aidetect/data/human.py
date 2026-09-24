@@ -10,6 +10,7 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import logging
 import re
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -17,6 +18,8 @@ from typing import Iterator
 
 from ..extract import extract_text
 from ..textproc import detect_language, word_count
+
+log = logging.getLogger(__name__)
 
 
 @dataclass
@@ -150,8 +153,26 @@ def load_hal(lang: str = "fr", limit: int = 2000, years: tuple[int, int] = (2005
 
 
 def load_sources(sources: list[dict]) -> Iterator[HumanDoc]:
+    """All local documents first (the most valuable), then the other sources in turn, one document each.
+
+    Interleaving means ``build --max-docs 200`` gets a French/English, academic/encyclopaedic mix instead
+    of 200 documents from whichever source is listed first. Remote sources are opened lazily.
+    """
     loaders = {"local": load_local, "jsonl": load_jsonl, "hf": load_hf, "hal": load_hal}
+    iters = []
     for src in sources:
         src = dict(src)
         kind = src.pop("type")
-        yield from loaders[kind](**src)
+        if kind == "local":
+            yield from loaders[kind](**src)
+        else:
+            iters.append(loaders[kind](**src))
+    while iters:
+        for it in list(iters):
+            try:
+                yield next(it)
+            except StopIteration:
+                iters.remove(it)
+            except Exception as e:  # e.g. a host blocked by the network: keep the other sources going
+                log.warning("human source dropped after an error: %s", e)
+                iters.remove(it)

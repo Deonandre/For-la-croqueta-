@@ -80,3 +80,19 @@ def test_discover_generators_picks_newest_affordable():
         {"id": "mistralai/m", "created": 1, "pricing": {"completion": "0.000001"}, "architecture": {"modality": "text+image->text"}},
     ]
     assert discover_generators(models, ["openai", "mistralai", "google"], 16) == ["openai/new", "mistralai/m"]
+
+
+def test_sources_are_interleaved_after_local(tmp_path, essay_en):
+    local = tmp_path / "local"
+    local.mkdir()
+    (local / "old_ee.txt").write_text(essay_en)
+    for name, lang in (("a", "fr"), ("b", "en")):
+        (tmp_path / f"{name}.jsonl").write_text(
+            "".join(json.dumps({"id": f"{name}{i}", "text": "word " * 200, "lang": lang}) + "\n" for i in range(3)))
+    from aidetect.data.human import load_sources
+
+    docs = list(load_sources([{"type": "jsonl", "path": str(tmp_path / "a.jsonl")},
+                              {"type": "local", "path": str(local)},
+                              {"type": "jsonl", "path": str(tmp_path / "b.jsonl")}]))
+    assert docs[0].source == "local"
+    assert [d.id for d in docs[1:]] == ["a0", "b0", "a1", "b1", "a2", "b2"]

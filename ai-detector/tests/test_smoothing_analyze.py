@@ -48,3 +48,13 @@ def test_short_text_is_insufficient(keyword_predictor):
     res = analyze("This is short. Only a few words.", keyword_predictor)
     assert res["summary"]["verdict"] == "insufficient"
     assert "short_text" in res["warnings"]
+
+
+def test_mine_skips_documents_already_in_dataset(tmp_path, keyword_predictor):
+    from aidetect.data.human import HumanDoc
+    from aidetect.mine import mine
+
+    flagged = "It is crucial to note this. It is crucial again. It is crucial once more."
+    docs = [HumanDoc(id=i, text=flagged, lang="en", source="t") for i in ("in-dataset", "new")]
+    found = mine(keyword_predictor, docs, tmp_path / "hn.jsonl", exclude_ids={"in-dataset"})
+    assert [doc_id for _, doc_id in found] == ["new"]

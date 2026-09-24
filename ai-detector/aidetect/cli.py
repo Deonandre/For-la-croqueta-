@@ -15,6 +15,15 @@ def _cfg(path: str) -> dict:
     return yaml.safe_load(Path(path).read_text()) or {}
 
 
+def cmd_doctor(args):
+    from .doctor import report, run_checks
+
+    text, ready = report(run_checks(_cfg(args.config)))
+    print(text)
+    if args.require and not ready[args.require]:
+        sys.exit(1)
+
+
 def cmd_models(args):
     from .data.llm import LLMClient, discover_generators
 
@@ -103,9 +112,17 @@ def cmd_mine(args):
     from .predictor import load_predictor
 
     cfg = _cfg(args.config)
-    pool = cfg.get("mining_pool") or cfg["human_sources"]
-    found = mine(load_predictor(args.model), load_sources(pool), args.out, args.top_k)
-    print(f"{len(found)} human documents flagged; saved to {args.out}", file=sys.stderr)
+    # By default scan the training sources further than the build did: documents already in the dataset
+    # are skipped, so the extra ones are the only candidates.
+    pool = cfg.get("mining_pool") or [dict(s, limit=s["limit"] * args.pool_factor) if "limit" in s else s
+                                      for s in cfg["human_sources"]]
+    exclude = set()
+    if Path(args.data).exists():
+        with open(args.data, encoding="utf-8") as f:
+            exclude = {json.loads(line)["doc_id"] for line in f if line.strip()}
+    found = mine(load_predictor(args.model), load_sources(pool), args.out, args.top_k, exclude_ids=exclude)
+    print(f"{len(found)} human documents flagged (skipped {len(exclude)} already in {args.data}); saved to {args.out}",
+          file=sys.stderr)
 
 
 _COLORS = {"ai": "\033[41;97m", "rephrased": "\033[43;30m"}
@@ -152,6 +169,11 @@ def main(argv=None):
     p = argparse.ArgumentParser(prog="aidetect")
     sub = p.add_subparsers(dest="cmd", required=True)
 
+    s = sub.add_parser("doctor", help="check the key, network, GPU and data this machine needs")
+    s.add_argument("--config", default="configs/default.yaml")
+    s.add_argument("--require", choices=["build", "train", "serve"], help="exit 1 if this step is blocked")
+    s.set_defaults(func=cmd_doctor)
+
     s = sub.add_parser("models", help="list the generator models that would be used")
     s.add_argument("--config", default="configs/default.yaml")
     s.set_defaults(func=cmd_models)
@@ -189,6 +211,8 @@ def main(argv=None):
     s.add_argument("--model", required=True)
     s.add_argument("--config", default="configs/default.yaml")
     s.add_argument("--out", default="data/hard_negatives.jsonl")
+    s.add_argument("--data", default="data/examples.jsonl", help="documents already in this dataset are skipped")
+    s.add_argument("--pool-factor", type=int, default=3, help="scan this many times each source's build limit")
     s.add_argument("--top-k", type=int, default=500)
     s.set_defaults(func=cmd_mine)
 

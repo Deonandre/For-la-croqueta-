@@ -1,18 +1,25 @@
-name: tests
+name: plume-tests
 
+# GitHub only reads workflows from the repository root, so this lives here and runs in ai-detector/.
 on:
   push:
+    paths: ["ai-detector/**", ".github/workflows/plume-tests.yml"]
   pull_request:
+    paths: ["ai-detector/**", ".github/workflows/plume-tests.yml"]
 
 jobs:
   pytest:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ai-detector
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: pip
+          cache-dependency-path: ai-detector/requirements.txt
       - name: Install (CPU-only torch)
         run: |
           pip install torch --index-url https://download.pytorch.org/whl/cpu
