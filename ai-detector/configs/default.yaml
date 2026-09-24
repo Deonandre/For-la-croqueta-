@@ -1,0 +1,71 @@
+# Plume: full pipeline configuration (see README "Pipeline").
+
+# Human-written documents. Only text written BEFORE 2023 can be trusted as human.
+human_sources:
+  # 1) Best source by far: your school's archive of IAs / Extended Essays / TOK essays from before 2023.
+  #    Drop .docx / .pdf / .txt files here (never committed). Optional meta.csv: file,task,subject,year,lang
+  - type: local
+    path: data/human/local
+  # 2) French academic writing: abstracts of theses and master's dissertations from HAL (2005-2021).
+  - type: hal
+    lang: fr
+    limit: 3000
+    years: [2005, 2021]
+  - type: hal
+    lang: en
+    limit: 1500
+    years: [2005, 2021]
+  # 3) General encyclopaedic prose, cut into essay-sized chunks.
+  - type: hf
+    dataset: wikimedia/wikipedia
+    config: 20231101.fr
+    lang: fr
+    limit: 1500
+  - type: hf
+    dataset: wikimedia/wikipedia
+    config: 20231101.en
+    lang: en
+    limit: 1500
+
+# Human documents scanned for false positives during hard-negative mining (defaults to human_sources).
+mining_pool: null
+
+generation:
+  # One OpenRouter key gives access to all of these families; the newest affordable model of each
+  # provider is picked automatically (`python -m aidetect models` shows the list).
+  providers: [openai, anthropic, google, meta-llama, mistralai, deepseek, qwen, x-ai, cohere]
+  # Never used for training: the test set measures detection of models the detector has never seen.
+  heldout_providers: [x-ai, cohere]
+  generators: []                      # explicit OpenRouter model ids override discovery
+  max_completion_price_per_mtok: 16   # USD per million output tokens
+  budget_usd: 60                      # hard stop for generation spend
+  concurrency: 8
+  cache_dir: .cache/llm
+  max_doc_words: 1200
+  mirror_max_words: 900
+  polish_threshold: 0.12              # grammar-only fixes below this word-edit ratio stay "human"
+  variants:                           # expected number of examples per human document
+    human: 1.0
+    mirror: 1.0
+    mosaic: 1.0
+    rephrase: 1.0
+    polish: 0.4
+    translation: 0.2
+    humanized_ai: 0.3
+
+splits:
+  val: 0.1
+  test: 0.1
+  seed: 13
+
+training:
+  base_model: FacebookAI/xlm-roberta-base   # multilingual FR+EN; use xlm-roberta-large on a big GPU
+  max_length: 512
+  stride: 128
+  epochs: 3
+  lr: 2.0e-5
+  batch_size: 8
+  grad_accum: 2
+  warmup_ratio: 0.06
+  weight_decay: 0.01
+  target_fpr: 0.01          # at most 1% of human sentences flagged on validation data

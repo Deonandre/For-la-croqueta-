@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Plume</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M26 4C15 5 8 12 6 26l2 1c1-3 3-6 5-8 5 0 10-3 12-8-3 1-5 1-7 0 4-1 7-3 8-7z' fill='%234f46e5'/></svg>">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><path d="M26 4C15 5 8 12 6 26l2 1c1-3 3-6 5-8 5 0 10-3 12-8-3 1-5 1-7 0 4-1 7-3 8-7z"/></svg>
+      <span class="name">Plume</span>
+      <span class="tagline" data-i18n="tagline"></span>
+    </div>
+    <div class="lang-switch" role="group" aria-label="Language">
+      <button type="button" data-lang="fr">FR</button>
+      <button type="button" data-lang="en">EN</button>
+    </div>
+  </header>
+
+  <div id="demo-banner" class="banner" hidden data-i18n="demo_banner"></div>
+
+  <main>
+    <!-- ============ INPUT ============ -->
+    <section id="input-view" class="card input-card">
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" class="tab active" data-tab="paste" data-i18n="tab_paste"></button>
+        <button type="button" role="tab" class="tab" data-tab="upload" data-i18n="tab_upload"></button>
+      </div>
+
+      <div class="tab-panel" data-panel="paste">
+        <textarea id="text" spellcheck="false" data-i18n-placeholder="placeholder"></textarea>
+      </div>
+      <div class="tab-panel" data-panel="upload" hidden>
+        <label id="drop" class="drop">
+          <input id="file" type="file" accept=".docx,.pdf,.txt,.md" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0-4 4m4-4 4 4M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+          <strong data-i18n="drop_title"></strong>
+          <span data-i18n="drop_hint"></span>
+          <span id="file-name" class="file-name"></span>
+        </label>
+      </div>
+
+      <div class="input-footer">
+        <span id="counter" class="muted"></span>
+        <span class="muted privacy" data-i18n="privacy"></span>
+        <button id="analyze" type="button" class="primary" data-i18n="analyze"></button>
+      </div>
+      <p id="error" class="error" hidden></p>
+    </section>
+
+    <!-- ============ RESULTS ============ -->
+    <section id="result-view" hidden>
+      <aside class="sidebar">
+        <div class="card summary">
+          <p class="eyebrow" data-i18n="result"></p>
+          <h2 id="verdict"></h2>
+          <div class="stack" id="stack" aria-hidden="true"></div>
+          <ul class="legend" id="legend"></ul>
+          <p class="meta" id="meta"></p>
+          <ul class="warnings" id="warnings"></ul>
+          <p class="disclaimer" data-i18n="disclaimer"></p>
+        </div>
+
+        <div class="card" id="passages-card">
+          <h3 data-i18n="passages"></h3>
+          <ol class="passages" id="passages"></ol>
+        </div>
+
+        <div class="card" id="sections-card">
+          <h3 data-i18n="sections"></h3>
+          <ul class="sections" id="sections"></ul>
+        </div>
+
+        <div class="actions">
+          <button type="button" id="new" class="secondary" data-i18n="new"></button>
+          <button type="button" id="print" class="secondary" data-i18n="print"></button>
+        </div>
+      </aside>
+
+      <article class="card document" id="document" aria-live="polite"></article>
+    </section>
+  </main>
+
+  <div id="pop" class="pop" role="tooltip" hidden></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

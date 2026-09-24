@@ -1,0 +1,25 @@
+Extended Essay: Economics
+Research question: To what extent did the 2019 minimum wage increase affect employment in small restaurants in Lyon?
+
+1. Introduction
+My aunt runs a small restaurant in the Croix-Rousse area, and in 2019 she told me she might have to let one of her waiters go because of the new minimum wage. That conversation is the reason I chose this topic. I wanted to know if what she feared actually happened to other restaurants like hers, or if it was just a feeling. To find out, I contacted 14 restaurant owners and asked them about their staff before and after the increase.
+
+Standard theory says that a price floor above the equilibrium wage creates unemployment. As Card and Krueger famously showed, "the predicted fall in employment simply did not appear in the data." So the answer is not obvious, and that is what makes the question interesting to me.
+
+2. Analysis
+Furthermore, it is important to note that the minimum wage plays a pivotal role in shaping labour market dynamics within the hospitality sector. The interplay between rising labour costs and consumer demand creates a multifaceted landscape in which small businesses must navigate complex trade-offs. Ultimately, understanding these dynamics provides valuable insights into the broader implications of wage policy for local economies.
+
+The survey data reveal a nuanced picture of adjustment strategies among the restaurants examined. Rather than reducing headcount, the majority of owners opted to curtail working hours and marginally raise menu prices, thereby distributing the cost burden between employees and consumers. This pattern suggests that the elasticity of labour demand in this segment is considerably lower than conventional models would predict.
+Figure 2: Change in staff numbers, 2018-2020
+Restaurant	Staff 2018	Staff 2020
+A	6	6
+B	4	3
+
+Only two of the fourteen restaurants actually fired someone, and one of them told me it was because of the building works on their street, not the wage. So I think the effect on jobs was small. But I have to admit my sample is tiny and all the owners were people my aunt knows, which is a big limitation.
+
+3. Conclusion
+To a small extent. The increase changed how restaurants organised hours and prices more than how many people they employed.
+
+Bibliography
+Card, D. and Krueger, A. (1994). Minimum Wages and Employment. American Economic Review, 84(4).
+INSEE (2020). Emploi dans l'hébergement-restauration. https://www.insee.fr

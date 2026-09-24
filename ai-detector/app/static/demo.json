@@ -1,0 +1,361 @@
+{
+ "language": "en",
+ "word_count": 406,
+ "scored_word_count": 333,
+ "summary": {
+  "human": 0.6306,
+  "ai": 0.1862,
+  "rephrased": 0.1832,
+  "verdict": "mixed",
+  "confidence": "medium"
+ },
+ "segments": [
+  {
+   "start": 0,
+   "end": 25,
+   "kind": "heading",
+   "section": "Extended Essay: Economics"
+  },
+  {
+   "start": 26,
+   "end": 142,
+   "kind": "sentence",
+   "section": "Extended Essay: Economics",
+   "label": "human",
+   "probs": {
+    "human": 0.93,
+    "ai": 0.04,
+    "rephrased": 0.03
+   }
+  },
+  {
+   "start": 144,
+   "end": 159,
+   "kind": "heading",
+   "section": "1. Introduction"
+  },
+  {
+   "start": 160,
+   "end": 318,
+   "kind": "sentence",
+   "section": "1. Introduction",
+   "label": "human",
+   "probs": {
+    "human": 0.83,
+    "ai": 0.1,
+    "rephrased": 0.07
+   }
+  },
+  {
+   "start": 319,
+   "end": 370,
+   "kind": "sentence",
+   "section": "1. Introduction",
+   "label": "human",
+   "probs": {
+    "human": 0.93,
+    "ai": 0.04,
+    "rephrased": 0.03
+   }
+  },
+  {
+   "start": 371,
+   "end": 485,
+   "kind": "sentence",
+   "section": "1. Introduction",
+   "label": "human",
+   "probs": {
+    "human": 0.93,
+    "ai": 0.04,
+    "rephrased": 0.03
+   }
+  },
+  {
+   "start": 486,
+   "end": 595,
+   "kind": "sentence",
+   "section": "1. Introduction",
+   "label": "human",
+   "probs": {
+    "human": 0.93,
+    "ai": 0.04,
+    "rephrased": 0.03
+   }
+  },
+  {
+   "start": 597,
+   "end": 685,
+   "kind": "sentence",
+   "section": "1. Introduction",
+   "label": "human",
+   "probs": {
+    "human": 0.93,
+    "ai": 0.04,
+    "rephrased": 0.03
+   }
+  },
+  {
+   "start": 686,
+   "end": 792,
+   "kind": "quote",
+   "section": "1. Introduction"
+  },
+  {
+   "start": 793,
+   "end": 877,
+   "kind": "sentence",
+   "section": "1. Introduction",
+   "label": "human",
+   "probs": {
+    "human": 0.93,
+    "ai": 0.04,
+    "rephrased": 0.03
+   }
+  },
+  {
+   "start": 879,
+   "end": 890,
+   "kind": "heading",
+   "section": "2. Analysis"
+  },
+  {
+   "start": 891,
+   "end": 1035,
+   "kind": "sentence",
+   "section": "2. Analysis",
+   "label": "ai",
+   "probs": {
+    "human": 0.03,
+    "ai": 0.94,
+    "rephrased": 0.03
+   }
+  },
+  {
+   "start": 1036,
+   "end": 1190,
+   "kind": "sentence",
+   "section": "2. Analysis",
+   "label": "ai",
+   "probs": {
+    "human": 0.03,
+    "ai": 0.94,
+    "rephrased": 0.03
+   }
+  },
+  {
+   "start": 1191,
+   "end": 1324,
+   "kind": "sentence",
+   "section": "2. Analysis",
+   "label": "ai",
+   "probs": {
+    "human": 0.03,
+    "ai": 0.94,
+    "rephrased": 0.03
+   }
+  },
+  {
+   "start": 1326,
+   "end": 1423,
+   "kind": "sentence",
+   "section": "2. Analysis",
+   "label": "rephrased",
+   "probs": {
+    "human": 0.08,
+    "ai": 0.12,
+    "rephrased": 0.8
+   }
+  },
+  {
+   "start": 1424,
+   "end": 1613,
+   "kind": "sentence",
+   "section": "2. Analysis",
+   "label": "rephrased",
+   "probs": {
+    "human": 0.08,
+    "ai": 0.12,
+    "rephrased": 0.8
+   }
+  },
+  {
+   "start": 1614,
+   "end": 1750,
+   "kind": "sentence",
+   "section": "2. Analysis",
+   "label": "rephrased",
+   "probs": {
+    "human": 0.08,
+    "ai": 0.12,
+    "rephrased": 0.8
+   }
+  },
+  {
+   "start": 1751,
+   "end": 1795,
+   "kind": "caption",
+   "section": "2. Analysis"
+  },
+  {
+   "start": 1796,
+   "end": 1828,
+   "kind": "table",
+   "section": "2. Analysis"
+  },
+  {
+   "start": 1829,
+   "end": 1834,
+   "kind": "table",
+   "section": "2. Analysis"
+  },
+  {
+   "start": 1835,
+   "end": 1840,
+   "kind": "table",
+   "section": "2. Analysis"
+  },
+  {
+   "start": 1842,
+   "end": 1994,
+   "kind": "sentence",
+   "section": "2. Analysis",
+   "label": "human",
+   "probs": {
+    "human": 0.93,
+    "ai": 0.04,
+    "rephrased": 0.03
+   }
+  },
+  {
+   "start": 1995,
+   "end": 2035,
+   "kind": "sentence",
+   "section": "2. Analysis",
+   "label": "human",
+   "probs": {
+    "human": 0.93,
+    "ai": 0.04,
+    "rephrased": 0.03
+   }
+  },
+  {
+   "start": 2036,
+   "end": 2146,
+   "kind": "sentence",
+   "section": "2. Analysis",
+   "label": "human",
+   "probs": {
+    "human": 0.93,
+    "ai": 0.04,
+    "rephrased": 0.03
+   }
+  },
+  {
+   "start": 2148,
+   "end": 2161,
+   "kind": "heading",
+   "section": "3. Conclusion"
+  },
+  {
+   "start": 2162,
+   "end": 2180,
+   "kind": "sentence",
+   "section": "3. Conclusion",
+   "label": "human",
+   "probs": {
+    "human": 0.93,
+    "ai": 0.04,
+    "rephrased": 0.03
+   }
+  },
+  {
+   "start": 2181,
+   "end": 2285,
+   "kind": "sentence",
+   "section": "3. Conclusion",
+   "label": "human",
+   "probs": {
+    "human": 0.93,
+    "ai": 0.04,
+    "rephrased": 0.03
+   }
+  },
+  {
+   "start": 2287,
+   "end": 2299,
+   "kind": "heading",
+   "section": "Bibliography"
+  },
+  {
+   "start": 2300,
+   "end": 2395,
+   "kind": "bibliography",
+   "section": "Bibliography"
+  },
+  {
+   "start": 2396,
+   "end": 2470,
+   "kind": "bibliography",
+   "section": "Bibliography"
+  }
+ ],
+ "passages": [
+  {
+   "start": 891,
+   "end": 1324,
+   "label": "ai",
+   "words": 62,
+   "confidence": 0.94
+  },
+  {
+   "start": 1326,
+   "end": 1750,
+   "label": "rephrased",
+   "words": 61,
+   "confidence": 0.8
+  }
+ ],
+ "sections": [
+  {
+   "title": "Extended Essay: Economics",
+   "words": 18,
+   "human": 1.0,
+   "ai": 0.0,
+   "rephrased": 0.0
+  },
+  {
+   "title": "1. Introduction",
+   "words": 112,
+   "human": 1.0,
+   "ai": 0.0,
+   "rephrased": 0.0
+  },
+  {
+   "title": "2. Analysis",
+   "words": 183,
+   "human": 0.328,
+   "ai": 0.339,
+   "rephrased": 0.333
+  },
+  {
+   "title": "3. Conclusion",
+   "words": 20,
+   "human": 1.0,
+   "ai": 0.0,
+   "rephrased": 0.0
+  }
+ ],
+ "warnings": [
+  "excluded_regions"
+ ],
+ "model": {
+  "name": "demo (scripted)",
+  "kind": "demo"
+ },
+ "labels": {
+  "human": 0,
+  "ai": 1,
+  "rephrased": 2
+ },
+ "text": "Extended Essay: Economics\nResearch question: To what extent did the 2019 minimum wage increase affect employment in small restaurants in Lyon?\n\n1. Introduction\nMy aunt runs a small restaurant in the Croix-Rousse area, and in 2019 she told me she might have to let one of her waiters go because of the new minimum wage. That conversation is the reason I chose this topic. I wanted to know if what she feared actually happened to other restaurants like hers, or if it was just a feeling. To find out, I contacted 14 restaurant owners and asked them about their staff before and after the increase.\n\nStandard theory says that a price floor above the equilibrium wage creates unemployment. As Card and Krueger famously showed, \"the predicted fall in employment simply did not appear in the data.\" So the answer is not obvious, and that is what makes the question interesting to me.\n\n2. Analysis\nFurthermore, it is important to note that the minimum wage plays a pivotal role in shaping labour market dynamics within the hospitality sector. The interplay between rising labour costs and consumer demand creates a multifaceted landscape in which small businesses must navigate complex trade-offs. Ultimately, understanding these dynamics provides valuable insights into the broader implications of wage policy for local economies.\n\nThe survey data reveal a nuanced picture of adjustment strategies among the restaurants examined. Rather than reducing headcount, the majority of owners opted to curtail working hours and marginally raise menu prices, thereby distributing the cost burden between employees and consumers. This pattern suggests that the elasticity of labour demand in this segment is considerably lower than conventional models would predict.\nFigure 2: Change in staff numbers, 2018-2020\nRestaurant\tStaff 2018\tStaff 2020\nA\t6\t6\nB\t4\t3\n\nOnly two of the fourteen restaurants actually fired someone, and one of them told me it was because of the building works on their street, not the wage. So I think the effect on jobs was small. But I have to admit my sample is tiny and all the owners were people my aunt knows, which is a big limitation.\n\n3. Conclusion\nTo a small extent. The increase changed how restaurants organised hours and prices more than how many people they employed.\n\nBibliography\nCard, D. and Krueger, A. (1994). Minimum Wages and Employment. American Economic Review, 84(4).\nINSEE (2020). Emploi dans l'hébergement-restauration. https://www.insee.fr\n"
+}

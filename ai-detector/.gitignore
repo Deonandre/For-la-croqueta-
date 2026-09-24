@@ -1,0 +1,10 @@
+# Student essays are personal data: never commit them.
+/data/
+/models/
+/reports/
+.cache/
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+*.egg-info/

@@ -1,0 +1,24 @@
+Extended Essay in History
+To what extent did the 1929 Wall Street Crash cause the rise of the Nazi Party?
+
+Table of Contents
+Introduction .......... 3
+Bibliography .......... 18
+
+1. Introduction
+When I first read about the Weimar Republic, I was surprised by how quickly things fell apart. In 1928 the NSDAP won only 2.6% of the vote, e.g. far less than the SPD. By July 1932 it had become the largest party in the Reichstag. Historians such as Dr. Richard J. Evans argue that the Depression was decisive. As Evans puts it, "the Depression was the single most important factor in the Nazi rise to power." I will test this claim against other factors.
+
+2. Analysis
+Unemployment rose from 1.3 million in 1929 to 6 million in 1932 (Evans, 2003, p. 235). This was not just an economic problem, it was a political one: middle-class voters felt abandoned by the traditional parties. However, the crash alone cannot explain everything. The weakness of the constitution, and especially Article 48, played a role too.
+Figure 1: NSDAP share of the vote, 1928-1933
+Year	Vote share	Seats
+1928	2.6%	12
+1932	37.3%	230
+
+3. Conclusion
+Overall, the crash was a necessary but not sufficient cause. Without it, Hitler would probably have remained on the fringe of German politics.
+
+Bibliography
+Evans, R. J. (2003). The Coming of the Third Reich. Penguin.
+Kershaw, I. (1998). Hitler 1889-1936: Hubris. London: Allen Lane.
+https://www.bbc.co.uk/bitesize/guides/weimar

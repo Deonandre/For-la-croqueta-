@@ -1,0 +1,16 @@
+Mémoire en Biologie
+Dans quelle mesure la température influence-t-elle l'activité de la catalase ?
+
+Introduction
+J'ai choisi ce sujet après un TP de biologie où nos résultats étaient très différents d'un groupe à l'autre. La catalase est une enzyme présente chez presque tous les êtres vivants, cf. Campbell (2012). Elle décompose le peroxyde d'hydrogène en eau et en dioxygène. Selon M. Dupont, notre professeur, « la température est le facteur le plus sous-estimé dans ce genre d'expérience ». Je voulais vérifier cette affirmation par moi-même.
+
+Méthodologie
+J'ai mesuré le volume de dioxygène produit en 60 s à cinq températures différentes, env. 10 °C, 20 °C, 30 °C, 40 °C et 50 °C. Chaque essai a été répété trois fois. Les résultats sont présentés dans le tableau 2, p. 7 de l'annexe.
+Tableau 2 : volume moyen de O2 produit (cm3)
+v = V / t = 12,4 / 60 = 0,21
+
+Conclusion
+Les résultats confirment en partie l'hypothèse de départ. L'activité augmente jusqu'à 40 °C puis chute brutalement, ce qui suggère une dénaturation de l'enzyme.
+
+Bibliographie
+Campbell, N. (2012). Biologie. Pearson.
