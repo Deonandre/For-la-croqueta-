@@ -37,6 +37,19 @@ It uses the same recipe as the strongest commercial detectors (Pangram), special
 7. **Honest evaluation**: two model families (Grok, Cohere) are never used in training, so the test
    set measures detection of unseen models. The report lists false-positive rates first.
 
+## Quickest start: Google Colab (free GPU, nothing to install)
+
+[`notebooks/plume_colab.ipynb`](notebooks/plume_colab.ipynb) runs the whole pipeline below on Colab's free T4
+GPU and ends by opening the web app with the trained model:
+[open it in Colab](https://colab.research.google.com/github/Deonandre/For-la-croqueta-/blob/claude/lucid-clarke-fcjgco/ai-detector/notebooks/plume_colab.ipynb)
+(or File → Upload notebook). The only thing it needs is an OpenRouter key with about $15 of credit.
+
+- Everything (dataset, paid LLM cache, models, reports) is kept in `My Drive/Plume`, so a disconnected
+  runtime resumes where it stopped without paying twice, and a later "Run all" goes straight to the app.
+- `BUDGET_USD` caps total spend across both rounds; round 2 (hard negatives) is skipped when the model
+  flags no human text.
+- A school's pre-2023 essays go in `My Drive/Plume/data/human/local`.
+
 ## Pipeline
 
 ```bash
@@ -104,4 +117,5 @@ aidetect/evaluate.py      metrics and reports
 aidetect/mine.py          hard-negative mining
 aidetect/doctor.py        pre-flight check of key, network, GPU and data
 app/                      FastAPI server + web interface
+notebooks/plume_colab.ipynb   the full pipeline on Google Colab (tests/test_notebook.py checks its CLI calls)
 ```

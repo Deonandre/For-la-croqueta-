@@ -321,13 +321,16 @@ def build_dataset(docs, builder: Builder, out_path: str | Path, concurrency: int
             if doc.id in done:
                 continue
             futures.append(pool.submit(work, doc))
-        for fut in as_completed(futures):
+        for i, fut in enumerate(as_completed(futures), 1):
             exs = fut.result()
             with lock:
                 for ex in exs:
                     f.write(ex.to_json() + "\n")
                 f.flush()
                 written += len(exs)
+            if i % 10 == 0 or i == len(futures):  # a full build takes a while: show it is moving
+                log.info("built %d/%d new documents (%d examples, $%.2f spent)", i, len(futures), written,
+                         getattr(builder.llm, "spent_usd", 0.0))
     return written
 
 

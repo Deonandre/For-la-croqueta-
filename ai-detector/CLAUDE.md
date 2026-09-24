@@ -28,9 +28,15 @@ Start every session with `python -m aidetect doctor`: it tests all of the below 
 
 ## Next steps
 
-0. Blocked until the key and network hosts above are set (as of 2026-09-24 none were). Check with `doctor`.
-1. `python -m aidetect models`, then `python -m aidetect build --max-docs 200` for a small first
-   dataset (~$8). Check `data/examples.jsonl` by hand.
-2. `python -m aidetect baseline` and `python -m aidetect eval --model models/baseline.joblib`.
-3. Full build within budget, `train` on GPU, `eval`, `mine`, then rebuild with the hard negatives.
-4. Deploy: Docker image (see Dockerfile) on a host with ~2 GB RAM, or export to ONNX for in-browser use.
+0. The Claude cloud environment is still blocked (no key, hosts denied, no GPU as of 2026-09-24), so the
+   recommended route is `notebooks/plume_colab.ipynb` on Google Colab: it runs build, baseline, train,
+   eval, mine and the hard-negative round with the user's key and saves everything to their Google
+   Drive. It has a `BRANCH` setting: update it (and the README link) if this work moves to `main`.
+1. First run: 200 documents, budget $15. Ask the user to paste `reports/plume/report.md` (step 8 of the
+   notebook) and judge it: human FPR first, then AI / rephrased recall, then the held-out generators.
+2. If the numbers hold: full run (1,500 documents, $60) and the user's pre-2023 essays if they have any.
+3. Deploy: Docker image (see Dockerfile) on a host with ~2 GB RAM, or export to ONNX for in-browser use.
+   Until then the notebook's last step serves the app from Colab.
+- Changing a CLI command or flag: update the notebook too; `tests/test_notebook.py` fails otherwise.
+- The notebook is plain JSON. After editing it, re-run it end to end with Colab stubbed and `build --fake`
+  plus a tiny base model (see `tests/test_pipeline_smoke.py`) before pushing.
