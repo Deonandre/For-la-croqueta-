@@ -53,6 +53,8 @@ const I18N = {
       unreadable_file: "Impossible de lire ce fichier.",
       network: "Le serveur ne répond pas.",
     },
+    preview_note: "Aperçu : le modèle n'est pas encore entraîné, donc l'analyse de vos propres textes n'est pas encore disponible. Cliquez sur « Voir l'exemple » pour explorer l'interface.",
+    see_example: "Voir l'exemple",
     demo_banner: "Démonstration : exemple fictif pour présenter l'interface, pas une vraie analyse.",
     words_short: (n) => `${n} mots`,
   },
@@ -108,12 +110,15 @@ const I18N = {
       unreadable_file: "This file could not be read.",
       network: "The server is not responding.",
     },
+    preview_note: "Preview: the model is not trained yet, so analysing your own texts is not available yet. Click \u201cSee the example\u201d to explore the interface.",
+    see_example: "See the example",
     demo_banner: "Demo: a made-up example to show the interface, not a real analysis.",
     words_short: (n) => `${n} words`,
   },
 };
 
 const $ = (id) => document.getElementById(id);
+const PREVIEW = window.PLUME_PREVIEW || null; // static page with an embedded demo and no server
 const state = { lang: "fr", tab: "paste", file: null, result: null, demo: false };
 
 function t(key) { return I18N[state.lang][key]; }
@@ -173,6 +178,7 @@ document.querySelectorAll(".lang-switch button").forEach((b) => b.addEventListen
 
 $("analyze").addEventListener("click", async () => {
   showError(null);
+  if (PREVIEW) return showResult(PREVIEW.demo);
   let req;
   if (state.tab === "paste") {
     const text = $("text").value;
@@ -356,7 +362,17 @@ $("document").addEventListener("click", (e) => {
 
 // ------------------------------------------------------------------ boot
 pickLang();
+if (PREVIEW) {
+  document.body.classList.add("preview");
+  const note = document.createElement("p");
+  note.className = "preview-note";
+  note.dataset.i18n = "preview_note";
+  $("input-view").before(note);
+  $("analyze").dataset.i18n = "see_example";
+  $("demo-banner").hidden = false;
+}
 applyI18n();
+if (PREVIEW) showResult(PREVIEW.demo);
 if (new URLSearchParams(location.search).has("demo")) {
   state.demo = true;
   $("demo-banner").hidden = false;
