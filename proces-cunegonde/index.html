@@ -78,6 +78,8 @@ h1{font-family:var(--display);font-weight:400;font-size:clamp(34px,7.2vw,62px);l
 @media(max-width:760px){ .line{grid-template-columns:minmax(0,1fr);gap:7px} }
 .rail{min-width:0}
 .who{font-family:var(--util);font-size:11px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;line-height:1.35}
+.cueno{font-family:var(--util);font-size:10px;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:4px;display:flex;gap:9px}
+.cueno b{font-weight:600;color:var(--ink-soft);font-variant-numeric:tabular-nums}
 .r-juge .who{color:var(--c-juge)} .r-proc .who{color:var(--c-proc)} .r-def .who{color:var(--c-def)}
 .r-cun .who{color:var(--c-cun)} .r-cand .who{color:var(--c-cand)}
 .railnote{font-family:var(--util);font-size:10px;color:var(--ink-faint);margin-top:6px;letter-spacing:.03em;line-height:1.5}
@@ -138,10 +140,11 @@ tr:last-child td{border-bottom:0}
   <p class="sub">Procès-verbal d'audience. Cunégonde de Thunder-ten-tronckh est-elle responsable des malheurs de Candide&nbsp;?</p>
   <div class="docket">
     <span>Affaire <b>n&deg; 1759</b></span>
-    <span>Durée <b>26–30 min</b></span>
+    <span>Durée <b>~30 min</b></span>
     <span>Rôles <b>5</b></span>
     <span>Répliques <b id="kpi-lines">—</b></span>
     <span>Références au roman <b id="kpi-refs">—</b></span>
+    <span>Fin <b id="kpi-end">—</b></span>
   </div>
   <nav class="nav">
     <a class="navlink" href="#distribution">Distribution</a>
@@ -181,7 +184,7 @@ tr:last-child td{border-bottom:0}
   <div class="note">
     <h4>Mode d'emploi</h4>
     <p>Cliquez sur votre rôle en haut&nbsp;: vos répliques passent en avant, les autres s'estompent. Activez <b>Afficher mes enchaînements</b> pour ne voir que la fin de la réplique précédente — c'est la façon dont on répète au théâtre, et cela évite d'apprendre tout le texte des autres.</p>
-    <p>Les mentions <span class="ref">ch.&nbsp;I</span> indiquent le chapitre à citer&nbsp;: ce sont elles qui rapportent les 10&nbsp;points de «&nbsp;références exactes au roman&nbsp;». Les passages <span class="cit">en rouge italique</span> sont des citations de Voltaire&nbsp;: dites-les mot pour mot. Les <span class="di">(indications entre parenthèses)</span> ne se prononcent pas, elles se jouent.</p>
+    <p>Chaque réplique porte son numéro et son heure de départ, comptée depuis l'ouverture&nbsp;: ce sont les mêmes que dans le document Word, pour vous repérer en répétition. Les mentions <span class="ref">ch.&nbsp;I</span> indiquent le chapitre à citer&nbsp;: ce sont elles qui rapportent les 10&nbsp;points de «&nbsp;références exactes au roman&nbsp;». Les passages <span class="cit">en rouge italique</span> sont des citations de Voltaire&nbsp;: dites-les mot pour mot. Les <span class="di">(indications entre parenthèses)</span> ne se prononcent pas, elles se jouent.</p>
   </div>
 </section>
 
@@ -566,7 +569,7 @@ tr:last-child td{border-bottom:0}
       <li><b>Disposition&nbsp;:</b> juge au centre, procureur et défense de part et d'autre, les deux témoins devant.</li>
       <li><b>Répétition&nbsp;:</b> une lecture assise pour le texte, une debout pour les silences. Deux suffisent.</li>
       <li><b>Accessoires&nbsp;:</b> une chemise cartonnée par orateur. Cela tient les notes et cela fait tribunal.</li>
-      <li><b>Chronomètre&nbsp;:</b> visez 28 min. Si vous dépassez, coupez dans l'acte IV, jamais dans le verdict.</li>
+      <li><b>Chronomètre&nbsp;:</b> l'audience dure 30 min. Si vous dépassez, coupez dans l'acte IV, jamais dans le verdict.</li>
     </ul></div>
   </div>
 </section>
@@ -589,7 +592,7 @@ tr:last-child td{border-bottom:0}
 
   <div class="note">
     <h4>Comment ce procès couvre le barème sur 20</h4>
-    <p><b>Références exactes au roman — 10 pts.</b> 23 renvois répartis sur 15 chapitres, dont les six exigés pour Cunégonde (I, VII, VIII, XIII, XXIX, XXX). Chaque rôle en porte au moins trois.</p>
+    <p><b>Références exactes au roman — 10 pts.</b> 60 renvois dans les répliques, répartis sur 15 chapitres et 23 passages identifiés — dont les six chapitres exigés pour Cunégonde (I, VII, VIII, XIII, XXIX, XXX). Le rôle le moins fourni en porte 9.</p>
     <p><b>Qualité des arguments — 6 pts.</b> Le procès ne se contente pas d'opposer coupable et victime&nbsp;: le procureur renonce lui-même à la condamnation (acte VI) et le verdict déplace la responsabilité sur l'optimisme. C'est la lecture que Voltaire propose.</p>
     <p><b>Expression orale et incarnation — 4 pts.</b> Les silences, les gestes et les adresses sont écrits dans la marge. Jouez-les&nbsp;: ce sont eux qui font la différence entre une lecture et un procès.</p>
   </div>
@@ -597,7 +600,8 @@ tr:last-child td{border-bottom:0}
 
 <p class="foot">
   Procès-verbal établi pour cinq élèves, d'après Voltaire, <i>Candide ou l'Optimisme</i> (1759).<br>
-  Durée d'audience estimée&nbsp;: 26 à 30 minutes. Vérifiez les citations dans votre édition avant le passage.
+  Durée d'audience estimée&nbsp;: 30 minutes, à 140 mots par minute, pauses et silences compris.<br>
+  Vérifiez les citations dans votre édition avant le passage.
 </p>
 
 </div>
@@ -624,10 +628,39 @@ tr:last-child td{border-bottom:0}
     ln.dataset.cueTxt = tail(prev, 11);
   });
 
+  // --- numbering and running time (same model as the Word script: 140 words/min) ---
+  var WPM = 140, TRANSITION = 1.5;
+  function pauseFor(t){
+    t = t.toLowerCase();
+    if (t.indexOf("long silence") > -1) return 3.5;
+    if (t.indexOf("trois coups") > -1) return 3;
+    if (t.indexOf("un temps") > -1) return 2;
+    if (t.indexOf("mouvement") > -1 || t.indexOf("se rassoit") > -1) return 2;
+    return 1.5;
+  }
+  function mmss(s){
+    var m = Math.floor(s/60), r = Math.floor(s%60);
+    return (m<10?"0":"")+m+":"+(r<10?"0":"")+r;
+  }
+  var clock = 0;
+  lines.forEach(function(ln, i){
+    var say = ln.querySelector(".say");
+    var words = say ? say.textContent.trim().split(/\s+/).length : 0;
+    var d = words/WPM*60 + TRANSITION;
+    Array.prototype.forEach.call(ln.querySelectorAll(".di"), function(di){ d += pauseFor(di.textContent); });
+    var tag = document.createElement("div");
+    tag.className = "cueno";
+    tag.innerHTML = "<b>N&deg; "+(i+1)+"</b><span>"+mmss(clock)+"</span>";
+    var rail = ln.querySelector(".rail");
+    if (rail) rail.insertBefore(tag, rail.firstChild);
+    clock += d;
+  });
+
   // --- counts ---
   var totalRefs = document.querySelectorAll(".say .ref").length;
   document.getElementById("kpi-lines").textContent = lines.length;
   document.getElementById("kpi-refs").textContent = totalRefs;
+  document.getElementById("kpi-end").textContent = mmss(clock);
   Object.keys(LABELS).forEach(function(r){
     var mine = lines.filter(function(l){ return l.dataset.role === r; });
     var refs = mine.reduce(function(n,l){ return n + l.querySelectorAll(".ref").length; }, 0);
