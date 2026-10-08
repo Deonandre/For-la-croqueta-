@@ -39,7 +39,8 @@ const items = [];
 for (const raw of md.split('\n')) {
   const line = raw.trim(); if (!line) continue;
   let m;
-  if ((m = line.match(/^##\s+(.*)$/))) items.push({ k: 'h2', t: m[1] });
+  if ((m = line.match(/^>\s+(.*)$/))) items.push({ k: 'q', t: m[1] });
+  else if ((m = line.match(/^##\s+(.*)$/))) items.push({ k: 'h2', t: m[1] });
   else if ((m = line.match(/^#\s+(.*)$/))) items.push({ k: 'h1', t: m[1] });
   else items.push({ k: 'p', t: line });
 }
@@ -47,22 +48,23 @@ for (const raw of md.split('\n')) {
 const refItems = [
   { k: 'h1', t: '7. References' },
   { k: 'h2', t: 'Primary Sources' },
-  { k: 'r', t: "Bryant, K. (2015, November 29). Dear basketball. The Players’ Tribune. https://www.theplayerstribune.com/articles/dear-basketball" },
+  { k: 'r', t: "Bryant, K. (2015, November 29). Dear basketball. The Players\u2019 Tribune. https://www.theplayerstribune.com/articles/dear-basketball" },
   { k: 'r', t: "Bryant, K., & Bernstein, A. D. (2018). The mamba mentality: How I play. MCD/Farrar, Straus and Giroux." },
-  { k: 'r', t: "Chopra, G. (Director). (2015). Kobe Bryant’s muse [Film]. Showtime Networks." },
+  { k: 'r', t: "Chopra, G. (Director). (2015). Kobe Bryant\u2019s muse [Film]. Showtime Networks." },
   { k: 'r', t: "Jimmy Kimmel Live! (2015, February 23). Season 13, Episode 28 [TV series episode]. ABC." },
-  { k: 'r', t: "Klosterman, C. (2015, February 17). Kobe Bryant will always be an all-star of talking [Interview with K. Bryant]. GQ. [VERIFY exact headline, online date and print-issue date against GQ before submission.]" },
-  { k: 'h2', t: 'Reports of Primary Events' },
-  { k: 'r', t: "CNN. (2015, November 30). Kobe Bryant: NBA great to retire at end of season. https://www.cnn.com/2015/11/30/sport/kobe-bryant-la-lakers-retirement/index.html [VERIFY byline.]" },
-  { k: 'r', t: "Sports Illustrated. (2015, November 30). Kobe Bryant’s retirement: The 10 sides of Los Angeles Lakers star. https://www.si.com/nba/2015/11/30/kobe-bryant-retirement-los-angles-lakers-press-conference-10-sides [VERIFY byline.]" },
-  { k: 'r', t: "Deadline. (2014, July). Kobe Bryant says Showtime’s “Kobe Bryant’s Muse” came out of Nike campaign [Report on Showtime’s Television Critics Association panel]. https://deadline.com/2014/07/tca-kobe-bryant-says-showtimes-kobe-bryants-muse-came-out-of-nike-campaign-mulling-806378/ [VERIFY byline and exact date.]" },
-  { k: 'r', t: "Ballislife. (2015, March 1). Kobe Bryant’s Muse — full movie. https://ballislife.com/kobe-bryants-muse-full-movie/ [VERIFY byline and date. Single-outlet report on the film’s re-editing; treat as reported, not established.]" },
-  { k: 'r', t: "Lowry, B. (2015, February 26). TV review: “Kobe Bryant’s Muse.” Variety. https://variety.com/2015/tv/reviews/tv-review-kobe-bryants-muse-1201432799/ [VERIFY exact publication date.]" },
+  { k: 'r', t: "Klosterman, C. (2015, February 17). Kobe Bryant will always be an all-star of talking [Interview with K. Bryant]. GQ. [VERIFY exact headline, online date and print-issue date against GQ, and check each quotation against the original text.]" },
+  { k: 'h2', t: 'Reported Accounts of Primary Events' },
+  { k: 'r', t: "CNBC. (2018, September 14). Retired NBA star Kobe Bryant still wakes up at 4 a.m. every day to work out [Report of Bryant\u2019s remarks on The School of Greatness podcast]. https://www.cnbc.com/2018/09/14/kobe-bryant-still-wakes-up-at-4-am-every-day-to-work-out.html [VERIFY byline.]" },
+  { k: 'r', t: "CNN. (2015, November 30). Kobe Bryant: NBA great to retire at end of season [Report of the 29 November 2015 press conference]. https://www.cnn.com/2015/11/30/sport/kobe-bryant-la-lakers-retirement/index.html [VERIFY byline.]" },
+  { k: 'r', t: "Deadline. (2014, July). Kobe Bryant says Showtime\u2019s \u201CKobe Bryant\u2019s Muse\u201D came out of Nike campaign [Report of Showtime\u2019s Television Critics Association panel]. https://deadline.com/2014/07/tca-kobe-bryant-says-showtimes-kobe-bryants-muse-came-out-of-nike-campaign-mulling-806378/ [VERIFY byline and exact date.]" },
+  { k: 'r', t: "Yahoo Finance. (2015, March). Kobe Bryant scrapped his original documentary and started from scratch [Report of Bryant\u2019s remarks on The Grantland Basketball Hour, February 2015]. https://finance.yahoo.com/news/kobe-bryant-scrapped-original-documentary-165426263.html [VERIFY byline and exact date. The underlying source is the broadcast itself, archived by The Ringer; cite that directly if you can access it.]" },
   { k: 'h2', t: 'Secondary Sources' },
   { k: 'r', t: "Barthes, R. (1972). Mythologies (A. Lavers, Trans.). Hill and Wang. (Original work published 1957)" },
   { k: 'r', t: "Chion, M. (1994). Audio-vision: Sound on screen (C. Gorbman, Ed. & Trans.). Columbia University Press." },
+  { k: 'r', t: "Chopra, G. (2021). What Kobe Bryant taught me. Religion of Sports. https://religionofsports.substack.com/p/what-kobe-bryant-taught-me [VERIFY exact publication date.]" },
   { k: 'r', t: "Dyer, R. (1998). Stars (New ed., with a supplementary chapter by P. McDonald). British Film Institute. (Original work published 1979)" },
   { k: 'r', t: "Hall, S. (Ed.). (1997). Representation: Cultural representations and signifying practices. Sage." },
+  { k: 'r', t: "Lowry, B. (2015, February 26). TV review: \u201CKobe Bryant\u2019s Muse.\u201D Variety. https://variety.com/2015/tv/reviews/tv-review-kobe-bryants-muse-1201432799/ [VERIFY exact publication date.]" },
   { k: 'r', t: "Nichols, B. (2001). Introduction to documentary. Indiana University Press." },
 ];
 const all = [...items, ...refItems];
@@ -83,6 +85,13 @@ for (const it of all) {
     content.push(new Paragraph({
       children: runs(it.t, { bold: true }), heading: HeadingLevel.HEADING_2,
       spacing: { before: 280, after: 160, line: LINE },
+    }));
+  } else if (it.k === 'q') {
+    content.push(new Paragraph({
+      children: runs(it.t),
+      spacing: { line: LINE, before: 120, after: 120 },
+      alignment: AlignmentType.JUSTIFIED,
+      indent: { left: convertInchesToTwip(0.5) },
     }));
   } else if (it.k === 'r') {
     content.push(new Paragraph({
