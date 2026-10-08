@@ -1,0 +1,688 @@
+<title>Procès de Cunégonde</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout concept: a court transcript (procès-verbal) — a marginal rail carries speaker
+   and chapter citations, the speech runs in a single readable measure beside it. */
+:root{
+  --paper:#EDEDE6; --raised:#F7F7F2; --sunk:#E3E3DA;
+  --ink:#16191C; --ink-soft:#52585E; --ink-faint:#7E858B;
+  --rule:#CDCDC3; --rule-soft:#DEDED5;
+  --accent:#8C2A33; --accent-soft:#B9636A;
+  --c-juge:#2B4257; --c-proc:#8C2A33; --c-def:#1F5D52; --c-cun:#6B3A63; --c-cand:#7A5A1E;
+  --display:"Libre Caslon Display",'Times New Roman',serif;
+  --body:"Spectral",Georgia,'Times New Roman',serif;
+  --util:"IBM Plex Mono",ui-monospace,'SFMono-Regular',Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --paper:#14171A; --raised:#1C2024; --sunk:#0F1215;
+  --ink:#E7E5DD; --ink-soft:#A1A7AD; --ink-faint:#7B8186;
+  --rule:#2F343A; --rule-soft:#242A2F;
+  --accent:#D98088; --accent-soft:#A95F66;
+  --c-juge:#8FB0C9; --c-proc:#D98088; --c-def:#6FBFAE; --c-cun:#C79AC0; --c-cand:#D4B06A;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#14171A; --raised:#1C2024; --sunk:#0F1215;
+  --ink:#E7E5DD; --ink-soft:#A1A7AD; --ink-faint:#7B8186;
+  --rule:#2F343A; --rule-soft:#242A2F;
+  --accent:#D98088; --accent-soft:#A95F66;
+  --c-juge:#8FB0C9; --c-proc:#D98088; --c-def:#6FBFAE; --c-cun:#C79AC0; --c-cand:#D4B06A;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1060px;margin:0 auto;padding-inline:20px;padding-block:0 72px}
+@media(max-width:560px){ body{font-size:16px} .wrap{padding-inline:16px} }
+
+/* ---------- masthead ---------- */
+.mast{padding-block:40px 26px;border-bottom:2px solid var(--ink)}
+.eyebrow{font-family:var(--util);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 18px}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(34px,7.2vw,62px);line-height:1.04;margin:0;text-wrap:balance;letter-spacing:-.01em}
+.sub{font-family:var(--body);font-style:italic;font-size:clamp(16px,2.4vw,20px);color:var(--ink-soft);margin:14px 0 0;max-width:40ch}
+.docket{display:flex;flex-wrap:wrap;gap:8px 26px;margin-top:24px;font-family:var(--util);font-size:11.5px;letter-spacing:.06em;color:var(--ink-soft)}
+.docket b{color:var(--ink);font-weight:500}
+
+/* ---------- section furniture ---------- */
+.sec{margin-top:52px}
+.sec-head{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--rule);padding-bottom:9px;margin-bottom:26px}
+.sec-num{font-family:var(--util);font-size:11px;letter-spacing:.16em;color:var(--accent);font-weight:600;white-space:nowrap}
+.sec-head h2{font-family:var(--display);font-weight:400;font-size:clamp(21px,3.6vw,29px);margin:0;line-height:1.15;flex:1;min-width:0;text-wrap:balance}
+.sec-time{font-family:var(--util);font-size:11px;color:var(--ink-faint);white-space:nowrap}
+
+/* ---------- role bar ---------- */
+.rolebar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--paper);border-bottom:1px solid var(--rule);padding-block:10px;margin-bottom:4px}
+.rolebar-in{display:flex;flex-wrap:wrap;align-items:center;gap:7px}
+.rb-label{font-family:var(--util);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-right:4px}
+.chip{font-family:var(--util);font-size:11.5px;letter-spacing:.04em;padding:5px 11px;border:1px solid var(--rule);border-radius:2px;background:var(--raised);color:var(--ink-soft);cursor:pointer;transition:.14s}
+.chip:hover{border-color:var(--ink-faint);color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.chip:focus-visible,.togg:focus-visible,.navlink:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.togg{font-family:var(--util);font-size:11.5px;padding:5px 11px;border:1px solid var(--rule);border-radius:2px;background:transparent;color:var(--ink-soft);cursor:pointer}
+.togg[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.togg[disabled]{opacity:.38;cursor:not-allowed}
+
+/* ---------- cast ---------- */
+.cast{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1px;background:var(--rule-soft);border:1px solid var(--rule-soft)}
+.cast-c{background:var(--paper);padding:16px 15px;min-width:0}
+.cast-c .n{font-family:var(--util);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;margin:0 0 7px}
+.cast-c h3{font-family:var(--display);font-weight:400;font-size:19px;margin:0 0 7px;line-height:1.2}
+.cast-c p{margin:0;font-size:14px;color:var(--ink-soft);line-height:1.48}
+.cast-c .stat{margin-top:11px;font-family:var(--util);font-size:10.5px;color:var(--ink-faint);letter-spacing:.04em}
+
+/* ---------- transcript ---------- */
+.act{margin-top:46px;scroll-margin-top:72px}
+.line{display:grid;grid-template-columns:168px minmax(0,1fr);gap:0 30px;padding:14px 0 14px 0;border-top:1px solid var(--rule-soft);transition:opacity .16s}
+.line:first-of-type{border-top:0}
+@media(max-width:760px){ .line{grid-template-columns:minmax(0,1fr);gap:7px} }
+.rail{min-width:0}
+.who{font-family:var(--util);font-size:11px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;line-height:1.35}
+.r-juge .who{color:var(--c-juge)} .r-proc .who{color:var(--c-proc)} .r-def .who{color:var(--c-def)}
+.r-cun .who{color:var(--c-cun)} .r-cand .who{color:var(--c-cand)}
+.railnote{font-family:var(--util);font-size:10px;color:var(--ink-faint);margin-top:6px;letter-spacing:.03em;line-height:1.5}
+.say{min-width:0}
+.say p{margin:0 0 13px;max-width:64ch}
+.say p:last-child{margin-bottom:0}
+.say strong{font-weight:600}
+.di{font-style:italic;color:var(--ink-faint);font-size:.93em}
+.cit{color:var(--accent);font-style:italic}
+.ref{font-family:var(--util);font-size:10px;letter-spacing:.05em;color:var(--ink-faint);border:1px solid var(--rule);border-radius:2px;padding:1px 5px;white-space:nowrap;vertical-align:1px;margin-left:3px}
+.beat{display:block;height:0;margin:16px 0;border-top:1px solid var(--rule-soft);max-width:64ch}
+
+/* focus mode */
+body.filtering .line{opacity:.26}
+body.filtering .line.hit{opacity:1}
+body.filtering .line.hit .rail{border-left:2px solid currentColor;padding-left:11px;margin-left:-13px}
+body.filtering .line.hit.r-juge .rail{color:var(--c-juge)} body.filtering .line.hit.r-proc .rail{color:var(--c-proc)}
+body.filtering .line.hit.r-def .rail{color:var(--c-def)} body.filtering .line.hit.r-cun .rail{color:var(--c-cun)}
+body.filtering .line.hit.r-cand .rail{color:var(--c-cand)}
+@media(max-width:760px){ body.filtering .line.hit .rail{margin-left:0;padding-left:9px} }
+.cue{font-family:var(--util);font-size:10.5px;color:var(--ink-faint);letter-spacing:.02em;margin:0 0 9px;padding-left:11px;border-left:2px solid var(--rule);max-width:60ch}
+.cue b{font-weight:500;color:var(--ink-soft)}
+
+/* ---------- tables ---------- */
+.tscroll{overflow-x:auto;border:1px solid var(--rule-soft)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:14px}
+th,td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+th{font-family:var(--util);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);font-weight:500;background:var(--sunk)}
+td.ch{font-family:var(--util);font-size:12px;color:var(--accent);white-space:nowrap;font-weight:500}
+tr:last-child td{border-bottom:0}
+
+/* ---------- notes / callouts ---------- */
+.note{background:var(--raised);border-left:2px solid var(--accent);padding:16px 18px;margin:22px 0}
+.note p{margin:0 0 10px;font-size:15px;max-width:66ch}
+.note p:last-child{margin:0}
+.note h4{font-family:var(--util);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;margin:0 0 9px;color:var(--accent)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(248px,1fr));gap:20px}
+.tip h4{font-family:var(--util);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 8px}
+.tip ul{margin:0;padding-left:17px;font-size:14.5px;color:var(--ink-soft)}
+.tip li{margin-bottom:6px;line-height:1.5}
+.tip li b{color:var(--ink);font-weight:600}
+
+.verdict{border:2px solid var(--ink);padding:26px 24px;margin-top:30px;background:var(--raised)}
+@media(max-width:560px){.verdict{padding:20px 17px}}
+.nav{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:16px;font-family:var(--util);font-size:11px}
+.navlink{color:var(--ink-soft);text-decoration:none;border-bottom:1px solid var(--rule)}
+.navlink:hover{color:var(--accent);border-color:var(--accent)}
+.foot{margin-top:60px;padding-top:20px;border-top:1px solid var(--rule);font-family:var(--util);font-size:11px;color:var(--ink-faint);line-height:1.7}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{.rolebar{display:none}body.filtering .line{opacity:1}}
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <p class="eyebrow">Tribunal littéraire &middot; Français A HL &middot; Voltaire, <i>Candide ou l'Optimisme</i>, 1759</p>
+  <h1>Le Procès de<br>Cunégonde</h1>
+  <p class="sub">Procès-verbal d'audience. Cunégonde de Thunder-ten-tronckh est-elle responsable des malheurs de Candide&nbsp;?</p>
+  <div class="docket">
+    <span>Affaire <b>n&deg; 1759</b></span>
+    <span>Durée <b>26–30 min</b></span>
+    <span>Rôles <b>5</b></span>
+    <span>Répliques <b id="kpi-lines">—</b></span>
+    <span>Références au roman <b id="kpi-refs">—</b></span>
+  </div>
+  <nav class="nav">
+    <a class="navlink" href="#distribution">Distribution</a>
+    <a class="navlink" href="#acte1">I. Ouverture</a>
+    <a class="navlink" href="#acte2">II. Réquisitoire</a>
+    <a class="navlink" href="#acte3">III. Plaidoirie</a>
+    <a class="navlink" href="#acte4">IV. Cunégonde</a>
+    <a class="navlink" href="#acte5">V. Candide</a>
+    <a class="navlink" href="#acte6">VI. Conclusions</a>
+    <a class="navlink" href="#verdict">VII. Verdict</a>
+    <a class="navlink" href="#annexes">Annexes</a>
+  </nav>
+</header>
+
+<div class="rolebar">
+  <div class="rolebar-in">
+    <span class="rb-label">Mon rôle</span>
+    <button class="chip" data-role="all" aria-pressed="true">Tous</button>
+    <button class="chip" data-role="juge" aria-pressed="false">Juge</button>
+    <button class="chip" data-role="proc" aria-pressed="false">Procureur</button>
+    <button class="chip" data-role="def" aria-pressed="false">Défense</button>
+    <button class="chip" data-role="cun" aria-pressed="false">Cunégonde</button>
+    <button class="chip" data-role="cand" aria-pressed="false">Candide</button>
+    <button class="togg" id="cueBtn" aria-pressed="false" disabled>Afficher mes enchaînements</button>
+  </div>
+</div>
+
+<section class="sec" id="distribution">
+  <div class="sec-head"><span class="sec-num">DISTRIBUTION</span><h2>Qui dit quoi</h2><span class="sec-time">5 élèves</span></div>
+  <div class="cast">
+    <div class="cast-c"><p class="n" style="color:var(--c-juge)">Élève 1</p><h3>Le Juge président</h3><p>Ouvre l'audience, énonce les trois chefs d'accusation, distribue la parole, pose la question finale à Candide, rend le verdict.</p><p class="stat" data-count="juge">—</p></div>
+    <div class="cast-c"><p class="n" style="color:var(--c-proc)">Élève 2</p><h3>Le Procureur</h3><p>Accuse. Trois chefs&nbsp;: le paravent (ch.&nbsp;I), l'Eldorado (ch.&nbsp;XVIII), la promesse (ch.&nbsp;XXIX–XXX). Interroge les deux témoins.</p><p class="stat" data-count="proc">—</p></div>
+    <div class="cast-c"><p class="n" style="color:var(--c-def)">Élève 3</p><h3>L'Avocat de la défense</h3><p>Défend. Démonte chaque chef, puis désigne les vrais coupables&nbsp;: le baron, la guerre, l'Inquisition, Pangloss.</p><p class="stat" data-count="def">—</p></div>
+    <div class="cast-c"><p class="n" style="color:var(--c-cun)">Élève 4</p><h3>Cunégonde</h3><p>L'accusée. Parle à la première personne. Maîtrise les chapitres I, VII, VIII, XIII, XXIX et XXX. A le dernier mot avant le verdict.</p><p class="stat" data-count="cun">—</p></div>
+    <div class="cast-c"><p class="n" style="color:var(--c-cand)">Élève 5</p><h3>Candide</h3><p>Témoin principal. Reconnaît avoir souffert, mais finit par assumer ses propres décisions. Son aveu fait basculer le procès.</p><p class="stat" data-count="cand">—</p></div>
+  </div>
+  <div class="note">
+    <h4>Mode d'emploi</h4>
+    <p>Cliquez sur votre rôle en haut&nbsp;: vos répliques passent en avant, les autres s'estompent. Activez <b>Afficher mes enchaînements</b> pour ne voir que la fin de la réplique précédente — c'est la façon dont on répète au théâtre, et cela évite d'apprendre tout le texte des autres.</p>
+    <p>Les mentions <span class="ref">ch.&nbsp;I</span> indiquent le chapitre à citer&nbsp;: ce sont elles qui rapportent les 10&nbsp;points de «&nbsp;références exactes au roman&nbsp;». Les passages <span class="cit">en rouge italique</span> sont des citations de Voltaire&nbsp;: dites-les mot pour mot. Les <span class="di">(indications entre parenthèses)</span> ne se prononcent pas, elles se jouent.</p>
+  </div>
+</section>
+
+<section class="sec act" id="acte1">
+  <div class="sec-head"><span class="sec-num">ACTE I</span><h2>Ouverture de l'audience</h2><span class="sec-time">~2 min</span></div>
+
+  <div class="line r-juge" data-role="juge">
+    <div class="rail"><div class="who">Le Juge</div><div class="railnote">Debout. Trois coups. Débit lent.</div></div>
+    <div class="say">
+      <p><span class="di">(Il frappe trois coups.)</span> L'audience est ouverte. Veuillez vous asseoir.</p>
+      <p>Tribunal littéraire de Westphalie, siégeant ce jour pour juger l'affaire enregistrée sous le numéro 1759 — l'année de publication de l'ouvrage qui nous tient lieu de dossier.</p>
+      <p>Comparaît devant nous Mademoiselle Cunégonde de Thunder-ten-tronckh, fille du baron du même nom, née en Westphalie, âgée de dix-sept ans au moment des faits initiaux, et dont le dossier précise qu'elle était <span class="cit">« haute en couleur, fraîche, grasse, appétissante »</span>.<span class="ref">ch.&nbsp;I</span></p>
+      <p>Elle est poursuivie pour avoir causé ou aggravé les malheurs du nommé Candide. Trois chefs d'accusation sont retenus.</p>
+      <p><b>Premier chef</b> — avoir, au chapitre premier, provoqué derrière un paravent une scène dont elle pouvait prévoir les conséquences, et qui a entraîné l'expulsion de Candide du château.<span class="ref">ch.&nbsp;I</span></p>
+      <p><b>Deuxième chef</b> — avoir exercé sur Candide une emprise telle qu'il a traversé deux fois l'Atlantique et quitté l'Eldorado, où il pouvait vivre heureux.<span class="ref">ch.&nbsp;XIII–XIX</span></p>
+      <p><b>Troisième chef</b> — avoir exigé l'exécution d'une promesse de mariage alors que les sentiments de Candide s'étaient éteints.<span class="ref">ch.&nbsp;XXIX–XXX</span></p>
+      <p>Mademoiselle, vous êtes présumée innocente. Vous avez le droit de vous taire. Mais puisque nous sommes dans un conte philosophique, je vous invite à parler&nbsp;: le silence y est encore plus suspect qu'ailleurs.</p>
+      <p>La parole est à Monsieur le Procureur.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec act" id="acte2">
+  <div class="sec-head"><span class="sec-num">ACTE II</span><h2>Réquisitoire introductif</h2><span class="sec-time">~4 min</span></div>
+
+  <div class="line r-proc" data-role="proc">
+    <div class="rail"><div class="who">Le Procureur</div><div class="railnote">Calme d'abord. Ne pas crier&nbsp;: l'accusation porte mieux à voix basse.</div></div>
+    <div class="say">
+      <p>Monsieur le Président, mesdames et messieurs.</p>
+      <p>Je ne vais pas vous dire que Cunégonde est un monstre. Ce serait faux, et ce serait facile. Je vais vous dire quelque chose de plus gênant&nbsp;: Cunégonde est le point fixe autour duquel tourne toute la souffrance de Candide. Retirez Cunégonde du roman, et Candide reste en Westphalie. Pas de Bulgares, pas d'Inquisition, pas de Surinam. Un jeune homme tranquille dans un château qui possède <span class="cit">« une porte et des fenêtres »</span>.<span class="ref">ch.&nbsp;I</span></p>
+
+      <span class="beat"></span>
+      <p><b>Premier chef&nbsp;: le paravent.</b></p>
+      <p>On vous dira que Candide est un innocent. C'est vrai. Mais lisez le texte, car le texte est d'une précision accablante. La veille, Cunégonde a vu <span class="cit">« entre des broussailles »</span> le docteur Pangloss donner <span class="cit">« une leçon de physique expérimentale »</span> à la femme de chambre de sa mère.<span class="ref">ch.&nbsp;I</span> Et Voltaire écrit qu'elle en revint <span class="cit">« tout agitée, tout pensive, toute remplie du désir d'être savante, songeant qu'elle pourrait bien être la raison suffisante du jeune Candide »</span>.<span class="ref">ch.&nbsp;I</span></p>
+      <p>Mesdames et messieurs&nbsp;: elle <b>songe</b>. Le mot est dans le livre. Elle a un projet. Elle est la seule des deux à savoir ce qu'elle fait.</p>
+      <p>Et le lendemain&nbsp;: <span class="cit">« Cunégonde laissa tomber son mouchoir, Candide le ramassa, elle lui prit innocemment la main. »</span><span class="ref">ch.&nbsp;I</span> <i>Laissa tomber</i>&nbsp;: le verbe est actif. Et Voltaire répète le mot «&nbsp;innocemment&nbsp;» — or chez Voltaire, un mot répété est un mot ironique. Le paravent n'est pas un accident. C'est une mise en scène.</p>
+      <p>Résultat, même chapitre&nbsp;: le baron <span class="cit">« passa auprès du paravent, et voyant cette cause et cet effet, chassa Candide du château à grands coups de pied dans le derrière »</span>.<span class="ref">ch.&nbsp;I</span></p>
+      <p>La défense dira&nbsp;: c'est le baron qui frappe. Je réponds&nbsp;: celui qui allume la mèche n'est pas innocent parce que c'est la poudre qui explose.</p>
+
+      <span class="beat"></span>
+      <p><b>Deuxième chef&nbsp;: l'Eldorado.</b></p>
+      <p>Candide arrive dans un pays sans prison et sans tribunal — j'insiste, mesdames et messieurs&nbsp;: <i>sans tribunal</i>, ce qui devrait nous faire réfléchir sur notre propre métier.<span class="ref">ch.&nbsp;XVIII</span> Il y a l'or, la paix, un roi qui l'embrasse. Et il repart.</p>
+      <p>Pourquoi&nbsp;? Il le dit lui-même à Cacambo&nbsp;: <span class="cit">« si nous retournons dans notre monde seulement avec douze moutons chargés de cailloux d'Eldorado, nous serons plus riches que tous les rois ensemble, nous n'aurons plus d'inquisiteurs à craindre, et nous pourrons aisément reprendre mademoiselle Cunégonde. »</span><span class="ref">ch.&nbsp;XVIII</span></p>
+      <p>Le dernier mot de la phrase, mesdames et messieurs. Le dernier mot&nbsp;: Cunégonde. L'or n'est qu'un moyen. Le but a un nom, et ce nom est assis sur ce banc.</p>
+      <p>Le roi l'avertit pourtant&nbsp;: <span class="cit">« Vous faites une sottise. »</span><span class="ref">ch.&nbsp;XVIII</span> Candide part quand même. Et il perd tout&nbsp;: ses moutons s'enfoncent, le marchand Vanderdendur le vole, un procès l'achève.<span class="ref">ch.&nbsp;XIX</span></p>
+
+      <span class="beat"></span>
+      <p><b>Troisième chef&nbsp;: la promesse.</b></p>
+      <p>Sur les bords de la Propontide, Candide retrouve une femme aux <span class="cit">« yeux éraillés »</span>, à la <span class="cit">« gorge sèche »</span>, aux <span class="cit">« bras rouges et écaillés »</span>.<span class="ref">ch.&nbsp;XXIX</span> Il recule d'horreur, puis il avance, par honnêteté.</p>
+      <p>Et que fait Cunégonde&nbsp;? Je cite&nbsp;: <span class="cit">« elle fit souvenir Candide de ses promesses avec un ton si absolu que le bon Candide n'osa pas la refuser. »</span><span class="ref">ch.&nbsp;XXIX</span></p>
+      <p><i>Un ton si absolu. N'osa pas.</i> Voilà le vocabulaire. Ce n'est pas de l'amour&nbsp;: c'est une créance qu'on recouvre.</p>
+      <p>Et le chapitre suivant ne laisse aucun doute&nbsp;: <span class="cit">« Candide, dans le fond de son cœur, n'avait aucune envie d'épouser Cunégonde »</span>, mais elle <span class="cit">« le pressait si vivement qu'il ne pouvait s'en dédire »</span>.<span class="ref">ch.&nbsp;XXX</span></p>
+      <p>Mesdames et messieurs, on peut être une victime et faire une victime. Les deux ne s'excluent pas. C'est même la leçon la plus noire de ce livre.</p>
+      <p>Je conclurai plus tard. Je vous remercie.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec act" id="acte3">
+  <div class="sec-head"><span class="sec-num">ACTE III</span><h2>Plaidoirie introductive</h2><span class="sec-time">~4 min</span></div>
+
+  <div class="line r-def" data-role="def">
+    <div class="rail"><div class="who">La Défense</div><div class="railnote">Commencer par l'indignation, finir par la démonstration.</div></div>
+    <div class="say">
+      <p>Monsieur le Président.</p>
+      <p>Mon confrère vient d'accomplir un exploit. Il a pris une femme dont la famille a été égorgée, qui a été violée, poignardée, vendue, partagée entre deux hommes par contrat écrit, revendue à un gouverneur, puis à un prince — et il a réussi à en faire l'accusée.</p>
+      <p>Je réponds point par point, puis je dirai qui aurait dû occuper ce banc.</p>
+
+      <span class="beat"></span>
+      <p><b>Sur le paravent.</b></p>
+      <p>Le ministère public confond le désir et le crime. Une fille de dix-sept ans embrasse un garçon&nbsp;: voilà le forfait.</p>
+      <p>Mais lisez la phrase entière&nbsp;: le <b>baron</b> <span class="cit">« chassa Candide du château »</span>.<span class="ref">ch.&nbsp;I</span> Qui chasse&nbsp;? Le père. Pas la fille. Cunégonde n'a aucun pouvoir dans ce château&nbsp;: elle y est une fille, c'est-à-dire un bien, et son père est le seul souverain.</p>
+      <p>Et pourquoi Candide est-il chassé&nbsp;? Pas pour un baiser. Pour une question de généalogie. Relisez le chapitre premier&nbsp;: si Candide n'est pas baron, c'est que sa mère refusa d'épouser son père <span class="cit">« parce qu'il n'avait pu prouver que soixante et onze quartiers »</span>.<span class="ref">ch.&nbsp;I</span> Soixante et onze. Il en manquait <b>un</b>. Candide est expulsé pour un quartier de noblesse manquant.</p>
+      <p>Le vrai responsable du premier malheur de Candide n'est pas une jeune fille derrière un paravent. C'est un arbre généalogique.</p>
+
+      <span class="beat"></span>
+      <p><b>Sur l'Eldorado.</b></p>
+      <p>Mon confrère a cité le chapitre XVIII. Je l'en remercie&nbsp;: il a cité contre lui-même. Il a lu <span class="cit">« si <b>nous</b> retournons »</span>, <span class="cit">« <b>nous</b> pourrons aisément reprendre mademoiselle Cunégonde »</span>.<span class="ref">ch.&nbsp;XVIII</span> C'est Candide qui parle. C'est Candide qui décide. Cunégonde est à sept mille lieues de là, retenue à Buenos-Ayres. Elle ignore jusqu'à l'existence de l'Eldorado.</p>
+      <p>Peut-on condamner quelqu'un pour une décision prise en son absence, sur un continent qu'elle n'a jamais vu, par un homme qui la croit perdue&nbsp;?</p>
+      <p>Et pourquoi est-elle à Buenos-Ayres&nbsp;? Parce que le gouverneur don Fernando d'Ibaraa y Figueora y Mascarenes y Lampourdos y Souza a demandé à Candide si elle était sa femme — et que Candide, je cite, <span class="cit">« n'osa pas dire qu'elle était sa femme, parce qu'en effet elle ne l'était point »</span>.<span class="ref">ch.&nbsp;XIII</span></p>
+      <p>Mesdames et messieurs&nbsp;: au seul instant où un mot aurait pu la protéger, c'est Candide qui se tait. Puis il s'embarque. On reproche aujourd'hui à Cunégonde de ne pas l'avoir suivi&nbsp;; on oublie que c'est lui qui est parti le premier.</p>
+
+      <span class="beat"></span>
+      <p><b>Sur la promesse.</b></p>
+      <p>Oui, elle rappelle la promesse. Mais mesurez d'abord ce qu'on lui a pris.</p>
+      <p>Chapitre huitième, par sa propre bouche&nbsp;: les Bulgares égorgent son père et son frère et <span class="cit">« coupèrent ma mère par morceaux »</span>. Un soldat la viole et lui donne <span class="cit">« un coup de couteau dans le flanc gauche »</span> dont elle porte encore la marque. Et Voltaire ajoute cette phrase terrible&nbsp;: tout cela était, dans ce château, <span class="cit">« une chose d'usage »</span>.<span class="ref">ch.&nbsp;VIII</span></p>
+      <p>Vendue à un capitaine, revendue à don Issachar. Puis le Grand Inquisiteur la voit à la messe et l'exige. Les deux hommes ne peuvent s'entendre&nbsp;? Ils signent un arrangement&nbsp;: à l'un les lundis, les mercredis et le jour du sabbat&nbsp;; à l'autre le reste de la semaine.<span class="ref">ch.&nbsp;VIII</span></p>
+      <p>Je demande au tribunal de mesurer ce que cela signifie. Cette femme a été <b>inscrite dans un calendrier</b>.</p>
+      <p>Il ne lui reste plus rien&nbsp;: ni famille, ni rang, ni fortune, ni beauté. Rien qu'une parole donnée. Et on lui fait un procès parce qu'elle y tient.</p>
+      <p>Monsieur le Président&nbsp;: quand on n'a plus que sa créance, on la réclame. Ce n'est pas de la cruauté. C'est de la survie.</p>
+
+      <span class="beat"></span>
+      <p><b>Et le vrai coupable&nbsp;?</b></p>
+      <p>Il a un nom. Il s'appelle Pangloss. Et sa doctrine a été définie par Candide lui-même&nbsp;: l'optimisme, <span class="cit">« c'est la rage de soutenir que tout est bien quand on est mal »</span>.<span class="ref">ch.&nbsp;XIX</span></p>
+      <p>C'est cette doctrine qui a rendu Candide incapable de choisir&nbsp;; incapable de rester en Eldorado&nbsp;; incapable de comprendre que le bonheur n'est pas au bout d'un voyage, mais dans un jardin.</p>
+      <p>Cunégonde n'est pas la cause du malheur de Candide. Elle en est la compagne.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec act" id="acte4">
+  <div class="sec-head"><span class="sec-num">ACTE IV</span><h2>Interrogatoire de l'accusée</h2><span class="sec-time">~6 min</span></div>
+
+  <div class="line r-juge" data-role="juge"><div class="rail"><div class="who">Le Juge</div></div><div class="say"><p>Mademoiselle, levez-vous. Le tribunal va vous entendre. Monsieur le Procureur, vous avez la parole.</p></div></div>
+
+  <div class="line r-proc" data-role="proc"><div class="rail"><div class="who">Le Procureur</div><div class="railnote">Questions courtes. Laisser le silence travailler.</div></div><div class="say"><p>Mademoiselle, au chapitre premier&nbsp;: avez-vous laissé tomber votre mouchoir&nbsp;?</p></div></div>
+
+  <div class="line r-cun" data-role="cun"><div class="rail"><div class="who">Cunégonde</div><div class="railnote">Droite. Jamais pleurnicharde. L'ironie est une arme.</div></div><div class="say"><p>Oui.</p></div></div>
+
+  <div class="line r-proc" data-role="proc"><div class="rail"><div class="who">Le Procureur</div></div><div class="say"><p>Volontairement&nbsp;?</p></div></div>
+
+  <div class="line r-cun" data-role="cun"><div class="rail"><div class="who">Cunégonde</div></div><div class="say"><p>Monsieur le Procureur, j'avais dix-sept ans et je vivais dans un château où le plus grand événement de la semaine était la leçon de métaphysico-théologo-cosmolonigologie du docteur Pangloss.<span class="ref">ch.&nbsp;I</span> Oui, j'ai laissé tomber mon mouchoir. Je ne vois pas quel autre crime on pouvait commettre dans cette maison.</p></div></div>
+
+  <div class="line r-proc" data-role="proc"><div class="rail"><div class="who">Le Procureur</div></div><div class="say"><p>Vous aviez vu, la veille, ce que vous appelez une «&nbsp;leçon de physique expérimentale&nbsp;». Vous saviez donc ce qui pouvait arriver.</p></div></div>
+
+  <div class="line r-cun" data-role="cun"><div class="rail"><div class="who">Cunégonde</div></div><div class="say"><p>J'avais vu, oui. Et j'ai voulu savoir. On m'avait enseigné que tout était cause et effet, que rien n'arrivait sans <span class="cit">« raison suffisante »</span>.<span class="ref">ch.&nbsp;I</span> J'ai voulu vérifier. Si c'est un crime d'appliquer ce qu'on nous enseigne, alors faites aussi comparaître mon professeur.</p></div></div>
+
+  <div class="line r-proc" data-role="proc"><div class="rail"><div class="who">Le Procureur</div></div><div class="say"><p>Vous saviez que votre père chasserait Candide.</p></div></div>
+
+  <div class="line r-cun" data-role="cun"><div class="rail"><div class="who">Cunégonde</div><div class="railnote">Marquer le temps avant la dernière phrase.</div></div><div class="say"><p>Je savais que mon père comptait les quartiers de noblesse. Je ne savais pas qu'il frappait. <span class="di">(un temps)</span> Je l'ai appris ce jour-là, en même temps que Candide.</p></div></div>
+
+  <div class="line r-proc" data-role="proc"><div class="rail"><div class="who">Le Procureur</div></div><div class="say"><p>Passons à Buenos-Ayres. Le gouverneur vous demande en mariage et vous sollicitez — je cite — <span class="cit">« un quart d'heure pour y penser, pour consulter la vieille, et pour se déterminer »</span>.<span class="ref">ch.&nbsp;XIII</span> Vous avez donc pesé. Vous avez calculé.</p></div></div>
+
+  <div class="line r-cun" data-role="cun"><div class="rail"><div class="who">Cunégonde</div></div><div class="say"><p>J'ai calculé, oui. La vieille m'a dit une phrase que je n'ai jamais oubliée&nbsp;: <span class="cit">« les malheurs donnent des droits »</span>.<span class="ref">ch.&nbsp;XIII</span> Elle m'a fait observer que j'avais soixante et douze quartiers de noblesse et pas une obole.<span class="ref">ch.&nbsp;XIII</span></p><p>Soixante-douze quartiers, Monsieur le Procureur. Dans cette monnaie-là, j'étais riche. Et je mourais de faim.</p></div></div>
+
+  <div class="line r-proc" data-role="proc"><div class="rail"><div class="who">Le Procureur</div></div><div class="say"><p>Vous avez donc préféré l'argent à Candide.</p></div></div>
+
+  <div class="line r-cun" data-role="cun"><div class="rail"><div class="who">Cunégonde</div><div class="railnote">Regarder Candide sur la dernière phrase.</div></div><div class="say"><p>J'ai préféré ne pas mourir. Et permettez-moi de rétablir un fait&nbsp;: avant que je ne choisisse quoi que ce soit, on avait demandé à Candide si j'étais sa femme. Il a répondu non.<span class="ref">ch.&nbsp;XIII</span> <span class="di">(elle le regarde)</span> Il a dit la vérité. Il dit toujours la vérité. C'est sa manière à lui de ne jamais me défendre.</p></div></div>
+
+  <div class="line r-proc" data-role="proc"><div class="rail"><div class="who">Le Procureur</div></div><div class="say"><p>Chapitre XXIX. Vous lui rappelez sa promesse <span class="cit">« avec un ton si absolu »</span> qu'il <span class="cit">« n'osa pas »</span> refuser.<span class="ref">ch.&nbsp;XXIX</span> Vous saviez qu'il ne vous aimait plus.</p></div></div>
+
+  <div class="line r-cun" data-role="cun"><div class="rail"><div class="who">Cunégonde</div><div class="railnote">Long silence avant «&nbsp;Oui&nbsp;». C'est le sommet du rôle.</div></div><div class="say"><p><span class="di">(long silence)</span> Oui.</p></div></div>
+
+  <div class="line r-proc" data-role="proc"><div class="rail"><div class="who">Le Procureur</div></div><div class="say"><p>Et vous l'avez épousé quand même.</p></div></div>
+
+  <div class="line r-cun" data-role="cun"><div class="rail"><div class="who">Cunégonde</div><div class="railnote">Monter lentement, finir presque à voix basse.</div></div><div class="say">
+    <p>Monsieur le Procureur, savez-vous ce qu'on m'a pris&nbsp;?</p>
+    <p>On m'a pris ma famille au chapitre huitième. On m'a pris mon corps. On m'a pris mon rang, puisqu'on m'a vendue. On m'a pris ma beauté — et c'était la seule chose qui, dans ce monde, donnait un prix à une femme&nbsp;: au chapitre XXVII, on vous dira que j'étais devenue <span class="cit">« horriblement laide »</span>, et qu'on m'avait mise à laver les écuelles d'un prince de Transylvanie.<span class="ref">ch.&nbsp;XXVII</span></p>
+    <p>Il me restait une phrase. Une seule. Prononcée par un garçon derrière un paravent, en Westphalie, il y a une vie entière.</p>
+    <p>Vous me demandez pourquoi j'y ai tenu «&nbsp;avec un ton absolu&nbsp;»&nbsp;? Parce qu'un ton absolu, c'était tout ce qui me restait d'absolu.</p>
+  </div></div>
+
+  <div class="line r-proc" data-role="proc"><div class="rail"><div class="who">Le Procureur</div></div><div class="say"><p>Plus de questions, Monsieur le Président.</p></div></div>
+
+  <div class="line r-juge" data-role="juge"><div class="rail"><div class="who">Le Juge</div></div><div class="say"><p>Maître, à vous.</p></div></div>
+
+  <div class="line r-def" data-role="def"><div class="rail"><div class="who">La Défense</div><div class="railnote">Série de questions fermées, rythme rapide.</div></div><div class="say"><p>Mademoiselle, quelques questions simples. Au chapitre premier&nbsp;: qui a chassé Candide du château&nbsp;?</p></div></div>
+
+  <div class="line r-cun" data-role="cun"><div class="rail"><div class="who">Cunégonde</div></div><div class="say"><p>Mon père.</p></div></div>
+
+  <div class="line r-def" data-role="def"><div class="rail"><div class="who">La Défense</div></div><div class="say"><p>Avez-vous été consultée&nbsp;?</p></div></div>
+
+  <div class="line r-cun" data-role="cun"><div class="rail"><div class="who">Cunégonde</div></div><div class="say"><p>On ne consultait pas les filles dans ce château. On les comptait, comme les quartiers.</p></div></div>
+
+  <div class="line r-def" data-role="def"><div class="rail"><div class="who">La Défense</div></div><div class="say"><p>Chapitre VIII. Avez-vous choisi don Issachar&nbsp;?</p></div></div>
+
+  <div class="line r-cun" data-role="cun"><div class="rail"><div class="who">Cunégonde</div></div><div class="say"><p>On m'a vendue à lui.</p></div></div>
+
+  <div class="line r-def" data-role="def"><div class="rail"><div class="who">La Défense</div></div><div class="say"><p>Avez-vous choisi le Grand Inquisiteur&nbsp;?</p></div></div>
+
+  <div class="line r-cun" data-role="cun"><div class="rail"><div class="who">Cunégonde</div><div class="railnote">S'interrompre comme si le mot ne venait pas.</div></div><div class="say"><p>Il m'a vue à la messe. Il m'a fait dire qu'il avait à me parler en particulier.<span class="ref">ch.&nbsp;VIII</span> <span class="di">(elle s'interrompt)</span> On s'est arrangé. Entre eux. Par écrit. On a partagé les jours de la semaine comme on partage une terre.</p></div></div>
+
+  <div class="line r-def" data-role="def"><div class="rail"><div class="who">La Défense</div></div><div class="say"><p>Avez-vous signé cet arrangement&nbsp;?</p></div></div>
+
+  <div class="line r-cun" data-role="cun"><div class="rail"><div class="who">Cunégonde</div></div><div class="say"><p>On ne m'a pas demandé de signer. On m'a demandé d'être là.</p></div></div>
+
+  <div class="line r-def" data-role="def"><div class="rail"><div class="who">La Défense</div></div><div class="say"><p>Dernière question. Chapitre XVIII&nbsp;: saviez-vous que l'Eldorado existait&nbsp;?</p></div></div>
+
+  <div class="line r-cun" data-role="cun"><div class="rail"><div class="who">Cunégonde</div><div class="railnote">Très simple. Ne pas jouer l'effet.</div></div><div class="say"><p>Je ne sais toujours pas où c'est.</p></div></div>
+
+  <div class="line r-def" data-role="def"><div class="rail"><div class="who">La Défense</div></div><div class="say"><p>Je vous remercie. Monsieur le Président, j'en ai terminé avec l'accusée.</p></div></div>
+</section>
+
+<section class="sec act" id="acte5">
+  <div class="sec-head"><span class="sec-num">ACTE V</span><h2>Audition du témoin Candide</h2><span class="sec-time">~5 min</span></div>
+
+  <div class="line r-juge" data-role="juge"><div class="rail"><div class="who">Le Juge</div></div><div class="say"><p>Monsieur Candide, vous comparaissez comme témoin. Jurez-vous de dire la vérité&nbsp;?</p></div></div>
+
+  <div class="line r-cand" data-role="cand"><div class="rail"><div class="who">Candide</div><div class="railnote">Doux, poli, un peu perdu. Jamais ironique&nbsp;: il est sincère.</div></div><div class="say"><p>Monsieur le Président, je n'ai jamais su faire autrement. C'est même, d'après tout le monde, mon principal défaut.</p></div></div>
+
+  <div class="line r-proc" data-role="proc"><div class="rail"><div class="who">Le Procureur</div></div><div class="say"><p>Monsieur Candide, combien de fois avez-vous failli mourir pour Mademoiselle Cunégonde&nbsp;?</p></div></div>
+
+  <div class="line r-cand" data-role="cand"><div class="rail"><div class="who">Candide</div><div class="railnote">Énumérer d'un trait, sans pathos.</div></div><div class="say"><p>Je n'ai pas compté. J'ai été passé par les baguettes chez les Bulgares&nbsp;;<span class="ref">ch.&nbsp;II</span> j'ai essuyé le tremblement de terre de Lisbonne&nbsp;;<span class="ref">ch.&nbsp;V</span> j'ai été fessé dans un autodafé pendant qu'on pendait mon maître&nbsp;;<span class="ref">ch.&nbsp;VI</span> j'ai tué deux hommes en deux minutes&nbsp;;<span class="ref">ch.&nbsp;IX</span> j'ai failli être mangé par les Oreillons&nbsp;;<span class="ref">ch.&nbsp;XVI</span> j'ai été volé par un marchand hollandais et ruiné par un procès.<span class="ref">ch.&nbsp;XIX</span></p></div></div>
+
+  <div class="line r-proc" data-role="proc"><div class="rail"><div class="who">Le Procureur</div></div><div class="say"><p>Et pour qui&nbsp;?</p></div></div>
+
+  <div class="line r-cand" data-role="cand"><div class="rail"><div class="who">Candide</div></div><div class="say"><p><span class="di">(un temps)</span> Pour elle.</p></div></div>
+
+  <div class="line r-proc" data-role="proc"><div class="rail"><div class="who">Le Procureur</div></div><div class="say"><p>En Eldorado, vous aviez tout. Le roi vous a dit&nbsp;: <span class="cit">« Vous faites une sottise. »</span><span class="ref">ch.&nbsp;XVIII</span> Pourquoi êtes-vous parti&nbsp;?</p></div></div>
+
+  <div class="line r-cand" data-role="cand"><div class="rail"><div class="who">Candide</div></div><div class="say"><p>Parce qu'elle n'y était pas.</p></div></div>
+
+  <div class="line r-proc" data-role="proc"><div class="rail"><div class="who">Le Procureur</div><div class="railnote">S'asseoir sur cette réplique&nbsp;: elle suffit.</div></div><div class="say"><p>Le tribunal appréciera. Je n'ai pas d'autre question.</p></div></div>
+
+  <div class="line r-def" data-role="def"><div class="rail"><div class="who">La Défense</div></div><div class="say"><p>Monsieur Candide, une précision. Au chapitre XVIII, qui prononce la phrase <span class="cit">« nous pourrons aisément reprendre mademoiselle Cunégonde »</span>&nbsp;?</p></div></div>
+
+  <div class="line r-cand" data-role="cand"><div class="rail"><div class="who">Candide</div></div><div class="say"><p>Moi.</p></div></div>
+
+  <div class="line r-def" data-role="def"><div class="rail"><div class="who">La Défense</div></div><div class="say"><p>Mademoiselle Cunégonde vous avait-elle écrit de venir&nbsp;?</p></div></div>
+
+  <div class="line r-cand" data-role="cand"><div class="rail"><div class="who">Candide</div></div><div class="say"><p>Non.</p></div></div>
+
+  <div class="line r-def" data-role="def"><div class="rail"><div class="who">La Défense</div></div><div class="say"><p>Vous avait-elle demandé de quitter l'Eldorado&nbsp;?</p></div></div>
+
+  <div class="line r-cand" data-role="cand"><div class="rail"><div class="who">Candide</div></div><div class="say"><p>Elle ne savait pas que j'y étais. Elle me croyait peut-être mort.</p></div></div>
+
+  <div class="line r-def" data-role="def"><div class="rail"><div class="who">La Défense</div></div><div class="say"><p>Chapitre XIII, à Buenos-Ayres. Le gouverneur vous demande si elle est votre femme. Qu'avez-vous répondu&nbsp;?</p></div></div>
+
+  <div class="line r-cand" data-role="cand"><div class="rail"><div class="who">Candide</div><div class="railnote">Gêné. Baisser les yeux.</div></div><div class="say"><p><span class="di">(gêné)</span> J'ai dit la vérité. Qu'elle ne l'était pas.<span class="ref">ch.&nbsp;XIII</span></p></div></div>
+
+  <div class="line r-def" data-role="def"><div class="rail"><div class="who">La Défense</div></div><div class="say"><p>Et ensuite, vous êtes parti.</p></div></div>
+
+  <div class="line r-cand" data-role="cand"><div class="rail"><div class="who">Candide</div></div><div class="say"><p>On allait m'arrêter pour le meurtre du Grand Inquisiteur. Cacambo m'a fait fuir.<span class="ref">ch.&nbsp;XIII–XIV</span></p></div></div>
+
+  <div class="line r-def" data-role="def"><div class="rail"><div class="who">La Défense</div><div class="railnote">Ralentir. C'est la question qui gagne le procès.</div></div><div class="say"><p>Monsieur Candide, je vais vous poser la question que personne ne vous a posée en trente chapitres. Qui a pris les décisions de votre vie&nbsp;?</p></div></div>
+
+  <div class="line r-cand" data-role="cand"><div class="rail"><div class="who">Candide</div><div class="railnote">Silence réel de 3 secondes. Puis regarder Cunégonde.</div></div><div class="say"><p><span class="di">(long silence)</span> Moi.</p><p><span class="di">(un temps)</span> J'ai cru longtemps que c'était Pangloss, ou la Providence, ou <span class="cit">« le meilleur des mondes possibles »</span>. Mais c'est moi qui suis monté sur le bateau. C'est moi qui ai quitté l'Eldorado. C'est moi qui n'ai pas dit au gouverneur qu'elle était ma femme. <span class="di">(il regarde Cunégonde)</span> Et c'est moi qui ai promis.</p></div></div>
+
+  <div class="line r-def" data-role="def"><div class="rail"><div class="who">La Défense</div></div><div class="say"><p>Monsieur le Président, la défense n'a plus de questions.</p></div></div>
+
+  <div class="line r-juge" data-role="juge"><div class="rail"><div class="who">Le Juge</div><div class="railnote">Changement de ton&nbsp;: le juge sort du formalisme.</div></div><div class="say"><p>Monsieur Candide, une dernière question, et le tribunal vous demande d'y répondre sans politesse. Au chapitre XXX, après le mariage&nbsp;: êtes-vous malheureux&nbsp;?</p></div></div>
+
+  <div class="line r-cand" data-role="cand"><div class="rail"><div class="who">Candide</div><div class="railnote">C'est la réplique la plus importante du rôle.</div></div><div class="say"><p>Non, Monsieur le Président. Et c'est ce qui m'étonne le plus.</p><p>Elle est <span class="cit">« à la vérité bien laide »</span>, mais elle est devenue <span class="cit">« une excellente pâtissière »</span>. Paquette brode, la vieille a soin du linge, frère Giroflée est devenu un très bon menuisier.<span class="ref">ch.&nbsp;XXX</span> Nous travaillons. Je ne raisonne plus.</p><p><span class="di">(un temps)</span> Je crois que j'ai confondu pendant trente chapitres le bonheur et l'obtention de ce que je voulais.</p></div></div>
+</section>
+
+<section class="sec act" id="acte6">
+  <div class="sec-head"><span class="sec-num">ACTE VI</span><h2>Conclusions des parties</h2><span class="sec-time">~5 min</span></div>
+
+  <div class="line r-juge" data-role="juge"><div class="rail"><div class="who">Le Juge</div></div><div class="say"><p>Le tribunal entendra les conclusions. Monsieur le Procureur, votre réquisitoire.</p></div></div>
+
+  <div class="line r-proc" data-role="proc"><div class="rail"><div class="who">Le Procureur</div><div class="railnote">Coup de théâtre&nbsp;: le procureur renonce à la condamnation. Annoncer franchement.</div></div><div class="say">
+    <p>Monsieur le Président, je vais être honnête avec vous, ce qui est rare dans mon métier.</p>
+    <p><b>Je ne demande pas la condamnation de Cunégonde.</b></p>
+    <p><span class="di">(mouvement dans la salle)</span></p>
+    <p>Je demande autre chose, et c'est plus difficile&nbsp;: je demande que ce tribunal refuse la facilité de l'innocence totale.</p>
+    <p>On nous propose deux Cunégonde. Celle de l'accusation&nbsp;: une manipulatrice. Celle de la défense&nbsp;: une victime pure. Aucune des deux n'est dans le livre.</p>
+    <p>La Cunégonde de Voltaire fait les deux à la fois. Au chapitre VIII, elle est violée et poignardée&nbsp;: elle subit. Au chapitre XIII, elle demande <span class="cit">« un quart d'heure pour y penser »</span> avant d'accepter le gouverneur&nbsp;: elle calcule.<span class="ref">ch.&nbsp;XIII</span> Au chapitre XXIX, elle réclame un mariage dont elle sait qu'il n'est plus désiré&nbsp;: elle calcule encore.</p>
+    <p>Mon confrère a cité la vieille&nbsp;: <span class="cit">« les malheurs donnent des droits »</span>.<span class="ref">ch.&nbsp;XIII</span> Mais regardez ce que la phrase dit exactement. Le malheur ne vous rend pas <i>bon</i>. Il vous donne des <i>droits</i> — c'est-à-dire des armes.</p>
+    <p>Je demande donc au tribunal de dire ceci&nbsp;: Cunégonde n'est pas coupable du malheur de Candide, mais elle n'en est pas innocente non plus, parce que personne ne l'est dans ce livre. Voltaire n'a pas écrit un conte avec des bons et des méchants. Il a écrit un conte où tout le monde abîme tout le monde, et où la seule issue n'est pas la justice&nbsp;: c'est un jardin.</p>
+    <p>Si ce tribunal veut rendre un verdict fidèle au texte, qu'il ne blanchisse personne — et qu'il constate que nous jugeons depuis le début la mauvaise personne.</p>
+    <p>Je m'en remets à votre sagesse.</p>
+  </div></div>
+
+  <div class="line r-juge" data-role="juge"><div class="rail"><div class="who">Le Juge</div></div><div class="say"><p>Maître, la parole est à la défense.</p></div></div>
+
+  <div class="line r-def" data-role="def"><div class="rail"><div class="who">La Défense</div><div class="railnote">Concéder d'abord&nbsp;: c'est ce qui rend la suite crédible.</div></div><div class="say">
+    <p>Monsieur le Président, mon confrère vient de faire un pas vers moi. J'en ferai un vers lui, et nous verrons où nous nous rencontrons.</p>
+    <p>Il a raison sur un point&nbsp;: Cunégonde calcule. Je ne le nierai pas.</p>
+    <p>Mais je demande au tribunal de regarder <b>quand</b> elle calcule.</p>
+    <p>Elle ne calcule jamais quand elle a le choix. Elle calcule toujours quand elle ne l'a plus.</p>
+    <p>Au chapitre premier, quand elle est libre, riche, protégée&nbsp;: que fait-elle&nbsp;? Elle embrasse un garçon sans fortune et sans quartiers. C'est le seul acte entièrement libre de sa vie, et c'est un acte d'amour, pas de calcul.</p>
+    <p>Tout le reste vient <i>après</i>. Après les Bulgares. Après le couteau dans le flanc gauche. Après le contrat qui la partage entre deux hommes.<span class="ref">ch.&nbsp;VIII</span> Après qu'on l'a vendue, revendue, et réduite à laver les écuelles d'un prince détrôné.<span class="ref">ch.&nbsp;XXVII</span></p>
+    <p>Mesdames et messieurs, ce n'est pas elle qui a changé. C'est ce qu'on lui a laissé.</p>
+    <p>On reproche à une femme d'être devenue dure. Mais demandez-vous ce qu'elle aurait dû faire au chapitre XIII&nbsp;: refuser le gouverneur et mourir de faim avec ses soixante-douze quartiers&nbsp;? Ce tribunal exige-t-il d'elle un héroïsme qu'il n'exige d'aucun homme de ce roman&nbsp;?</p>
+    <p>Un mot sur Candide. Je ne l'accuse pas&nbsp;: c'est le personnage le plus doux du livre. Mais la douceur n'est pas l'innocence. Il n'a pas dit au gouverneur qu'elle était sa femme.<span class="ref">ch.&nbsp;XIII</span> Il n'a pas quitté l'Eldorado pour elle seule&nbsp;: il l'a quitté avec <span class="cit">« douze moutons chargés de cailloux »</span>.<span class="ref">ch.&nbsp;XVIII</span> Et quand il peut enfin rompre une promesse qu'il ne désire plus tenir, il se tait et il épouse.</p>
+    <p>Candide a traversé le monde pour Cunégonde. Mais il ne l'a jamais regardée.</p>
+    <p>Je demande la relaxe pure et simple. Et si ce tribunal veut condamner quelqu'un, je l'invite à lever les yeux vers le banc vide où devrait être assis le docteur Pangloss.</p>
+  </div></div>
+
+  <div class="line r-juge" data-role="juge"><div class="rail"><div class="who">Le Juge</div></div><div class="say"><p>Mademoiselle, la loi vous accorde le dernier mot. La parole est à vous.</p></div></div>
+
+  <div class="line r-cun" data-role="cun"><div class="rail"><div class="who">Cunégonde</div><div class="railnote">Se lever. Parler sans notes si possible. Ne rien jouer&nbsp;: dire.</div></div><div class="say">
+    <p>Messieurs, je n'ai pas de plaidoirie. J'ai une remarque.</p>
+    <p>Pendant tout ce procès, on a parlé de moi comme d'une <i>cause</i>. La cause du départ de Candide, la cause de ses voyages, la cause de son malheur. Cause et effet, raison suffisante&nbsp;: c'est encore le vocabulaire de Pangloss.<span class="ref">ch.&nbsp;I</span> Vous me jugez avec les mots de l'homme qui a ruiné nos deux vies.</p>
+    <p>Je n'ai pas été une cause. J'ai été un prétexte. Candide avait besoin de quelque chose à chercher, parce qu'on lui avait appris que le monde avait un sens et qu'il suffisait d'aller le chercher assez loin. Si je n'avais pas existé, il aurait cherché autre chose.</p>
+    <p>Vous voulez savoir qui est coupable&nbsp;? Mon père, qui comptait des quartiers. Les Bulgares, qui ont coupé ma mère par morceaux et appelaient cela <span class="cit">« une chose d'usage »</span>.<span class="ref">ch.&nbsp;VIII</span> L'Inquisiteur, qui a partagé une femme entre deux agendas. Vanderdendur, qui vole.<span class="ref">ch.&nbsp;XIX</span> Et Pangloss, qui leur a trouvé à tous une raison suffisante.</p>
+    <p>Moi, j'ai survécu. <span class="di">(un temps)</span> Condamnez-moi pour cela, si vous voulez.</p>
+    <p><span class="di">(elle se rassoit)</span></p>
+  </div></div>
+</section>
+
+<section class="sec act" id="verdict">
+  <div class="sec-head"><span class="sec-num">ACTE VII</span><h2>Verdict</h2><span class="sec-time">~4 min</span></div>
+
+  <div class="verdict">
+  <div class="line r-juge" data-role="juge" style="border-top:0;padding-top:0">
+    <div class="rail"><div class="who">Le Juge</div><div class="railnote">Debout. Très lent. Marquer un silence avant chaque «&nbsp;relaxée&nbsp;».</div></div>
+    <div class="say">
+      <p>Le tribunal a entendu les parties. Il va statuer.</p>
+
+      <p><b>Sur le premier chef — le paravent.</b> Le tribunal constate que Cunégonde a pris l'initiative du geste. Mais il constate aussi que le texte attribue l'expulsion au baron, et qu'il en donne la raison&nbsp;: <span class="cit">« soixante et onze quartiers »</span> au lieu de soixante-douze.<span class="ref">ch.&nbsp;I</span> Un baiser ne chasse personne&nbsp;: c'est une généalogie qui chasse. Cunégonde est <b>relaxée</b> de ce chef. Le tribunal relève toutefois qu'elle savait quand Candide ignorait&nbsp;: il y a là, non un délit, mais une inégalité dont elle a usé. Le tribunal en prend acte.</p>
+
+      <p><b>Sur le deuxième chef — l'Eldorado.</b> Le tribunal ne retient rien. Les mots sont de Candide, la décision est de Candide, l'avertissement du roi est adressé à Candide.<span class="ref">ch.&nbsp;XVIII</span> On ne condamne pas une absente. <b>Relaxe.</b></p>
+
+      <p><b>Sur le troisième chef — la promesse.</b> C'est le seul point où le tribunal hésite. Le texte dit que Candide <span class="cit">« n'avait aucune envie »</span> de l'épouser et qu'il <span class="cit">« n'osa pas »</span> refuser.<span class="ref">ch.&nbsp;XXIX–XXX</span> Il y a là une contrainte morale, et le tribunal ne la nie pas. Mais il observe trois choses&nbsp;: que la promesse existait&nbsp;; qu'elle avait été librement donnée&nbsp;; et que celui qui l'avait donnée n'a jamais eu le courage de la reprendre. Candide a eu trente chapitres pour dire non. Il a préféré se taire et souffrir — ce qui est moins courageux que de refuser. Cunégonde est <b>relaxée</b> de ce chef, avec cette seule observation&nbsp;: elle a réclamé son dû à un homme qui ne lui devait plus que de la pitié.</p>
+
+      <span class="beat"></span>
+      <p>En conséquence, le tribunal déclare Mademoiselle Cunégonde de Thunder-ten-tronckh <b>non coupable</b> des faits qui lui sont reprochés.</p>
+
+      <span class="beat"></span>
+      <p>Mais ce tribunal ne se séparera pas sans nommer les véritables responsables, car aucun d'eux n'a comparu. Le tribunal les déclare coupables par contumace&nbsp;:</p>
+      <p>— <b>Le baron de Thunder-ten-tronckh</b>, pour avoir préféré un arbre généalogique à sa fille et à sa maison.<span class="ref">ch.&nbsp;I</span></p>
+      <p>— <b>La guerre</b>, qui a coupé une mère par morceaux et a nommé cela <span class="cit">« une chose d'usage »</span>.<span class="ref">ch.&nbsp;VIII</span></p>
+      <p>— <b>Don Issachar et le Grand Inquisiteur</b>, pour avoir fait d'une femme un bien partagé entre deux calendriers.<span class="ref">ch.&nbsp;VIII</span></p>
+      <p>— <b>Vanderdendur et le commerce qu'il représente</b>, dont un esclave mutilé du Surinam a dit&nbsp;: <span class="cit">« C'est à ce prix que vous mangez du sucre en Europe. »</span><span class="ref">ch.&nbsp;XIX</span></p>
+      <p>— Et, en qualité d'auteur principal, <b>le docteur Pangloss</b>, avec la doctrine qu'il enseigne&nbsp;: l'optimisme, que Candide lui-même définit comme <span class="cit">« la rage de soutenir que tout est bien quand on est mal »</span>.<span class="ref">ch.&nbsp;XIX</span></p>
+
+      <span class="beat"></span>
+      <p>Car voici ce que cette audience aura établi. Le malheur de Candide ne vient pas d'avoir aimé Cunégonde. Il vient d'avoir cru que le bonheur se trouvait ailleurs, plus loin, au bout d'un voyage. Et c'est Pangloss qui le lui a appris.</p>
+
+      <p>Le tribunal ordonne en conséquence une seule mesure, et ce n'est pas une peine. Au chapitre XXX, Candide répond à Pangloss six mots qui annulent trente chapitres de métaphysique&nbsp;:</p>
+      <p style="font-family:var(--display);font-size:clamp(22px,4.4vw,32px);line-height:1.25;color:var(--accent);margin:22px 0;max-width:20ch">« Il faut cultiver notre jardin. »<span class="ref" style="font-size:10px">ch.&nbsp;XXX</span></p>
+      <p>Le tribunal fait sienne cette conclusion.</p>
+      <p>L'audience est levée. <span class="di">(trois coups)</span></p>
+    </div>
+  </div>
+  </div>
+</section>
+
+<section class="sec" id="annexes">
+  <div class="sec-head"><span class="sec-num">ANNEXE 1</span><h2>Index des références au roman</h2><span class="sec-time">10 pts du barème</span></div>
+  <p style="max-width:66ch;color:var(--ink-soft);margin-top:-8px">Chaque ligne est utilisée au moins une fois dans le procès. Si la professeure demande «&nbsp;où est-ce dans le texte&nbsp;?&nbsp;», la réponse est ici.</p>
+  <div class="tscroll"><table>
+    <thead><tr><th>Chapitre</th><th>Fait ou citation</th><th>Qui s'en sert</th></tr></thead>
+    <tbody>
+      <tr><td class="ch">I</td><td>Cunégonde «&nbsp;haute en couleur, fraîche, grasse, appétissante&nbsp;»&nbsp;; le château a «&nbsp;une porte et des fenêtres&nbsp;»</td><td>Juge, Procureur</td></tr>
+      <tr><td class="ch">I</td><td>Pangloss et Paquette&nbsp;: la «&nbsp;leçon de physique expérimentale&nbsp;» vue «&nbsp;entre des broussailles&nbsp;»</td><td>Procureur, Cunégonde</td></tr>
+      <tr><td class="ch">I</td><td>Cunégonde revient «&nbsp;tout agitée, tout pensive, toute remplie du désir d'être savante&nbsp;»&nbsp;; la «&nbsp;raison suffisante&nbsp;»</td><td>Procureur</td></tr>
+      <tr><td class="ch">I</td><td>Le mouchoir, le paravent&nbsp;: le baron «&nbsp;chassa Candide du château à grands coups de pied dans le derrière&nbsp;»</td><td>Procureur, Défense, Juge</td></tr>
+      <tr><td class="ch">I</td><td>Le père de Candide n'avait «&nbsp;que soixante et onze quartiers&nbsp;»&nbsp;: la vraie cause de l'expulsion</td><td>Défense, Juge</td></tr>
+      <tr><td class="ch">II</td><td>Candide passé par les baguettes chez les Bulgares</td><td>Candide</td></tr>
+      <tr><td class="ch">V–VI</td><td>Tremblement de terre de Lisbonne&nbsp;; autodafé&nbsp;: Pangloss pendu, Candide fessé</td><td>Candide</td></tr>
+      <tr><td class="ch">VII</td><td>Retrouvailles&nbsp;: «&nbsp;on ne meurt pas toujours de ces deux accidents&nbsp;»</td><td>Réserve (voir annexe 3)</td></tr>
+      <tr><td class="ch">VIII</td><td>Histoire de Cunégonde&nbsp;: les Bulgares «&nbsp;coupèrent ma mère par morceaux&nbsp;»&nbsp;; le «&nbsp;coup de couteau dans le flanc gauche&nbsp;»&nbsp;; «&nbsp;une chose d'usage&nbsp;»</td><td>Défense, Cunégonde</td></tr>
+      <tr><td class="ch">VIII</td><td>Don Issachar et le Grand Inquisiteur se partagent la semaine par contrat</td><td>Défense, Cunégonde, Juge</td></tr>
+      <tr><td class="ch">IX</td><td>Candide tue les deux hommes «&nbsp;en deux minutes&nbsp;»</td><td>Candide</td></tr>
+      <tr><td class="ch">XIII</td><td>Le gouverneur don Fernando d'Ibaraa y Figueora y Mascarenes y Lampourdos y Souza</td><td>Défense</td></tr>
+      <tr><td class="ch">XIII</td><td>Candide «&nbsp;n'osa pas dire qu'elle était sa femme, parce qu'en effet elle ne l'était point&nbsp;»</td><td>Défense, Cunégonde, Candide</td></tr>
+      <tr><td class="ch">XIII</td><td>Cunégonde demande «&nbsp;un quart d'heure pour y penser&nbsp;»&nbsp;; la vieille&nbsp;: «&nbsp;les malheurs donnent des droits&nbsp;»&nbsp;; 72 quartiers et pas une obole</td><td>Procureur, Cunégonde</td></tr>
+      <tr><td class="ch">XVI</td><td>Les Oreillons</td><td>Candide</td></tr>
+      <tr><td class="ch">XVII–XVIII</td><td>Eldorado&nbsp;: ni prison ni tribunal&nbsp;; le roi&nbsp;: «&nbsp;Vous faites une sottise&nbsp;»</td><td>Procureur, Juge</td></tr>
+      <tr><td class="ch">XVIII</td><td>«&nbsp;si nous retournons dans notre monde seulement avec douze moutons chargés de cailloux d'Eldorado… nous pourrons aisément reprendre mademoiselle Cunégonde&nbsp;»</td><td>Procureur, Défense, Candide</td></tr>
+      <tr><td class="ch">XIX</td><td>L'esclave du Surinam&nbsp;: «&nbsp;C'est à ce prix que vous mangez du sucre en Europe&nbsp;»&nbsp;; Vanderdendur vole Candide</td><td>Juge, Cunégonde</td></tr>
+      <tr><td class="ch">XIX</td><td>Définition de l'optimisme&nbsp;: «&nbsp;la rage de soutenir que tout est bien quand on est mal&nbsp;»</td><td>Défense, Juge</td></tr>
+      <tr><td class="ch">XXVII</td><td>Cunégonde «&nbsp;horriblement laide&nbsp;», esclave d'un prince de Transylvanie sur la Propontide</td><td>Cunégonde, Défense</td></tr>
+      <tr><td class="ch">XXIX</td><td>«&nbsp;les yeux éraillés, la gorge sèche, les joues ridées, les bras rouges et écaillés&nbsp;»&nbsp;; «&nbsp;elle fit souvenir Candide de ses promesses avec un ton si absolu&nbsp;»</td><td>Procureur, Juge</td></tr>
+      <tr><td class="ch">XXX</td><td>«&nbsp;Candide, dans le fond de son cœur, n'avait aucune envie d'épouser Cunégonde&nbsp;»&nbsp;; elle «&nbsp;le pressait si vivement&nbsp;»</td><td>Procureur, Juge</td></tr>
+      <tr><td class="ch">XXX</td><td>«&nbsp;bien laide&nbsp;» mais «&nbsp;excellente pâtissière&nbsp;»&nbsp;; Paquette brode&nbsp;; Giroflée menuisier&nbsp;; «&nbsp;Il faut cultiver notre jardin&nbsp;»</td><td>Candide, Juge</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="note">
+    <h4>Précaution d'usage</h4>
+    <p>Les citations sont données d'après le texte courant de Voltaire. Avant l'oral, vérifiez-les une fois dans <b>votre</b> édition de classe et notez le numéro de page&nbsp;: les éditions modernisent parfois l'orthographe, et un professeur qui vous voit citer page en main met la note maximale sur ce critère.</p>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">ANNEXE 2</span><h2>Conseils de jeu, rôle par rôle</h2><span class="sec-time">4 pts du barème</span></div>
+  <div class="grid2">
+    <div class="tip"><h4 style="color:var(--c-juge)">Le Juge</h4><ul>
+      <li><b>Rythme&nbsp;:</b> le plus lent des cinq. Un juge qui se presse n'est pas un juge.</li>
+      <li><b>Geste&nbsp;:</b> trois coups à l'ouverture, trois à la clôture. Un stylo sur la table suffit.</li>
+      <li><b>Regard&nbsp;:</b> vers la salle pendant le verdict, pas vers vos notes.</li>
+      <li><b>Piège&nbsp;:</b> ne commentez pas pendant les plaidoiries. Votre silence fait votre autorité.</li>
+    </ul></div>
+    <div class="tip"><h4 style="color:var(--c-proc)">Le Procureur</h4><ul>
+      <li><b>Ton&nbsp;:</b> froid, méthodique. L'accusation porte mieux à voix basse qu'en criant.</li>
+      <li><b>Arme&nbsp;:</b> la citation. Dites «&nbsp;je cite&nbsp;» avant, marquez un temps après.</li>
+      <li><b>Moment fort&nbsp;:</b> «&nbsp;Le dernier mot de la phrase&nbsp;: Cunégonde.&nbsp;» Laissez 2 secondes.</li>
+      <li><b>Piège&nbsp;:</b> ne soyez pas antipathique. Votre renoncement final (acte VI) n'aura de force que si on vous a cru de bonne foi.</li>
+    </ul></div>
+    <div class="tip"><h4 style="color:var(--c-def)">La Défense</h4><ul>
+      <li><b>Ton&nbsp;:</b> indignation d'abord, démonstration ensuite. Le contraire tombe à plat.</li>
+      <li><b>Arme&nbsp;:</b> les questions fermées à l'acte IV. Enchaînez vite&nbsp;: c'est un rythme de mitraille.</li>
+      <li><b>Moment fort&nbsp;:</b> «&nbsp;Cette femme a été inscrite dans un calendrier.&nbsp;»</li>
+      <li><b>Piège&nbsp;:</b> ne niez pas que Cunégonde calcule. Concédez-le&nbsp;: votre plaidoirie finale est construite là-dessus.</li>
+    </ul></div>
+    <div class="tip"><h4 style="color:var(--c-cun)">Cunégonde</h4><ul>
+      <li><b>Ton&nbsp;:</b> digne, jamais larmoyante. Elle a tout vu&nbsp;: plus rien ne la surprend.</li>
+      <li><b>Arme&nbsp;:</b> l'ironie sèche («&nbsp;Je ne vois pas quel autre crime on pouvait commettre dans cette maison&nbsp;»).</li>
+      <li><b>Moment fort&nbsp;:</b> le «&nbsp;Oui&nbsp;» après le long silence. Comptez vraiment jusqu'à trois.</li>
+      <li><b>Piège&nbsp;:</b> ne jouez pas la victime — c'est l'avocat qui le fait pour vous. Vous, vous constatez.</li>
+    </ul></div>
+    <div class="tip"><h4 style="color:var(--c-cand)">Candide</h4><ul>
+      <li><b>Ton&nbsp;:</b> doux, poli, sincère. Candide n'est jamais ironique&nbsp;: c'est Voltaire qui l'est à sa place.</li>
+      <li><b>Arme&nbsp;:</b> la simplicité. «&nbsp;Parce qu'elle n'y était pas.&nbsp;» Quatre mots, aucun effet.</li>
+      <li><b>Moment fort&nbsp;:</b> le «&nbsp;Moi.&nbsp;» de l'acte V. Tenez le silence avant&nbsp;: c'est le pivot du procès.</li>
+      <li><b>Piège&nbsp;:</b> ne jouez pas le niais. Il est naïf, pas bête&nbsp;: au chapitre XIX, il renonce lui-même à l'optimisme.</li>
+    </ul></div>
+    <div class="tip"><h4>Pour le groupe</h4><ul>
+      <li><b>Disposition&nbsp;:</b> juge au centre, procureur et défense de part et d'autre, les deux témoins devant.</li>
+      <li><b>Répétition&nbsp;:</b> une lecture assise pour le texte, une debout pour les silences. Deux suffisent.</li>
+      <li><b>Accessoires&nbsp;:</b> une chemise cartonnée par orateur. Cela tient les notes et cela fait tribunal.</li>
+      <li><b>Chronomètre&nbsp;:</b> visez 28 min. Si vous dépassez, coupez dans l'acte IV, jamais dans le verdict.</li>
+    </ul></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">ANNEXE 3</span><h2>Questions imprévues&nbsp;: réponses de secours</h2><span class="sec-time">6 pts du barème</span></div>
+  <p style="max-width:66ch;color:var(--ink-soft);margin-top:-8px">Si la professeure interrompt le procès pour poser une question, voici quoi répondre. Ces réponses valorisent le critère «&nbsp;qualité des arguments&nbsp;».</p>
+  <div class="tscroll"><table>
+    <thead><tr><th>Si on vous demande…</th><th>Répondez</th></tr></thead>
+    <tbody>
+      <tr><td>«&nbsp;Cunégonde aime-t-elle vraiment Candide&nbsp;?&nbsp;»</td><td>Au chapitre premier, oui&nbsp;: c'est son seul acte libre. Ensuite, Voltaire ne le dit jamais. Il décrit ce qu'elle <i>fait</i>, pas ce qu'elle ressent — et c'est précisément le procédé du conte philosophique&nbsp;: les personnages sont des fonctions, pas des psychologies.</td></tr>
+      <tr><td>«&nbsp;Pourquoi Voltaire la rend-il laide à la fin&nbsp;?&nbsp;»</td><td>Parce que la beauté était la seule valeur qu'on lui reconnaissait. En la lui retirant au chapitre XXIX, Voltaire oblige Candide à choisir entre son désir et sa parole — et à découvrir, au chapitre XXX, que le bonheur ne dépendait d'aucun des deux.</td></tr>
+      <tr><td>«&nbsp;Le mariage final est-il un échec&nbsp;?&nbsp;»</td><td>Non&nbsp;: c'est un déplacement. Le roman abandonne l'amour comme but et le remplace par le travail. Cunégonde n'est plus désirée, elle est <i>utile</i>&nbsp;: «&nbsp;elle devint une excellente pâtissière&nbsp;» (ch.&nbsp;XXX). C'est une fin ironique, pas malheureuse.</td></tr>
+      <tr><td>«&nbsp;Qui est le vrai responsable&nbsp;?&nbsp;»</td><td>Ni Cunégonde ni Candide&nbsp;: l'optimisme de Pangloss, qui enseigne que tout est au mieux et empêche donc d'agir. Candide lui-même le définit au chapitre XIX&nbsp;: «&nbsp;la rage de soutenir que tout est bien quand on est mal&nbsp;».</td></tr>
+      <tr><td>«&nbsp;Cunégonde est-elle un personnage féministe&nbsp;?&nbsp;»</td><td>Prudence&nbsp;: le mot est anachronique. Mais Voltaire fait d'elle, avec la vieille, un constat sur la condition des femmes&nbsp;: elles sont des biens qu'on vend, qu'on partage et qu'on compte en quartiers de noblesse. «&nbsp;Les malheurs donnent des droits&nbsp;» (ch.&nbsp;XIII) est la seule morale qu'on leur laisse.</td></tr>
+      <tr><td>«&nbsp;Pourquoi Candide quitte-t-il l'Eldorado&nbsp;?&nbsp;»</td><td>Deux raisons dans la même phrase du chapitre XVIII&nbsp;: la richesse («&nbsp;plus riches que tous les rois ensemble&nbsp;») et Cunégonde. L'Eldorado est une utopie&nbsp;: Voltaire la montre invivable pour un homme qui veut encore quelque chose.</td></tr>
+      <tr><td>«&nbsp;Et le chapitre VII&nbsp;?&nbsp;»</td><td>Les retrouvailles à Lisbonne. Cunégonde y résume tout le roman d'une phrase&nbsp;: «&nbsp;on ne meurt pas toujours de ces deux accidents&nbsp;». C'est l'humour noir de Voltaire&nbsp;: on survit à tout, même à l'horreur, et c'est justement ce qui rend l'optimisme obscène.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="note">
+    <h4>Comment ce procès couvre le barème sur 20</h4>
+    <p><b>Références exactes au roman — 10 pts.</b> 23 renvois répartis sur 15 chapitres, dont les six exigés pour Cunégonde (I, VII, VIII, XIII, XXIX, XXX). Chaque rôle en porte au moins trois.</p>
+    <p><b>Qualité des arguments — 6 pts.</b> Le procès ne se contente pas d'opposer coupable et victime&nbsp;: le procureur renonce lui-même à la condamnation (acte VI) et le verdict déplace la responsabilité sur l'optimisme. C'est la lecture que Voltaire propose.</p>
+    <p><b>Expression orale et incarnation — 4 pts.</b> Les silences, les gestes et les adresses sont écrits dans la marge. Jouez-les&nbsp;: ce sont eux qui font la différence entre une lecture et un procès.</p>
+  </div>
+</section>
+
+<p class="foot">
+  Procès-verbal établi pour cinq élèves, d'après Voltaire, <i>Candide ou l'Optimisme</i> (1759).<br>
+  Durée d'audience estimée&nbsp;: 26 à 30 minutes. Vérifiez les citations dans votre édition avant le passage.
+</p>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var LABELS = {juge:"Juge",proc:"Procureur",def:"Défense",cun:"Cunégonde",cand:"Candide"};
+  var lines = Array.prototype.slice.call(document.querySelectorAll(".line"));
+  var chips = Array.prototype.slice.call(document.querySelectorAll(".chip"));
+  var cueBtn = document.getElementById("cueBtn");
+  var current = "all", cueOn = false;
+
+  // --- precompute the cue (tail of the previous speech) for every line ---
+  function tail(el, words){
+    var t = (el.querySelector(".say") || el).textContent.replace(/\s+/g," ").trim();
+    var w = t.split(" ");
+    return (w.length > words ? "… " : "") + w.slice(-words).join(" ");
+  }
+  lines.forEach(function(ln, i){
+    if (i === 0){ ln.dataset.cueWho = ""; ln.dataset.cueTxt = "Ouverture de l'audience."; return; }
+    var prev = lines[i-1];
+    ln.dataset.cueWho = LABELS[prev.dataset.role] || "";
+    ln.dataset.cueTxt = tail(prev, 11);
+  });
+
+  // --- counts ---
+  var totalRefs = document.querySelectorAll(".say .ref").length;
+  document.getElementById("kpi-lines").textContent = lines.length;
+  document.getElementById("kpi-refs").textContent = totalRefs;
+  Object.keys(LABELS).forEach(function(r){
+    var mine = lines.filter(function(l){ return l.dataset.role === r; });
+    var refs = mine.reduce(function(n,l){ return n + l.querySelectorAll(".ref").length; }, 0);
+    var slot = document.querySelector('.stat[data-count="'+r+'"]');
+    if (slot) slot.textContent = mine.length + (mine.length>1?" répliques":" réplique") + " · " + refs + (refs>1?" références":" référence");
+  });
+
+  // --- rendering ---
+  function clearCues(){
+    Array.prototype.slice.call(document.querySelectorAll(".cue")).forEach(function(c){ c.remove(); });
+  }
+  function render(){
+    clearCues();
+    var filtering = current !== "all";
+    document.body.classList.toggle("filtering", filtering);
+    cueBtn.disabled = !filtering;
+    if (!filtering && cueOn){ cueOn = false; cueBtn.setAttribute("aria-pressed","false"); cueBtn.textContent = "Afficher mes enchaînements"; }
+
+    lines.forEach(function(ln){
+      var hit = filtering && ln.dataset.role === current;
+      ln.classList.toggle("hit", hit);
+      ln.hidden = cueOn && !hit;
+      if (cueOn && hit){
+        var c = document.createElement("p");
+        c.className = "cue";
+        var who = ln.dataset.cueWho;
+        c.innerHTML = (who ? "<b>" + who + " —</b> " : "") + ln.dataset.cueTxt.replace(/[<>&]/g, function(m){
+          return {"<":"&lt;",">":"&gt;","&":"&amp;"}[m];
+        });
+        ln.parentNode.insertBefore(c, ln);
+      }
+    });
+    chips.forEach(function(c){ c.setAttribute("aria-pressed", String(c.dataset.role === current)); });
+  }
+
+  chips.forEach(function(c){
+    c.addEventListener("click", function(){
+      current = c.dataset.role;
+      try { localStorage.setItem("proces-role", current); } catch(e){}
+      render();
+    });
+  });
+
+  cueBtn.addEventListener("click", function(){
+    if (cueBtn.disabled) return;
+    cueOn = !cueOn;
+    cueBtn.setAttribute("aria-pressed", String(cueOn));
+    cueBtn.textContent = cueOn ? "Afficher tout le procès" : "Afficher mes enchaînements";
+    render();
+  });
+
+  try {
+    var saved = localStorage.getItem("proces-role");
+    if (saved && (saved === "all" || LABELS[saved])) current = saved;
+  } catch(e){}
+  render();
+})();
+</script>
