@@ -52,6 +52,7 @@ const refItems = [
   { k: 'r', t: "Bryant, K., & Bernstein, A. D. (2018). The mamba mentality: How I play. MCD/Farrar, Straus and Giroux." },
   { k: 'r', t: "Chopra, G. (Director). (2015). Kobe Bryant\u2019s muse [Film]. Showtime Networks." },
   { k: 'r', t: "Jimmy Kimmel Live! (2015, February 23). Season 13, Episode 28 [TV series episode]. ABC." },
+  { k: 'r', t: "The Grantland Basketball Hour. (2015, February). Episode with Kobe Bryant, Bill Simmons and Jalen Rose [Television programme]. Grantland/ESPN. [Archived as a podcast by The Ringer. Quotations below are taken from the Yahoo Finance report listed under Reported Accounts; cite the recording directly if you can access it.]" },
   { k: 'r', t: "Klosterman, C. (2015, February 17). Kobe Bryant will always be an all-star of talking [Interview with K. Bryant]. GQ. [VERIFY exact headline, online date and print-issue date against GQ, and check each quotation against the original text.]" },
   { k: 'h2', t: 'Reported Accounts of Primary Events' },
   { k: 'r', t: "CNBC. (2018, September 14). Retired NBA star Kobe Bryant still wakes up at 4 a.m. every day to work out [Report of Bryant\u2019s remarks on The School of Greatness podcast]. https://www.cnbc.com/2018/09/14/kobe-bryant-still-wakes-up-at-4-am-every-day-to-work-out.html [VERIFY byline.]" },
