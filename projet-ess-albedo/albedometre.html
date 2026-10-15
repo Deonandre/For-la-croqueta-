@@ -1,0 +1,1001 @@
+<title>Albédomètre</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chivo:wght@700;900&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* Layout : cahier d'instrument — une colonne d'étapes numérotées, readout collant en tête. */
+:root{
+  --bg:#E7EDEF; --surface:#FDFDFC; --surface-2:#EFF4F5; --surface-3:#E2EAEC;
+  --ink:#152227; --ink-2:#4B6269; --ink-3:#73898F; --line:#C7D5D9;
+  --solar:#9E5B07; --solar-soft:#F3E2CC;
+  --albedo:#0D6A74; --albedo-soft:#D3E7E9;
+  --cool:#1C6F47; --warn:#95371E;
+  --on-accent:#FFFFFF;
+  --radius:10px;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --display:"Chivo","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F1A1E; --surface:#18252B; --surface-2:#1E2E35; --surface-3:#263941;
+  --ink:#E7EFF1; --ink-2:#9DB3BA; --ink-3:#7A9099; --line:#2B3F47;
+  --solar:#E2A044; --solar-soft:#3A2D18;
+  --albedo:#4ABAC5; --albedo-soft:#123238;
+  --cool:#4FC78A; --warn:#E07B5C;
+  --on-accent:#0F1A1E;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0F1A1E; --surface:#18252B; --surface-2:#1E2E35; --surface-3:#263941;
+  --ink:#E7EFF1; --ink-2:#9DB3BA; --ink-3:#7A9099; --line:#2B3F47;
+  --solar:#E2A044; --solar-soft:#3A2D18;
+  --albedo:#4ABAC5; --albedo-soft:#123238;
+  --cool:#4FC78A; --warn:#E07B5C;
+  --on-accent:#0F1A1E;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;
+  -webkit-text-size-adjust:100%}
+.wrap{max-width:860px;margin:0 auto;padding-inline:16px;padding-block:28px 64px}
+h1,h2,h3{font-family:var(--display);font-weight:900;text-wrap:balance;margin:0;letter-spacing:-.015em}
+h1{font-size:clamp(1.9rem,6vw,2.9rem);line-height:1.04}
+h2{font-size:clamp(1.15rem,3.4vw,1.45rem);line-height:1.15}
+h3{font-size:1rem;font-weight:700;letter-spacing:0}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:.7rem;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3)}
+.lede{color:var(--ink-2);font-size:1.05rem;max-width:62ch}
+a{color:var(--albedo)}
+code,.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* ---- en-tête ---- */
+header.top{display:flex;flex-direction:column;gap:14px;margin-bottom:10px}
+.badges{display:flex;flex-wrap:wrap;gap:6px}
+.badge{font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;
+  padding:4px 9px;border-radius:99px;border:1px solid var(--line);color:var(--ink-2);background:var(--surface)}
+
+/* ---- readout collant ---- */
+.readout{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;margin:22px 0 6px;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:0 6px 18px -14px rgba(0,0,0,.5);overflow:hidden}
+.readout-grid{display:grid;grid-template-columns:repeat(3,1fr)}
+.ro{padding:12px 14px;border-left:1px solid var(--line);min-width:0}
+.ro:first-child{border-left:0}
+.ro-k{font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-3);display:block;margin-bottom:3px}
+.ro-v{font-family:var(--display);font-weight:900;font-size:clamp(1.05rem,3.6vw,1.5rem);
+  font-variant-numeric:tabular-nums;line-height:1.1;display:block}
+.ro-u{font-size:.74rem;color:var(--ink-2);font-family:var(--mono)}
+.ro.hero .ro-v{color:var(--cool)}
+@media (max-width:520px){.readout-grid{grid-template-columns:1fr 1fr}
+  .ro:nth-child(3){grid-column:1/-1;border-left:0;border-top:1px solid var(--line)}}
+
+/* ---- sections ---- */
+section{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:20px 18px;margin-top:20px}
+.sec-head{display:flex;gap:12px;align-items:baseline;margin-bottom:6px}
+.step-no{font-family:var(--mono);font-weight:600;font-size:.78rem;color:var(--solar);
+  border:1px solid var(--solar);border-radius:4px;padding:1px 6px;flex:none;letter-spacing:.04em}
+.sec-sub{color:var(--ink-2);margin-top:8px;max-width:64ch}
+
+/* ---- tableau de mesures ---- */
+.tablewrap{overflow-x:auto;margin-top:16px;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:.88rem}
+th,td{padding:7px 8px;text-align:left;border-bottom:1px solid var(--line);vertical-align:middle}
+thead th{background:var(--surface-2);font-family:var(--mono);font-size:.66rem;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--ink-2);font-weight:600;white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+tr.control td{background:var(--solar-soft)}
+input,select{font-family:var(--body);font-size:.88rem;color:var(--ink);background:var(--surface-2);
+  border:1px solid var(--line);border-radius:6px;padding:6px 7px;width:100%;min-width:0}
+input.lux,input.pct{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--albedo);outline-offset:1px}
+td.alb{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:600}
+.w-nom{min-width:150px}.w-lux{width:78px}.w-pct{width:64px}
+.rm{background:none;border:0;color:var(--ink-3);cursor:pointer;font-size:1.1rem;line-height:1;padding:2px 5px;border-radius:5px}
+.rm:hover{color:var(--warn);background:var(--surface-3)}
+.flagged{color:var(--warn);font-weight:600}
+
+button{font-family:var(--body);font-size:.88rem;font-weight:600;cursor:pointer;
+  background:var(--surface-2);color:var(--ink);border:1px solid var(--line);
+  border-radius:7px;padding:8px 13px}
+button:hover{background:var(--surface-3)}
+button.primary{background:var(--albedo);border-color:var(--albedo);color:#fff}
+:root[data-theme="dark"] button.primary{color:#0F1A1E}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) button.primary{color:#0F1A1E}}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
+.hint{font-size:.82rem;color:var(--ink-3);margin-top:10px}
+
+/* ---- barres d'albédo ---- */
+.bars{display:flex;flex-direction:column;gap:3px;margin-top:18px}
+.bar-row{display:grid;grid-template-columns:minmax(96px,34%) 1fr;gap:10px;align-items:center;
+  padding:7px 0;border-bottom:1px solid var(--line)}
+.bar-row:last-child{border-bottom:0}
+.bar-lab{font-size:.84rem;min-width:0;overflow-wrap:anywhere}
+.bar-lab b{display:block;font-weight:600}
+.bar-lab span{font-family:var(--mono);font-size:.72rem;color:var(--ink-3)}
+.track{position:relative;height:30px;background:var(--surface-2);border-radius:5px;min-width:0}
+.litband{position:absolute;top:0;bottom:0;background:var(--solar-soft);border-left:1px dashed var(--solar);
+  border-right:1px dashed var(--solar)}
+.fill{position:absolute;top:5px;bottom:5px;left:0;background:var(--albedo);border-radius:4px}
+.ebar{position:absolute;top:9px;height:12px;border-left:2px solid var(--ink);border-right:2px solid var(--ink)}
+.ebar::before{content:"";position:absolute;top:50%;left:0;right:0;border-top:2px solid var(--ink)}
+.bval{position:absolute;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:.74rem;
+  font-weight:600;padding-left:6px;white-space:nowrap}
+.axis{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.68rem;
+  color:var(--ink-3);margin-top:4px;padding-left:calc(34% + 10px)}
+@media (max-width:480px){.axis{padding-left:0}}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;font-size:.78rem;color:var(--ink-2)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+
+/* ---- paramètres du modèle ---- */
+.params{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:12px;margin-top:18px}
+.p{display:flex;flex-direction:column;gap:5px;min-width:0}
+.p label{font-size:.78rem;color:var(--ink-2);font-weight:600}
+.p .srcnote{font-size:.7rem;color:var(--ink-3);font-family:var(--mono)}
+
+/* ---- chaîne de calcul ---- */
+.chain{margin-top:18px;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;
+  padding:14px;overflow-x:auto}
+.chain ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:11px}
+.chain li{font-size:.86rem}
+.chain .lbl{color:var(--ink-2);display:block;margin-bottom:2px}
+.chain .eq{font-family:var(--mono);font-size:.84rem;white-space:nowrap;font-variant-numeric:tabular-nums}
+.chain .eq b{color:var(--albedo)}
+
+/* ---- scénarios ---- */
+.scn{display:flex;flex-direction:column;gap:9px;margin-top:16px}
+.scn-row{display:grid;grid-template-columns:minmax(110px,38%) 1fr;gap:10px;align-items:center}
+.scn-lab{font-size:.84rem;min-width:0}
+.scn-lab span{display:block;font-family:var(--mono);font-size:.7rem;color:var(--ink-3)}
+.scn-track{position:relative;height:26px;background:var(--surface-2);border-radius:5px;min-width:0}
+.scn-fill{position:absolute;inset:4px auto 4px 0;background:var(--cool);border-radius:4px}
+.scn-val{position:absolute;top:50%;transform:translateY(-50%);padding-left:7px;
+  font-family:var(--mono);font-size:.76rem;font-weight:600;white-space:nowrap}
+
+/* ---- équivalences ---- */
+.equiv{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:18px}
+.eq-card{background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:13px}
+.eq-card .n{font-family:var(--display);font-weight:900;font-size:1.5rem;font-variant-numeric:tabular-nums;
+  display:block;line-height:1.1}
+.eq-card .t{font-size:.8rem;color:var(--ink-2);margin-top:3px;display:block}
+
+/* ---- schéma ---- */
+figure{margin:18px 0 0}
+figure svg{display:block;width:100%;max-width:100%;height:auto;
+  background:var(--surface-2);border:1px solid var(--line);border-radius:8px}
+figcaption{font-size:.79rem;color:var(--ink-3);margin-top:7px;max-width:62ch}
+
+/* ---- listes de contenu ---- */
+.steps{margin:16px 0 0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:13px;counter-reset:s}
+.steps li{position:relative;padding-left:34px;font-size:.93rem;counter-increment:s}
+.steps li::before{content:counter(s);position:absolute;left:0;top:1px;width:23px;height:23px;
+  border-radius:50%;background:var(--albedo-soft);color:var(--albedo);font-family:var(--mono);
+  font-size:.74rem;font-weight:600;display:grid;place-items:center}
+.steps b{font-weight:600}
+ul.plain{margin:14px 0 0;padding-left:19px;display:flex;flex-direction:column;gap:8px;font-size:.9rem}
+ul.plain li{padding-left:2px}
+.refs{margin:16px 0 0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:11px;font-size:.84rem}
+.refs li{padding-left:15px;border-left:2px solid var(--line);color:var(--ink-2)}
+.refs b{color:var(--ink);font-weight:600}
+.note{margin-top:16px;padding:13px;border-radius:8px;background:var(--solar-soft);
+  border:1px solid var(--solar);font-size:.86rem}
+.note b{font-weight:600}
+.io{width:100%;min-height:76px;font-family:var(--mono);font-size:.76rem;margin-top:12px;
+  background:var(--surface-2);color:var(--ink);border:1px solid var(--line);border-radius:7px;padding:9px;resize:vertical}
+footer{margin-top:28px;font-size:.8rem;color:var(--ink-3);text-align:center}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <p class="eyebrow">Systèmes environnementaux et sociétés · NS · Thème 6</p>
+  <h1>Albédomètre</h1>
+  <p class="lede">Mesure l'albédo réel des surfaces de ton établissement avec un smartphone,
+  puis convertis ces mesures en forçage radiatif et en équivalent CO<sub>2</sub>.
+  Toute la chaîne de calcul est affichée, chiffre par chiffre.</p>
+  <div class="badges">
+    <span class="badge">6.1 Bilan radiatif</span>
+    <span class="badge">6.2 Forçage</span>
+    <span class="badge">6.3 Atténuation</span>
+    <span class="badge">0 € de matériel</span>
+  </div>
+</header>
+
+<div class="readout" id="readout">
+  <div class="readout-grid">
+    <div class="ro"><span class="ro-k">Albédo du site</span>
+      <span class="ro-v num" id="ro-site">—</span><span class="ro-u" id="ro-site-u">pondéré par surface</span></div>
+    <div class="ro"><span class="ro-k">Forçage radiatif</span>
+      <span class="ro-v num" id="ro-forc">—</span><span class="ro-u">W·m⁻² planétaire</span></div>
+    <div class="ro hero"><span class="ro-k">Équivalent CO₂ évité</span>
+      <span class="ro-v num" id="ro-co2">—</span><span class="ro-u">tonnes de CO₂</span></div>
+  </div>
+</div>
+
+<!-- ======================= 1 ======================= -->
+<section>
+  <div class="sec-head"><span class="step-no">01</span><h2>Le protocole de terrain</h2></div>
+  <p class="sec-sub">L'albédo est la fraction du rayonnement solaire qu'une surface renvoie.
+  Un capteur de luminosité de smartphone suffit à en mesurer la composante visible : on compare
+  l'éclairement reçu du ciel à l'éclairement renvoyé par le sol.</p>
+
+  <figure>
+    <svg viewBox="0 0 480 182" role="img" aria-label="Schéma du principe de mesure : le téléphone mesure d'abord l'éclairement descendant du ciel, puis l'éclairement remontant de la surface.">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto">
+          <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+        </marker>
+      </defs>
+      <g fill="none" stroke-width="2">
+        <!-- soleil -->
+        <circle cx="66" cy="34" r="15" fill="var(--solar)" stroke="none"/>
+        <g stroke="var(--solar)" stroke-width="2">
+          <path d="M66 10v-7M66 65v7M38 34h-7M94 34h7M47 15l-5-5M85 53l5 5M85 15l5-5M47 53l-5 5"/>
+        </g>
+        <!-- rayon incident -->
+        <g color="var(--solar)" stroke="var(--solar)">
+          <path d="M84 50 L163 118" marker-end="url(#ar)"/>
+        </g>
+        <!-- sol -->
+        <rect x="24" y="131" width="432" height="18" rx="3" fill="var(--surface-3)" stroke="var(--line)"/>
+        <!-- rayon réfléchi -->
+        <g color="var(--albedo)" stroke="var(--albedo)">
+          <path d="M168 120 L246 56" marker-end="url(#ar)"/>
+        </g>
+        <!-- téléphone position 1 : capteur vers le haut -->
+        <rect x="286" y="34" width="29" height="50" rx="4" fill="var(--surface)" stroke="var(--ink-2)"/>
+        <circle cx="300.5" cy="42" r="2.4" fill="var(--solar)" stroke="none"/>
+        <g color="var(--solar)" stroke="var(--solar)" stroke-width="1.6">
+          <path d="M300.5 18 L300.5 32" marker-end="url(#ar)"/>
+        </g>
+        <!-- téléphone position 2 : capteur vers le bas -->
+        <rect x="286" y="96" width="29" height="50" rx="4" fill="var(--surface)" stroke="var(--ink-2)"/>
+        <circle cx="300.5" cy="138" r="2.4" fill="var(--albedo)" stroke="none"/>
+        <g color="var(--albedo)" stroke="var(--albedo)" stroke-width="1.6">
+          <path d="M300.5 166 L300.5 150" marker-end="url(#ar)"/>
+        </g>
+      </g>
+      <g font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--ink-2)">
+        <text x="110" y="92">incident</text>
+        <text x="196" y="40">réfléchi</text>
+        <text x="326" y="50" fill="var(--solar)">E↓ vers le ciel</text>
+        <text x="326" y="66" fill="var(--ink-3)">éclairement reçu</text>
+        <text x="326" y="118" fill="var(--albedo)">E↑ vers le sol</text>
+        <text x="326" y="134" fill="var(--ink-3)">éclairement renvoyé</text>
+      </g>
+      <g font-family="IBM Plex Mono, monospace" font-size="13" font-weight="600" fill="var(--ink)">
+        <text x="28" y="174">α = E↑ / E↓</text>
+      </g>
+    </svg>
+    <figcaption>Principe de la mesure. Le rapport des deux éclairements donne l'albédo dans le
+    domaine visible. Les deux lectures doivent être prises au même endroit, à quelques secondes
+    d'intervalle, pour que l'éclairement du ciel n'ait pas changé.</figcaption>
+  </figure>
+
+  <ol class="steps">
+    <li><b>Installe phyphox</b> (gratuit, développé par l'université RWTH d'Aix-la-Chapelle,
+      sans publicité). Ouvre l'expérience « Capteur de luminosité » / « Light ». Vérifie d'abord que
+      ton téléphone possède bien un capteur de luminosité : l'application te le dira.</li>
+    <li><b>Choisis un créneau de ciel clair</b>, entre 11 h et 15 h, soleil non voilé.
+      Note l'heure et la couverture nuageuse pour chaque série.</li>
+    <li><b>Pour chaque surface</b> : tiens le téléphone à l'horizontale, à environ 50 cm du sol,
+      écran vers le ciel, et relève <code>E↓</code>. Retourne-le immédiatement, capteur vers le sol,
+      même hauteur, et relève <code>E↑</code>.</li>
+    <li><b>Reste hors de l'ombre portée</b> de ton propre corps. Place-toi de côté, bras tendu :
+      ton ombre sur la zone mesurée est la principale source d'erreur.</li>
+    <li><b>Répète trois fois</b> par surface, en te déplaçant d'un mètre entre chaque répétition.
+      C'est ce qui te donnera un écart-type et un intervalle de confiance.</li>
+    <li><b>Mesure une feuille de papier blanc A4</b> posée au sol comme <b>témoin</b>.
+      Sa réflectance connue (0,75–0,85) permet de vérifier que ta méthode ne dérive pas.</li>
+    <li><b>Estime la part de chaque surface</b> dans la cour : capture d'écran du Géoportail
+      ou de Google Maps en vue satellite, puis comptage sur une grille imprimée.</li>
+  </ol>
+
+  <div class="note"><b>Sécurité et autorisation.</b> Demande l'accord de la vie scolaire avant
+  de circuler dans la cour avec un téléphone, et ne monte jamais sur un toit. Pour la toiture,
+  mesure un matériau identique accessible au sol, ou utilise une valeur de la littérature en
+  l'indiquant explicitement dans ton rapport.</div>
+</section>
+
+<!-- ======================= 2 ======================= -->
+<section>
+  <div class="sec-head"><span class="step-no">02</span><h2>Tes mesures</h2></div>
+  <p class="sec-sub">Les lignes ci-dessous sont un <b>exemple</b> de cour de lycée : remplace
+  chaque valeur par tes propres relevés. Les éclairements sont en lux. La virgule décimale
+  est acceptée.</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr>
+        <th class="w-nom">Surface</th>
+        <th class="w-pct">Part %</th>
+        <th class="w-lux">E↓ #1</th><th class="w-lux">E↑ #1</th>
+        <th class="w-lux">E↓ #2</th><th class="w-lux">E↑ #2</th>
+        <th class="w-lux">E↓ #3</th><th class="w-lux">E↑ #3</th>
+        <th>α ± IC<sub>95</sub></th><th></th>
+      </tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="btnrow">
+    <button id="addRow">+ Ajouter une surface</button>
+    <button id="clearRows">Vider le tableau</button>
+    <button id="resetRows">Rétablir l'exemple</button>
+    <button id="toggleIO">Exporter / importer</button>
+  </div>
+  <p class="hint">Tes saisies sont conservées dans ce navigateur. Pour les transférer vers
+  ton rapport ou un autre appareil, utilise « Exporter / importer ».</p>
+
+  <div id="ioBox" hidden>
+    <textarea class="io" id="ioText" spellcheck="false" aria-label="Données au format texte"></textarea>
+    <div class="btnrow">
+      <button id="doExport">Remplir avec mes données</button>
+      <button id="doCopy">Copier</button>
+      <button class="primary" id="doImport">Importer ce texte</button>
+    </div>
+    <p class="hint" id="ioMsg">Format : une ligne par surface, champs séparés par des
+    tabulations ou des points-virgules — nom ; part % ; E↓1 ; E↑1 ; E↓2 ; E↑2 ; E↓3 ; E↑3</p>
+  </div>
+</section>
+
+<!-- ======================= 3 ======================= -->
+<section>
+  <div class="sec-head"><span class="step-no">03</span><h2>Albédo mesuré, surface par surface</h2></div>
+  <p class="sec-sub">Barre pleine : ta moyenne. Crochets noirs : l'intervalle de confiance à 95 %
+  calculé sur tes répétitions. Bande ocre : la fourchette publiée dans la littérature pour ce
+  type de matériau. Un écart important entre les deux est un résultat à discuter, pas une erreur
+  à cacher.</p>
+  <div class="bars" id="bars"></div>
+  <div class="axis"><span>0</span><span>0,2</span><span>0,4</span><span>0,6</span><span>0,8</span><span>1,0</span></div>
+  <div class="legend">
+    <span><i style="background:var(--albedo)"></i>Albédo mesuré</span>
+    <span><i style="background:var(--solar-soft);border:1px dashed var(--solar)"></i>Fourchette de référence</span>
+    <span><i style="background:var(--ink)"></i>IC à 95 %</span>
+  </div>
+  <p class="hint" id="siteNote"></p>
+</section>
+
+<!-- ======================= 4 ======================= -->
+<section>
+  <div class="sec-head"><span class="step-no">04</span><h2>Du lux à la tonne de CO₂</h2></div>
+  <p class="sec-sub">Choisis une intervention réaliste : éclaircir une surface de l'établissement.
+  Le modèle convertit le gain d'albédo en forçage radiatif planétaire, puis en masse de CO₂
+  dont le retrait produirait le même effet radiatif.</p>
+
+  <div class="params">
+    <div class="p"><label for="pSurf">Surface à traiter</label>
+      <select id="pSurf"></select>
+      <span class="srcnote">albédo actuel : <span id="pAlbNow">—</span></span></div>
+    <div class="p"><label for="pArea">Aire traitée (m²)</label>
+      <input class="lux" id="pArea" value="2000" inputmode="decimal">
+      <span class="srcnote">toiture ou cour</span></div>
+    <div class="p"><label for="pTarget">Albédo visé</label>
+      <input class="lux" id="pTarget" value="0,60" inputmode="decimal">
+      <span class="srcnote">peinture réfléchissante : 0,6–0,8</span></div>
+    <div class="p"><label for="pIns">Irradiation annuelle (kWh·m⁻²)</label>
+      <input class="lux" id="pIns" value="1300" inputmode="decimal">
+      <span class="srcnote">à relever sur PVGIS</span></div>
+    <div class="p"><label for="pTau">Transmittance atmosphérique ↑</label>
+      <input class="lux" id="pTau" value="0,76" inputmode="decimal">
+      <span class="srcnote">fraction qui s'échappe vers l'espace</span></div>
+    <div class="p"><label for="pConc">CO₂ atmosphérique actuel (ppm)</label>
+      <input class="lux" id="pConc" value="425" inputmode="decimal">
+      <span class="srcnote">à relever sur NOAA GML</span></div>
+  </div>
+
+  <div class="chain"><ol id="chain"></ol></div>
+
+  <div class="equiv" id="equiv"></div>
+
+  <div class="note"><b>Le piège à éviter.</b> Un gain d'albédo ne « compense » pas du CO₂ au sens
+  strict : il produit le même forçage radiatif <i>aussi longtemps que la surface reste claire</i>,
+  alors qu'une tonne de CO₂ non émise agit pendant des siècles. L'équivalence calculée ici est
+  <b>instantanée</b>, pas cumulée. Écris-le dans ta discussion : c'est le point qui distingue
+  une analyse de NS d'un simple calcul.</div>
+</section>
+
+<!-- ======================= 5 ======================= -->
+<section>
+  <div class="sec-head"><span class="step-no">05</span><h2>Mise en perspective</h2></div>
+  <p class="sec-sub">Trois scénarios appliqués à ton établissement, puis la confrontation de ce
+  modèle simplifié au résultat de référence de la littérature scientifique.</p>
+  <div class="scn" id="scn"></div>
+
+  <h3 style="margin-top:26px">Mon modèle tient-il la route ?</h3>
+  <p class="sec-sub">Akbari, Menon et Rosenfeld (2009) estiment qu'éclaircir les toits et les
+  chaussées de toutes les villes du monde — soit une hausse de l'albédo urbain d'environ 0,10 —
+  produirait un forçage négatif équivalant à <b>44 Gt de CO₂</b>. En appliquant la chaîne de
+  calcul ci-dessus à ce même scénario mondial :</p>
+  <div class="chain"><ol id="bench"></ol></div>
+  <p class="hint" id="benchNote"></p>
+</section>
+
+<!-- ======================= 6 ======================= -->
+<section>
+  <div class="sec-head"><span class="step-no">06</span><h2>Limites et sources</h2></div>
+
+  <h3>Les cinq limites à reconnaître dans ton rapport</h3>
+  <ul class="plain">
+    <li><b>Le capteur ne voit que le visible.</b> Un luxmètre pondère la lumière par la courbe
+      de sensibilité de l'œil (380–780 nm), alors que près de la moitié de l'énergie solaire
+      arrive dans l'infrarouge proche. Tu mesures donc un <i>albédo visible</i>, pas l'albédo
+      à ondes courtes complet. Pour la plupart des matériaux de construction les deux sont
+      proches, mais la végétation réfléchit beaucoup plus dans l'infrarouge : ton albédo du
+      gazon sera <b>sous-estimé</b>.</li>
+    <li><b>Réponse angulaire imparfaite.</b> Un capteur de téléphone n'est pas un cosinus
+      parfait comme un pyranomètre : il sous-pondère la lumière rasante. L'erreur est plus
+      faible à midi, d'où le créneau imposé par le protocole.</li>
+    <li><b>Réflexion non lambertienne.</b> Beaucoup de surfaces réfléchissent plus dans
+      certaines directions. Une mesure ponctuelle ne capture pas toute l'hémisphère.</li>
+    <li><b>Un seul jour de mesure.</b> L'albédo varie avec l'humidité du sol, la saison et la
+      hauteur du soleil. Un enrobé mouillé réfléchit presque deux fois plus qu'un enrobé sec.</li>
+    <li><b>Le forçage local n'est pas le forçage global.</b> Le modèle suppose qu'une fraction
+      fixe du rayonnement réfléchi s'échappe vers l'espace. En réalité, nuages et aérosols en
+      renvoient une partie vers le sol, et ce taux varie géographiquement.</li>
+  </ul>
+
+  <h3 style="margin-top:24px">Constantes et relations utilisées</h3>
+  <ul class="refs">
+    <li><b>Forçage radiatif du CO₂ :</b> ΔF = 5,35 · ln(C/C₀) W·m⁻² — Myhre, Highwood, Shine
+      et Stordal (1998), <i>Geophysical Research Letters</i> 25(14). Un doublement de la
+      concentration donne 3,7 W·m⁻². La dérivée marginale, 5,35/C, sert ici à convertir un
+      forçage en ppm.</li>
+    <li><b>Masse d'un ppm de CO₂ :</b> 7,82 Gt. Dérivé de la masse de l'atmosphère
+      (5,148·10¹⁸ kg), de la masse molaire de l'air sec (28,96 g·mol⁻¹) et de celle du CO₂
+      (44,01 g·mol⁻¹). La convention du GIEC, 2,124 GtC par ppm, donne 7,78 Gt de CO₂ : les
+      deux valeurs concordent à 0,5 %.</li>
+    <li><b>Aire de la surface terrestre :</b> 5,10·10¹⁴ m².</li>
+    <li><b>Référence albédo-climat :</b> Akbari H., Menon S., Rosenfeld A. (2009),
+      « Global cooling: increasing world-wide urban albedos to offset CO₂ »,
+      <i>Climatic Change</i> 94, 275–286.</li>
+    <li><b>Albédos de référence :</b> valeurs de la base PVsyst reprises par le Sandia
+      National Laboratories PV Performance Modeling Collaborative (enrobé sec 0,09–0,15 ;
+      béton 0,25–0,35 ; gazon 0,15–0,26).</li>
+    <li><b>Irradiation locale :</b> PVGIS, Commission européenne — outil « Monthly radiation »,
+      surface horizontale H(h). Relève la valeur de ta commune et remplace le 1300 par défaut.</li>
+    <li><b>Concentration de CO₂ :</b> NOAA Global Monitoring Laboratory, série de Mauna Loa.
+      Relève la dernière moyenne annuelle publiée.</li>
+    <li><b>Empreinte carbone française :</b> environ 8,2 t CO₂e par habitant en 2024 d'après
+      le SDES (ministère de la Transition écologique). Vérifie la valeur la plus récente avant
+      de la citer.</li>
+  </ul>
+
+  <div class="note"><b>Deux chiffres à aller chercher toi-même.</b> L'irradiation de ta commune
+  sur PVGIS et la dernière concentration de CO₂ sur NOAA. Ces deux relevés prennent cinq minutes,
+  et citer une source primaire que tu as consultée toi-même vaut mieux que reprendre une valeur
+  par défaut.</div>
+</section>
+
+<footer>Albédomètre — outil de calcul pour un projet d’ESS NS, thème 6.
+Toutes les valeurs par défaut sont des exemples à remplacer par tes propres mesures.</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- constantes physiques ---------- */
+var S_EARTH = 5.10e14;      /* m² */
+var GT_PER_PPM = 7.82;      /* Gt CO2 par ppm */
+var MYHRE = 5.35;           /* W/m² */
+var HOURS_YR = 8760;
+var T95 = {2:12.706,3:4.303,4:3.182,5:2.776,6:2.571,7:2.447,8:2.365,9:2.306,10:2.262};
+var KEY = "albedometre.v1";
+
+/* ---------- référentiel de matériaux ---------- */
+var REF = [
+  {k:"enrobe",  n:"Enrobé / bitume sec", min:0.09, max:0.15},
+  {k:"beton",   n:"Béton",               min:0.25, max:0.35},
+  {k:"gazon",   n:"Gazon",               min:0.15, max:0.26},
+  {k:"gravier", n:"Gravier clair",       min:0.25, max:0.35},
+  {k:"toiture", n:"Toiture bitumineuse", min:0.08, max:0.15},
+  {k:"blanche", n:"Peinture blanche",    min:0.70, max:0.80},
+  {k:"papier",  n:"Papier blanc (témoin)", min:0.75, max:0.85},
+  {k:"autre",   n:"Autre / non classé",  min:null, max:null}
+];
+function refOf(k){for(var i=0;i<REF.length;i++){if(REF[i].k===k)return REF[i];}return REF[REF.length-1];}
+
+/* ---------- jeu d'exemple ---------- */
+function demo(){return [
+ {nom:"Enrobé du parking",    kind:"enrobe",  part:22, reps:[[61200,5500],[60400,5200],[61800,5900]]},
+ {nom:"Béton de la cour",     kind:"beton",   part:38, reps:[[60800,17900],[61500,18600],[60200,17200]]},
+ {nom:"Pelouse du terrain",   kind:"gazon",   part:24, reps:[[61000,13100],[60600,12600],[61400,13800]]},
+ {nom:"Gravier de l'allée",   kind:"gravier", part:8,  reps:[[60900,16800],[61300,17400],[60500,16100]]},
+ {nom:"Toiture du préau",     kind:"toiture", part:8,  reps:[[61100,6600],[60700,6200],[61600,7000]]},
+ {nom:"Feuille A4 (témoin)",  kind:"papier",  part:0,  reps:[[61000,49400],[60800,48600],[61200,50100]],ctl:true}
+];}
+
+var rows = [];
+
+/* ---------- utilitaires ---------- */
+function num(v){
+  if(v===null||v===undefined)return NaN;
+  var s=String(v).trim().replace(/\s/g,"").replace(",",".");
+  if(s==="")return NaN;
+  var x=parseFloat(s);
+  return isFinite(x)?x:NaN;
+}
+function fr(x,d){
+  if(!isFinite(x))return "—";
+  return x.toLocaleString("fr-FR",{minimumFractionDigits:d,maximumFractionDigits:d});
+}
+function sci(x,d){
+  if(!isFinite(x)||x===0)return fr(x,d||2);
+  var e=Math.floor(Math.log10(Math.abs(x)));
+  var m=x/Math.pow(10,e);
+  var sup="⁰¹²³⁴⁵⁶⁷⁸⁹";
+  var es=String(Math.abs(e)).split("").map(function(c){return sup[+c];}).join("");
+  return fr(m,d===undefined?2:d)+"·10"+(e<0?"⁻":"")+es;
+}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+
+/* ---------- statistiques ---------- */
+function stats(r){
+  var a=[],i;
+  for(i=0;i<r.reps.length;i++){
+    var d=num(r.reps[i][0]), u=num(r.reps[i][1]);
+    if(isFinite(d)&&isFinite(u)&&d>0)a.push(u/d);
+  }
+  var n=a.length;
+  if(n===0)return {n:0};
+  var sum=0;for(i=0;i<n;i++)sum+=a[i];
+  var m=sum/n;
+  if(n===1)return {n:1,mean:m,sd:NaN,ci:NaN,vals:a};
+  var ss=0;for(i=0;i<n;i++)ss+=(a[i]-m)*(a[i]-m);
+  var sd=Math.sqrt(ss/(n-1));
+  var t=T95[n]||1.96;
+  return {n:n,mean:m,sd:sd,ci:t*sd/Math.sqrt(n),vals:a};
+}
+
+/* ---------- rendu du tableau ---------- */
+function renderTable(){
+  var tb=document.getElementById("tbody"), html="", i, j;
+  for(i=0;i<rows.length;i++){
+    var r=rows[i], st=stats(r), ref=refOf(r.kind);
+    var opts="";
+    for(j=0;j<REF.length;j++){
+      opts+='<option value="'+REF[j].k+'"'+(REF[j].k===r.kind?" selected":"")+">"+esc(REF[j].n)+"</option>";
+    }
+    var lux="";
+    for(j=0;j<3;j++){
+      lux+='<td><input class="lux" inputmode="numeric" data-i="'+i+'" data-r="'+j+'" data-c="0" value="'+esc(r.reps[j][0])+'" aria-label="Eclairement descendant repetition '+(j+1)+'"></td>';
+      lux+='<td><input class="lux" inputmode="numeric" data-i="'+i+'" data-r="'+j+'" data-c="1" value="'+esc(r.reps[j][1])+'" aria-label="Eclairement remontant repetition '+(j+1)+'"></td>';
+    }
+    var cell="—", cls="alb";
+    if(st.n>0){
+      cell=fr(st.mean,3)+(st.n>1?" ± "+fr(st.ci,3):" <small>(n=1)</small>");
+      if(ref.min!==null&&(st.mean<ref.min-0.08||st.mean>ref.max+0.08))cls="alb flagged";
+    }
+    html+='<tr'+(r.ctl?' class="control"':'')+">"
+      +'<td class="w-nom"><input id="nom'+i+'" data-i="'+i+'" data-f="nom" value="'+esc(r.nom)+'" aria-label="Nom de la surface">'
+      +'<select id="kind'+i+'" data-i="'+i+'" data-f="kind" style="margin-top:4px" aria-label="Type de materiau">'+opts+'</select></td>'
+      +'<td><input class="pct" id="part'+i+'" data-i="'+i+'" data-f="part" inputmode="decimal" value="'+esc(r.part)+'" aria-label="Part de surface en pourcent"></td>'
+      +lux
+      +'<td class="'+cls+'">'+cell+'</td>'
+      +'<td><button class="rm" data-del="'+i+'" title="Supprimer cette ligne" aria-label="Supprimer la ligne '+(i+1)+'">×</button></td>'
+      +"</tr>";
+  }
+  tb.innerHTML=html;
+}
+
+/* ---------- barres ---------- */
+function renderBars(){
+  var box=document.getElementById("bars"), html="", i;
+  var shown=0;
+  for(i=0;i<rows.length;i++){
+    var r=rows[i], st=stats(r), ref=refOf(r.kind);
+    if(st.n===0)continue;
+    shown++;
+    var pct=Math.max(0,Math.min(100,st.mean*100));
+    var band="";
+    if(ref.min!==null){
+      band='<div class="litband" style="left:'+(ref.min*100)+'%;width:'+((ref.max-ref.min)*100)+'%"></div>';
+    }
+    var eb="";
+    if(isFinite(st.ci)&&st.ci>0){
+      var lo=Math.max(0,(st.mean-st.ci)*100), hi=Math.min(100,(st.mean+st.ci)*100);
+      eb='<div class="ebar" style="left:'+lo+'%;width:'+Math.max(hi-lo,0.6)+'%"></div>';
+    }
+    var inside = pct>58;
+    html+='<div class="bar-row"><div class="bar-lab"><b>'+esc(r.nom)+"</b><span>"
+      +esc(refOf(r.kind).n)+" · n="+st.n+(r.part>0?" · "+fr(num(r.part),0)+" %":"")+"</span></div>"
+      +'<div class="track">'+band+'<div class="fill" style="width:'+pct+'%"></div>'+eb
+      +'<div class="bval" style="'+(inside?"right:0;padding-right:7px;padding-left:0;color:var(--on-accent)":"left:"+pct+"%")+'">'
+      +fr(st.mean,3)+"</div></div></div>";
+  }
+  if(!shown)html='<p class="hint">Aucune mesure exploitable. Renseigne au moins un couple E↓ / E↑ dans le tableau.</p>';
+  box.innerHTML=html;
+}
+
+/* ---------- albédo du site, pondéré par les aires ---------- */
+function siteAlbedo(){
+  var wsum=0, asum=0, i;
+  for(i=0;i<rows.length;i++){
+    var r=rows[i];
+    if(r.ctl)continue;
+    var p=num(r.part), st=stats(r);
+    if(!isFinite(p)||p<=0||st.n===0)continue;
+    wsum+=p; asum+=p*st.mean;
+  }
+  if(wsum<=0)return {ok:false};
+  return {ok:true, alb:asum/wsum, cover:wsum};
+}
+
+/* ---------- sélecteur de surface ---------- */
+function fillSelect(){
+  var sel=document.getElementById("pSurf"), keep=sel.value, html="", i;
+  for(i=0;i<rows.length;i++){
+    var st=stats(rows[i]);
+    if(st.n===0||rows[i].ctl)continue;
+    html+='<option value="'+i+'">'+esc(rows[i].nom)+" (α = "+fr(st.mean,3)+")</option>";
+  }
+  var site=siteAlbedo();
+  if(site.ok)html+='<option value="site">Ensemble du site (α = '+fr(site.alb,3)+")</option>";
+  sel.innerHTML=html||'<option value="">— aucune mesure —</option>';
+  if(keep){
+    for(i=0;i<sel.options.length;i++){if(sel.options[i].value===keep){sel.value=keep;break;}}
+  }
+}
+function currentAlbedo(){
+  var v=document.getElementById("pSurf").value;
+  if(v==="site"){var s=siteAlbedo();return s.ok?s.alb:NaN;}
+  var i=parseInt(v,10);
+  if(isNaN(i)||!rows[i])return NaN;
+  var st=stats(rows[i]);
+  return st.n>0?st.mean:NaN;
+}
+function currentName(){
+  var v=document.getElementById("pSurf").value;
+  if(v==="site")return "l'ensemble du site";
+  var i=parseInt(v,10);
+  return (rows[i]&&rows[i].nom)?rows[i].nom:"la surface";
+}
+
+/* ---------- modèle de forçage ---------- */
+function model(a0,a1,area,ins,tau,conc){
+  var dA=a1-a0;
+  var sw=ins*1000/HOURS_YR;
+  var dFs=-dA*sw;
+  var dFt=dFs*tau;
+  var power=dFt*area;
+  var dFg=power/S_EARTH;
+  var dC=Math.abs(dFg)*conc/MYHRE;
+  var gt=dC*GT_PER_PPM;
+  return {dA:dA,sw:sw,dFs:dFs,dFt:dFt,power:power,dFg:dFg,dC:dC,gt:gt,tonnes:gt*1e9};
+}
+
+/* ---------- rendu du modèle ---------- */
+function renderModel(){
+  var a0=currentAlbedo();
+  var a1=num(document.getElementById("pTarget").value);
+  var area=num(document.getElementById("pArea").value);
+  var ins=num(document.getElementById("pIns").value);
+  var tau=num(document.getElementById("pTau").value);
+  var conc=num(document.getElementById("pConc").value);
+
+  document.getElementById("pAlbNow").textContent = isFinite(a0)?fr(a0,3):"—";
+
+  var chain=document.getElementById("chain");
+  var equiv=document.getElementById("equiv");
+  var ok = isFinite(a0)&&isFinite(a1)&&isFinite(area)&&isFinite(ins)&&isFinite(tau)&&isFinite(conc)&&area>0&&conc>0;
+
+  if(!ok){
+    chain.innerHTML='<li><span class="lbl">Paramètres incomplets</span><span class="eq">Renseigne une surface mesurée et les six paramètres ci-dessus.</span></li>';
+    equiv.innerHTML="";
+    document.getElementById("ro-forc").textContent="—";
+    document.getElementById("ro-co2").textContent="—";
+    return;
+  }
+
+  var m=model(a0,a1,area,ins,tau,conc);
+  var warming = m.dA<0;
+
+  var L=[
+    ["Gain d'albédo de la surface traitée",
+     "Δα = "+fr(a1,3)+" − "+fr(a0,3)+" = <b>"+(m.dA>=0?"+":"−")+fr(Math.abs(m.dA),3)+"</b>"],
+    ["Éclairement solaire moyen reçu au sol",
+     "SW↓ = "+fr(ins,0)+" kWh·m⁻²·an⁻¹ × 1000 ÷ "+fr(HOURS_YR,0)+" h = <b>"+fr(m.sw,1)+" W·m⁻²</b>"],
+    ["Forçage radiatif à la surface traitée",
+     "ΔF<sub>surf</sub> = −("+fr(m.dA,3)+") × "+fr(m.sw,1)+" = <b>"+fr(m.dFs,1)+" W·m⁻²</b>"],
+    ["Part qui s'échappe au sommet de l'atmosphère",
+     "ΔF<sub>TOA</sub> = "+fr(m.dFs,1)+" × "+fr(tau,2)+" = <b>"+fr(m.dFt,1)+" W·m⁻²</b> par m² traité"],
+    ["Puissance radiative totale en jeu",
+     "P = "+fr(m.dFt,1)+" × "+fr(area,0)+" m² = <b>"+fr(m.power,0)+" W</b>"],
+    ["Forçage moyenné sur toute la planète",
+     "ΔF<sub>global</sub> = "+fr(m.power,0)+" ÷ 5,10·10¹⁴ m² = <b>"+sci(m.dFg,2)+" W·m⁻²</b>"],
+    ["Variation de CO₂ produisant le même forçage",
+     "ΔC = "+sci(Math.abs(m.dFg),2)+" × "+fr(conc,0)+" ÷ 5,35 = <b>"+sci(m.dC,2)+" ppm</b>"],
+    ["Masse de CO₂ correspondante",
+     "m = "+sci(m.dC,2)+" × 7,82·10⁹ t = <b>"+fr(m.tonnes,0)+" t de CO₂</b>"]
+  ];
+  var html="",i;
+  for(i=0;i<L.length;i++){
+    html+='<li><span class="lbl">'+L[i][0]+'</span><span class="eq">'+L[i][1]+"</span></li>";
+  }
+  chain.innerHTML=html;
+
+  var perCap=8.2;
+  var cars=1.9;   /* t CO2 par an et par voiture particulière, ordre de grandeur */
+  equiv.innerHTML=
+    '<div class="eq-card"><span class="n" style="color:'+(warming?"var(--warn)":"var(--cool)")+'">'
+      +(warming?"+":"−")+fr(Math.abs(m.tonnes),0)+'</span><span class="t">tonnes de CO₂ en équivalent radiatif instantané</span></div>'
+   +'<div class="eq-card"><span class="n">'+fr(Math.abs(m.tonnes)/perCap,0)+'</span>'
+      +'<span class="t">empreintes carbone annuelles moyennes en France (8,2 t CO₂e)</span></div>'
+   +'<div class="eq-card"><span class="n">'+fr(Math.abs(m.dFt),1)+'</span>'
+      +'<span class="t">W·m⁻² de forçage local sur la surface traitée</span></div>'
+   +'<div class="eq-card"><span class="n">'+fr(Math.abs(m.tonnes)/cars,0)+'</span>'
+      +'<span class="t">années de circulation d\'une voiture particulière</span></div>';
+
+  document.getElementById("ro-forc").textContent=sci(m.dFg,2);
+  document.getElementById("ro-co2").textContent=(warming?"+":"−")+fr(Math.abs(m.tonnes),0);
+  document.getElementById("ro-co2").style.color=warming?"var(--warn)":"var(--cool)";
+}
+
+/* ---------- scénarios ---------- */
+function renderScenarios(){
+  var ins=num(document.getElementById("pIns").value);
+  var tau=num(document.getElementById("pTau").value);
+  var conc=num(document.getElementById("pConc").value);
+  if(!isFinite(ins)||!isFinite(tau)||!isFinite(conc)){document.getElementById("scn").innerHTML="";return;}
+
+  function albOfKind(k,fb){
+    var i;
+    for(i=0;i<rows.length;i++){
+      if(rows[i].kind===k){var st=stats(rows[i]);if(st.n>0)return st.mean;}
+    }
+    return fb;
+  }
+  var S=[
+    {n:"Peindre la toiture en blanc", d:"2 000 m² · α de "+fr(albOfKind("toiture",0.11),2)+" à 0,70",
+      a0:albOfKind("toiture",0.11), a1:0.70, area:2000},
+    {n:"Revêtement clair sur la cour", d:"1 200 m² · α de "+fr(albOfKind("beton",0.30),2)+" à 0,50",
+      a0:albOfKind("beton",0.30), a1:0.50, area:1200},
+    {n:"Végétaliser le parking", d:"600 m² · α de "+fr(albOfKind("enrobe",0.09),2)+" à "+fr(albOfKind("gazon",0.22),2),
+      a0:albOfKind("enrobe",0.09), a1:albOfKind("gazon",0.22), area:600}
+  ];
+  var vals=[],i,max=0;
+  for(i=0;i<S.length;i++){
+    var m=model(S[i].a0,S[i].a1,S[i].area,ins,tau,conc);
+    vals.push(Math.abs(m.tonnes));
+    if(Math.abs(m.tonnes)>max)max=Math.abs(m.tonnes);
+  }
+  var html="";
+  for(i=0;i<S.length;i++){
+    var w=max>0?(vals[i]/max*100):0;
+    var inside=w>52;
+    html+='<div class="scn-row"><div class="scn-lab"><b>'+esc(S[i].n)+"</b><span>"+esc(S[i].d)+"</span></div>"
+      +'<div class="scn-track"><div class="scn-fill" style="width:'+w+'%"></div>'
+      +'<div class="scn-val" style="'+(inside?"left:0;color:var(--on-accent)":"left:"+w+"%")+'">'
+      +fr(vals[i],0)+" t CO₂</div></div></div>";
+  }
+  document.getElementById("scn").innerHTML=html;
+}
+
+/* ---------- confrontation à la littérature ---------- */
+function renderBench(){
+  var tau=num(document.getElementById("pTau").value);
+  var conc=num(document.getElementById("pConc").value);
+  if(!isFinite(tau))tau=0.76;
+  if(!isFinite(conc))conc=425;
+  var urbanArea=1.49e12;   /* 1 % des terres émergées */
+  var dA=0.10;
+  var swUrban=200;         /* W·m⁻², zones urbaines majoritairement tempérées à subtropicales */
+  var dFt=dA*swUrban*tau;
+  var power=dFt*urbanArea;
+  var dFg=power/S_EARTH;
+  var dC=dFg*conc/MYHRE;
+  var gt=dC*GT_PER_PPM;
+
+  var L=[
+    ["Aire urbaine mondiale retenue","A = 1 % des terres émergées = <b>1,49·10¹² m²</b>"],
+    ["Hausse d'albédo urbain (Akbari et al.)","Δα = <b>+0,10</b> (toits +0,25, chaussées +0,15)"],
+    ["Forçage au sommet de l'atmosphère","ΔF<sub>TOA</sub> = 0,10 × "+fr(swUrban,0)+" × "+fr(tau,2)+" = <b>"+fr(dFt,1)+" W·m⁻²</b>"],
+    ["Forçage planétaire moyen","ΔF<sub>global</sub> = <b>"+fr(dFg,4)+" W·m⁻²</b>"],
+    ["Équivalent CO₂ obtenu par ce modèle","m = <b>"+fr(gt,0)+" Gt de CO₂</b> — à comparer aux <b>44 Gt</b> publiées"]
+  ];
+  var html="",i;
+  for(i=0;i<L.length;i++)html+='<li><span class="lbl">'+L[i][0]+'</span><span class="eq">'+L[i][1]+"</span></li>";
+  document.getElementById("bench").innerHTML=html;
+
+  var ratio=gt>0?44/gt:0;
+  document.getElementById("benchNote").innerHTML=
+    "Ce modèle simplifié donne <b>"+fr(gt,0)+" Gt</b>, soit un facteur "+fr(ratio,1)
+    +" en dessous des 44 Gt publiées — <b>le même ordre de grandeur</b>. L'écart s'explique "
+    +"principalement par l'éclairement moyen retenu, par la méthode d'équivalence CO₂ "
+    +"(dérivée marginale ici, bilan intégré chez les auteurs) et par l'estimation de l'aire "
+    +"urbaine. Signaler cet écart et en proposer l'explication vaut mieux que de prétendre "
+    +"retrouver exactement le chiffre de la littérature.";
+}
+
+/* ---------- note de site ---------- */
+function renderSite(){
+  var s=siteAlbedo();
+  var el=document.getElementById("ro-site"), u=document.getElementById("ro-site-u");
+  if(!s.ok){
+    el.textContent="—"; u.textContent="renseigne les parts de surface";
+    document.getElementById("siteNote").textContent=
+      "Pour obtenir l'albédo moyen du site, renseigne la colonne « Part % » : la part de la surface totale occupée par chaque revêtement.";
+    return;
+  }
+  el.textContent=fr(s.alb,3);
+  u.textContent=fr(s.cover,0)+" % du site couvert";
+  document.getElementById("siteNote").innerHTML=
+    "<b>Albédo moyen du site : "+fr(s.alb,3)+"</b>, pondéré par les aires renseignées ("
+    +fr(s.cover,0)+" % du site). À comparer à l'albédo moyen de la Terre, 0,30, et à celui "
+    +"d'une zone urbaine dense, de l'ordre de 0,15 à 0,20.";
+}
+
+/* ---------- persistance ---------- */
+function save(){
+  try{
+    localStorage.setItem(KEY,JSON.stringify({
+      rows:rows,
+      p:{area:document.getElementById("pArea").value,target:document.getElementById("pTarget").value,
+         ins:document.getElementById("pIns").value,tau:document.getElementById("pTau").value,
+         conc:document.getElementById("pConc").value,surf:document.getElementById("pSurf").value}
+    }));
+  }catch(e){/* stockage indisponible : l'outil reste utilisable */}
+}
+function load(){
+  try{
+    var raw=localStorage.getItem(KEY);
+    if(!raw)return false;
+    var o=JSON.parse(raw);
+    if(!o||!o.rows||!o.rows.length)return false;
+    rows=o.rows;
+    if(o.p){
+      if(o.p.area)document.getElementById("pArea").value=o.p.area;
+      if(o.p.target)document.getElementById("pTarget").value=o.p.target;
+      if(o.p.ins)document.getElementById("pIns").value=o.p.ins;
+      if(o.p.tau)document.getElementById("pTau").value=o.p.tau;
+      if(o.p.conc)document.getElementById("pConc").value=o.p.conc;
+    }
+    return true;
+  }catch(e){return false;}
+}
+
+/* ---------- import / export texte ---------- */
+function exportText(){
+  var out=["# Albedometre — mesures de terrain",
+           "# nom\tpart%\tE1down\tE1up\tE2down\tE2up\tE3down\tE3up\talbedo\tIC95"],i;
+  for(i=0;i<rows.length;i++){
+    var r=rows[i], st=stats(r);
+    out.push([r.nom,r.part,r.reps[0][0],r.reps[0][1],r.reps[1][0],r.reps[1][1],
+      r.reps[2][0],r.reps[2][1],
+      st.n>0?st.mean.toFixed(4):"",
+      (st.n>1&&isFinite(st.ci))?st.ci.toFixed(4):""].join("\t"));
+  }
+  return out.join("\n");
+}
+function importText(txt){
+  var lines=txt.split(/\r?\n/), out=[], i;
+  for(i=0;i<lines.length;i++){
+    var ln=lines[i].trim();
+    if(!ln||ln.charAt(0)==="#")continue;
+    var f=ln.split(/\t|;/);
+    if(f.length<4)continue;
+    var reps=[[f[2]||"",f[3]||""],[f[4]||"",f[5]||""],[f[6]||"",f[7]||""]];
+    out.push({nom:(f[0]||"Surface").trim(),kind:guessKind(f[0]||""),part:(f[1]||"0").trim(),reps:reps});
+  }
+  return out;
+}
+function guessKind(n){
+  var s=n.toLowerCase();
+  if(/enrob|bitum|goudron|asphalt|parking/.test(s))return "enrobe";
+  if(/b[ée]ton|dalle|ciment|cour/.test(s))return "beton";
+  if(/gazon|pelouse|herbe|v[ée]g/.test(s))return "gazon";
+  if(/gravi|caillou/.test(s))return "gravier";
+  if(/toit|toiture|pr[ée]au|terrasse/.test(s))return "toiture";
+  if(/blanc|peinture/.test(s))return "blanche";
+  if(/papier|feuille|a4|t[ée]moin/.test(s))return "papier";
+  return "autre";
+}
+
+/* ---------- boucle de rendu ---------- */
+function renderAll(){
+  renderTable(); renderBars(); renderSite(); fillSelect();
+  renderModel(); renderScenarios(); renderBench(); save();
+}
+function renderCalc(){
+  renderBars(); renderSite(); fillSelect();
+  renderModel(); renderScenarios(); renderBench(); save();
+}
+
+/* ---------- évènements ---------- */
+document.getElementById("tbody").addEventListener("input",function(e){
+  var t=e.target;
+  if(t.tagName!=="INPUT"&&t.tagName!=="SELECT")return;
+  var i=parseInt(t.getAttribute("data-i"),10);
+  if(isNaN(i)||!rows[i])return;
+  var f=t.getAttribute("data-f");
+  if(f==="nom"){rows[i].nom=t.value;}
+  else if(f==="part"){rows[i].part=t.value;}
+  else if(f==="kind"){rows[i].kind=t.value;renderTable();}
+  else{
+    var r=parseInt(t.getAttribute("data-r"),10), c=parseInt(t.getAttribute("data-c"),10);
+    rows[i].reps[r][c]=t.value;
+    /* met à jour la cellule d'albédo sans reconstruire le tableau, pour ne pas perdre le focus */
+    var st=stats(rows[i]), ref=refOf(rows[i].kind);
+    var cell=t.closest("tr").querySelector("td.alb");
+    if(cell){
+      cell.className="alb";
+      if(st.n>0){
+        cell.innerHTML=fr(st.mean,3)+(st.n>1?" ± "+fr(st.ci,3):" <small>(n=1)</small>");
+        if(ref.min!==null&&(st.mean<ref.min-0.08||st.mean>ref.max+0.08))cell.className="alb flagged";
+      }else cell.textContent="—";
+    }
+  }
+  renderCalc();
+});
+document.getElementById("tbody").addEventListener("click",function(e){
+  var b=e.target.closest("button[data-del]");
+  if(!b)return;
+  var i=parseInt(b.getAttribute("data-del"),10);
+  if(!isNaN(i)){rows.splice(i,1);renderAll();}
+});
+document.getElementById("addRow").addEventListener("click",function(){
+  rows.push({nom:"Nouvelle surface",kind:"autre",part:0,reps:[["",""],["",""],["",""]]});
+  renderAll();
+  var el=document.getElementById("nom"+(rows.length-1));
+  if(el){el.focus();el.select();}
+});
+document.getElementById("clearRows").addEventListener("click",function(){
+  rows=[{nom:"Surface 1",kind:"autre",part:0,reps:[["",""],["",""],["",""]]}];
+  renderAll();
+});
+document.getElementById("resetRows").addEventListener("click",function(){rows=demo();renderAll();});
+
+var ids=["pTarget","pArea","pIns","pTau","pConc"],k;
+for(k=0;k<ids.length;k++){
+  document.getElementById(ids[k]).addEventListener("input",function(){
+    renderModel();renderScenarios();renderBench();save();
+  });
+}
+document.getElementById("pSurf").addEventListener("change",function(){renderModel();save();});
+
+document.getElementById("toggleIO").addEventListener("click",function(){
+  var b=document.getElementById("ioBox");
+  b.hidden=!b.hidden;
+  if(!b.hidden)document.getElementById("ioText").value=exportText();
+});
+document.getElementById("doExport").addEventListener("click",function(){
+  document.getElementById("ioText").value=exportText();
+  document.getElementById("ioMsg").textContent="Données écrites ci-dessus. Sélectionne-les, ou utilise « Copier ».";
+});
+document.getElementById("doCopy").addEventListener("click",function(){
+  var ta=document.getElementById("ioText");
+  if(!ta.value)ta.value=exportText();
+  var msg=document.getElementById("ioMsg");
+  try{
+    navigator.clipboard.writeText(ta.value).then(function(){
+      msg.textContent="Copié dans le presse-papiers.";
+    },function(){
+      ta.focus();ta.select();
+      msg.textContent="Copie automatique refusée par le navigateur : le texte est sélectionné, fais-le manuellement.";
+    });
+  }catch(err){
+    ta.focus();ta.select();
+    msg.textContent="Copie automatique indisponible : le texte est sélectionné, fais-le manuellement.";
+  }
+});
+document.getElementById("doImport").addEventListener("click",function(){
+  var txt=document.getElementById("ioText").value;
+  var parsed=importText(txt);
+  var msg=document.getElementById("ioMsg");
+  if(!parsed.length){
+    msg.textContent="Aucune ligne reconnue. Vérifie que chaque ligne contient au moins le nom, la part et un couple E↓ / E↑, séparés par des tabulations ou des points-virgules.";
+    return;
+  }
+  rows=parsed;
+  renderAll();
+  msg.textContent=parsed.length+" surface(s) importée(s).";
+});
+
+/* ---------- démarrage ---------- */
+if(!load())rows=demo();
+renderAll();
+})();
+</script>
