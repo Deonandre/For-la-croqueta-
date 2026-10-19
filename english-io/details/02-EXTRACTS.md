@@ -23,7 +23,7 @@ IB requires **two extracts, each max 40 lines**, one from the literary work, one
 | 9,11,12 | circle every -in' | present participles = no arrival |
 | 14 | draw the pivot arrow | testimony → command |
 | 14–17 | number the 3 negative imperatives | hope as refusal |
-| 20 | arrow back to line 2 | repetition = warning becomes credential |
+| 20 | **circle the opening "And"** | line 2 + one word; joins the list of stairs, not a closed circle |
 
 ---
 

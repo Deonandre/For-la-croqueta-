@@ -19,7 +19,7 @@
 2. **"Bare." as the shortest, end-stopped line** — form enacts the missing floorboard.
 3. **Present participles throughout** — continuous aspect denies arrival.
 4. **Three negative imperatives** (lines 14–17) — hope defined as refusal.
-5. **Circular repetition** of line 2 at line 20 — warning becomes credential.
+5. **Line 20 is line 2 plus one word: "And".** Not an exact repeat — never say "word for word," the examiner has the text. The added conjunction puts her whole life into the same list as the splinters and the landings: the poem adds a step rather than closing a circle.
 6. **Double negative** "ain't been no" — the poem defines life by subtraction.
 7. **"Crystal stair" = mansion + Jacob's ladder** — denies material and spiritual ascent together.
 8. **AAVE orthography** — inverts the minstrel-dialect tradition.

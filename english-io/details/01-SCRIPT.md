@@ -38,7 +38,7 @@ Then, in exactly the same grammar, the poem turns: "And reachin' landin's, / And
 
 **At line fourteen the poem pivots** from testimony to command: "So boy, don't you turn back." Three imperatives, and all three are negative — don't turn back, don't set down, don't fall. She cannot promise him a destination. She can only forbid three ways of stopping. This is the crucial point for my global issue: hope in this poem is not optimism. It is **refusal**.
 
-**Finally, the last line repeats the second, word for word** — but it has changed meaning. The first time, "life for me ain't been no crystal stair" is a warning. The second time, it is a credential: the proof of her right to give the order. The repetition performs the climb. She is still saying it, so she is still going.
+**Finally, the last line repeats the second — almost.** Line two reads "Life for me ain't been no crystal stair." Line twenty reads "**And** life for me ain't been no crystal stair." That extra conjunction is the whole ending. "And" is the word she used for every stair that injured her — "And splinters," "And boards torn up" — and for every step she took anyway — "And reachin'," "And turnin'." So the poem does not close a circle; it adds one more item to the list. The warning returns as a credential, and it returns as another step.
 
 ---
 
