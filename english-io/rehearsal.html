@@ -1,0 +1,429 @@
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Hughes and Lange Oral</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=Spectral:ital,wght@0,300;0,400;0,600;1,400&family=Courier+Prime:wght@400;700&display=swap">
+
+<style>
+/* Layout: a teleprompter — timecode rail at left, single measure of script at right, sticky clock above. */
+:root{
+  --paper:#F2F3F1; --ink:#15181A; --ink-soft:#575E61; --rule:#D5D8D4;
+  --panel:#E8EAE7; --stamp:#2B4A6F; --mark:#8F6327; --mark-bg:#EFE4D2;
+  --f-display:"Bodoni Moda",Georgia,"Times New Roman",serif;
+  --f-body:"Spectral",Georgia,serif;
+  --f-util:"Courier Prime",ui-monospace,"Courier New",monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#121415; --ink:#E9EAE7; --ink-soft:#99A0A2; --rule:#2A2E30;
+  --panel:#1A1D1F; --stamp:#86AEDA; --mark:#CDA165; --mark-bg:#2A2318;
+  color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --paper:#121415; --ink:#E9EAE7; --ink-soft:#99A0A2; --rule:#2A2E30;
+  --panel:#1A1D1F; --stamp:#86AEDA; --mark:#CDA165; --mark-bg:#2A2318;
+  color-scheme:dark;}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);
+  font-size:17px;line-height:1.62;margin:0;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);
+  z-index:40;background:var(--panel)}
+.wrap{max-width:860px;margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 72px}
+h1,h2,h3{text-wrap:balance;margin:0}
+
+/* ---- masthead ---- */
+.mast{border-bottom:2px solid var(--ink);padding-block:34px 14px}
+.kicker{font-family:var(--f-util);font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--stamp)}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(30px,6.4vw,48px);
+  line-height:1.04;margin-block:10px 12px;letter-spacing:-.012em}
+.issue{font-style:italic;color:var(--ink-soft);font-size:15.5px;max-width:52ch}
+
+/* ---- clock ---- */
+.clock{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--panel);
+  border-bottom:1px solid var(--rule);margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)))
+   calc(-1 * max(16px,env(safe-area-inset-right,0px)))}
+.clock-in{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:11px}
+.elapsed{font-family:var(--f-util);font-weight:700;font-size:28px;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;min-width:4.1ch}
+.elapsed.over{color:var(--mark)}
+.where{flex:1 1 180px;min-width:0}
+.where-lab{font-family:var(--f-util);font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-soft)}
+.where-val{font-size:15px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.btns{display:flex;gap:7px}
+button{font-family:var(--f-util);font-size:12px;letter-spacing:.07em;text-transform:uppercase;
+  background:transparent;color:var(--ink);border:1px solid var(--ink);border-radius:2px;
+  padding:7px 13px;cursor:pointer}
+button:hover{background:var(--ink);color:var(--paper)}
+button:focus-visible{outline:2px solid var(--stamp);outline-offset:2px}
+button.on{background:var(--ink);color:var(--paper)}
+.bar{height:3px;background:var(--rule)}
+.bar i{display:block;height:100%;width:0;background:var(--stamp);transition:width .3s linear}
+.bar i.over{background:var(--mark)}
+
+/* ---- view nav ---- */
+nav{display:flex;gap:0;border-bottom:1px solid var(--rule);margin-block:0 4px}
+nav button{border:0;border-bottom:2px solid transparent;border-radius:0;padding:14px 16px 11px;
+  color:var(--ink-soft);background:none}
+nav button:hover{background:none;color:var(--ink)}
+nav button.on{background:none;color:var(--ink);border-bottom-color:var(--stamp)}
+
+/* ---- script ---- */
+.sec{display:grid;grid-template-columns:78px 1fr;gap:0 22px;
+  padding-block:24px;border-bottom:1px solid var(--rule)}
+.sec.live{background:linear-gradient(90deg,color-mix(in srgb,var(--stamp) 9%,transparent),transparent 70%)}
+.tc{font-family:var(--f-util);font-size:11.5px;color:var(--stamp);letter-spacing:.02em;
+  padding-top:5px;font-variant-numeric:tabular-nums}
+.sec.live .tc::after{content:" ◀";}
+.sec h2{font-family:var(--f-display);font-size:21px;font-weight:700;margin-bottom:12px;
+  letter-spacing:-.006em}
+.sec p{margin:0 0 13px;max-width:62ch}
+.sec p:last-child{margin-bottom:0}
+.sec b{font-weight:600}
+blockquote{margin:0 0 15px;padding-left:16px;border-left:2px solid var(--stamp);
+  font-family:var(--f-display);font-size:19px;font-style:italic;line-height:1.45;max-width:54ch}
+.cut{background:var(--mark-bg);color:var(--mark);padding:1px 4px;border-radius:2px;
+  font-size:.93em;font-style:italic}
+body.lean .cut{display:none}
+.thesis{background:var(--panel);border-left:3px solid var(--stamp);padding:14px 17px;
+  margin-block:4px 14px;max-width:62ch}
+
+/* ---- delivery notes ---- */
+.notes{margin-top:30px;border:1px solid var(--rule);padding:20px 22px}
+.notes h3{font-family:var(--f-util);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--stamp);margin-bottom:12px}
+.notes ul{margin:0;padding-left:19px}
+.notes li{margin-bottom:8px;max-width:60ch}
+.notes li:last-child{margin:0}
+
+/* ---- Q&A ---- */
+.qa{border-bottom:1px solid var(--rule);padding-block:20px}
+.qa .q{font-family:var(--f-display);font-size:19px;font-weight:700;margin-bottom:9px;max-width:58ch}
+.qa .n{font-family:var(--f-util);font-size:11px;color:var(--stamp);margin-right:9px}
+.qa p{margin:0;max-width:62ch;color:var(--ink)}
+.trap{border-left:3px solid var(--mark);background:var(--mark-bg);padding:15px 18px;margin-block:16px}
+.trap .q{color:var(--mark)}
+.trap p{color:var(--ink)}
+
+/* ---- facts ---- */
+.fx{padding-block:22px;border-bottom:1px solid var(--rule)}
+.fx h2{font-family:var(--f-display);font-size:22px;font-weight:700;margin-bottom:5px}
+.fx .sub{font-family:var(--f-util);font-size:11.5px;color:var(--ink-soft);margin-bottom:15px}
+.fx ol,.fx ul{margin:0;padding-left:20px}
+.fx li{margin-bottom:9px;max-width:62ch}
+.caption{font-family:var(--f-util);font-size:13px;background:var(--panel);
+  padding:11px 14px;border-left:2px solid var(--ink-soft);margin-block:14px;max-width:58ch}
+.warnbox{border:1px dashed var(--mark);padding:14px 17px;margin-block:16px}
+.warnbox .h{font-family:var(--f-util);font-size:11px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--mark);margin-bottom:9px}
+.warnbox p{margin:0 0 9px;max-width:60ch}
+.warnbox p:last-child{margin:0}
+.lines{font-family:var(--f-display);font-size:18px;font-style:italic;line-height:1.5;
+  border-left:2px solid var(--stamp);padding-left:16px;margin-block:14px}
+
+@media(max-width:560px){
+  .sec{grid-template-columns:1fr;gap:6px}
+  .tc{padding-top:0}
+  .elapsed{font-size:24px}
+  nav button{padding:12px 11px;font-size:11px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+
+  <header class="mast">
+    <div class="kicker">Individual Oral · 10 minutes + 5 questions</div>
+    <h1>The Crystal Stair<br>and the Unlit Lamp</h1>
+    <p class="issue">Global issue: the representation of economic hardship and the limits of individual resilience. Langston Hughes, &ldquo;Mother to Son&rdquo; (1922) &middot; Dorothea Lange, <i>Migrant Mother</i> (1936).</p>
+  </header>
+
+  <div class="clock">
+    <div class="clock-in">
+      <div class="elapsed" id="t">0:00</div>
+      <div class="where">
+        <div class="where-lab">You should be in</div>
+        <div class="where-val" id="w">Introduction</div>
+      </div>
+      <div class="btns">
+        <button id="go">Start</button>
+        <button id="rs">Reset</button>
+        <button id="lean" title="Hide the optional lines">Short</button>
+      </div>
+    </div>
+    <div class="bar"><i id="pb"></i></div>
+  </div>
+
+  <nav>
+    <button class="on" data-v="script">Script</button>
+    <button data-v="qa">Questions</button>
+    <button data-v="facts">Facts</button>
+  </nav>
+
+  <!-- ================= SCRIPT ================= -->
+  <section id="v-script">
+
+    <article class="sec" data-a="0" data-b="75">
+      <div class="tc">0:00<br>1:15</div>
+      <div>
+        <h2>Introduction</h2>
+        <blockquote>&ldquo;Well, son, I&rsquo;ll tell you: life for me ain&rsquo;t been no crystal stair.&rdquo;</blockquote>
+        <p>That is 1922. A Black mother speaks, in her own accent, in a magazine run by the NAACP.</p>
+        <p>Fourteen years later, in a tent in Nipomo, California, another mother &mdash; thirty-two years old, seven children, no work &mdash; says nothing at all. And she becomes the most reproduced photograph in American history.</p>
+        <p>My global issue is <b>the representation of economic hardship and the limits of individual resilience.</b> My question is not &ldquo;is poverty hard?&rdquo; It is sharper than that: <i>when art asks us to admire someone for surviving, what does it stop us from looking at?</i></p>
+        <p>My literary work is the poetry of Langston Hughes; my extract is &ldquo;Mother to Son,&rdquo; supported by &ldquo;Dreams&rdquo; and &ldquo;Harlem.&rdquo; My non-literary body of work is Dorothea Lange&rsquo;s <i>Migrant Mother</i> series &mdash; six surviving negatives, made in about ten minutes in March 1936, for the United States Resettlement Administration.</p>
+        <div class="thesis"><p>My argument is this: both artists make poverty bearable to look at by routing it through a mother&rsquo;s endurance. But Hughes builds a warning into his own form. Lange does not.</p></div>
+      </div>
+    </article>
+
+    <article class="sec" data-a="75" data-b="240">
+      <div class="tc">1:15<br>4:00</div>
+      <div>
+        <h2>Extract 1 &mdash; &ldquo;Mother to Son&rdquo;</h2>
+        <p><b>Start with the voice.</b> Hughes does not describe this woman &mdash; he vacates the poem and lets her occupy all twenty lines. There is no narrator to translate her. &ldquo;Well, son, I&rsquo;ll tell you:&rdquo; drops us into the middle of a conversation we were not invited to, and the colon promises a lesson.</p>
+        <p>And the lesson comes in African American Vernacular English &mdash; &ldquo;ain&rsquo;t,&rdquo; &ldquo;I&rsquo;se been a-climbin&rsquo;,&rdquo; &ldquo;kinder hard.&rdquo; In 1922 that was a risk. Dialect in American poetry still carried the stain of the minstrel show: it was how white audiences had been taught to find Black speech funny. Hughes inverts the convention. Here the vernacular is not a sign of ignorance &mdash; it is the <i>source</i> of her authority. She knows because she climbed, and the way she speaks is the proof that she climbed.</p>
+        <p><b>Now the central metaphor.</b> A crystal stair is cut glass: a staircase in a mansion. It is also Jacob&rsquo;s ladder &mdash; a smooth ascent, material and spiritual at once. Hughes denies both, and he denies them in a double negative: &ldquo;ain&rsquo;t been no crystal stair.&rdquo; The poem opens by taking something away.</p>
+        <p>What replaces it is tactile and small: &ldquo;tacks,&rdquo; &ldquo;splinters,&rdquo; &ldquo;boards torn up.&rdquo; These are not grand tragedies. They are the injuries of a bad staircase in a bad building &mdash; the texture of ordinary, chronic poverty.</p>
+        <p><b>And look at how Hughes lays this on the page.</b> The lines get shorter and more broken until they collapse into one word, alone: &ldquo;Bare.&rdquo; One syllable. End-stopped. The shortest line in the poem is the moment the floor runs out. The free verse is not decoration &mdash; the staircase <i>is</i> the stanza.</p>
+        <p>Then, in exactly the same grammar, the poem turns: &ldquo;And reachin&rsquo; landin&rsquo;s, / And turnin&rsquo; corners.&rdquo; Notice that Hughes counts the obstacles and counts the progress with the identical construction &mdash; &ldquo;And splinters,&rdquo; &ldquo;And reachin&rsquo;.&rdquo; Hardship and persistence are formally the same. In this poem, surviving does not look different from suffering. It is made of the same material.</p>
+        <p><b>And the verbs never finish.</b> <i>Climbin&rsquo;, reachin&rsquo;, turnin&rsquo;, goin&rsquo;</i> &mdash; present participles, continuous, no past tense, no arrival. Even at the close: &ldquo;I&rsquo;se still goin&rsquo;&hellip; I&rsquo;se still climbin&rsquo;.&rdquo; The grammar refuses to let her reach the top.</p>
+        <p><b>At line fourteen the poem pivots</b> from testimony to command: &ldquo;So boy, don&rsquo;t you turn back.&rdquo; Three imperatives, and all three are negative &mdash; don&rsquo;t turn back, don&rsquo;t set down, don&rsquo;t fall. She cannot promise him a destination. She can only forbid three ways of stopping. This is the crucial point for my global issue: hope in this poem is not optimism. It is <b>refusal</b>.</p>
+        <p><b>Finally, the last line repeats the second, word for word</b> &mdash; but it has changed meaning. The first time, &ldquo;life for me ain&rsquo;t been no crystal stair&rdquo; is a warning. The second time, it is a credential: the proof of her right to give the order. The repetition performs the climb. She is still saying it, so she is still going.</p>
+      </div>
+    </article>
+
+    <article class="sec" data-a="240" data-b="320">
+      <div class="tc">4:00<br>5:20</div>
+      <div>
+        <h2>The wider work &mdash; &ldquo;Dreams&rdquo; and &ldquo;Harlem&rdquo;</h2>
+        <p>Across Hughes&rsquo;s body of work, the climb is a question he keeps reopening.</p>
+        <p>&ldquo;Dreams,&rdquo; also 1922, begins with an imperative &mdash; &ldquo;Hold fast.&rdquo; A verb of grip, of strain. Dreams are not something you <i>have</i>; they are something you can lose hold of. And the punishment is immobility: &ldquo;a broken-winged bird / That cannot fly,&rdquo; <span class="cut">then &ldquo;a barren field / Frozen with snow.&rdquo;</span> The bird is not killed. It is <i>grounded</i>. Hardship here does not end life &mdash; it ends movement, which is precisely what the staircase was for.</p>
+        <p>But twenty-nine years later, in &ldquo;Harlem,&rdquo; Hughes asks the question &ldquo;Mother to Son&rdquo; could not ask: what if you keep climbing and the stairs lead nowhere? &ldquo;What happens to a dream deferred?&rdquo; The answers arrive as a chain of similes that decay through the senses &mdash; a raisin drying, a sore festering, meat stinking, a sweet crusting over, a load sagging. Postponement is not neutral. It is rot.</p>
+        <p><b>And then the last line breaks the pattern: &ldquo;Or does it explode?&rdquo;</b> There is no &ldquo;like.&rdquo; Every other image was a comparison, held at a safe distance by a simile. This one is literal, italicised, and alone. The deferred dream stops being something to describe and becomes something that detonates.</p>
+        <p>So the body of work does not say <i>endure, and you will be fine</i>. It says: this woman endured, and her grandchildren&rsquo;s generation may not. Hughes keeps the determination and withdraws the guarantee.</p>
+      </div>
+    </article>
+
+    <article class="sec" data-a="320" data-b="490">
+      <div class="tc">5:20<br>8:10</div>
+      <div>
+        <h2>Extract 2 &mdash; Lange, <i>Migrant Mother</i></h2>
+        <p><b>Now the photograph.</b> Six negatives, roughly ten minutes, March 1936, a pea-pickers&rsquo; camp at Nipomo. Late rains had destroyed the crop; there was no work. The woman is Florence Owens Thompson &mdash; thirty-two, Cherokee, born in Oklahoma. Lange filed the picture without her name: <i>&ldquo;Destitute pea pickers in California. Mother of seven children.&rdquo;</i></p>
+        <p><b>The first thing to establish is that this is not a neutral record.</b> Lange was employed by the Resettlement Administration &mdash; a New Deal agency whose photographic unit existed to build public support for relief spending. This is a government-commissioned image, designed to persuade Congress. And it worked: within days a San Francisco newspaper ran it, and twenty thousand pounds of federal food aid were sent to the camp.</p>
+        <p><b>Composition.</b> The mother&rsquo;s head sits at the apex of a triangle; the two older children, leaning in on either side, form its base. That pyramid is not an accident &mdash; it is the compositional formula of the Renaissance Madonna, and Lange, trained as a studio portraitist, knew it precisely. The effect is instant sympathy: a migrant labourer is given the visual grammar of a sacred painting.</p>
+        <p><b>But that is where I want to press.</b> Making her holy also makes her <i>timeless</i> &mdash; and a timeless Madonna of suffering is not a woman owed wages by a specific grower, in a specific county, in 1936. The form that produces our sympathy lifts her out of politics.</p>
+        <p><b>Look at the children.</b> Both older ones turn their faces <i>into</i> her shoulders. That does two things. It removes every competing point of eye contact, so the mother absorbs all our attention. And it makes them anonymous &mdash; any children, every child. The cost is that nobody in the frame is allowed to look at us and accuse.</p>
+        <p><b>Then her hand at her chin.</b> It reads as worry, as calculation, as forbearance &mdash; and it partly covers her mouth. Her gaze goes past the lens into the middle distance. Lange gives her a face of extraordinary interiority, and gives her no voice at all. We are invited to imagine what she is thinking, which means we supply it ourselves. The photograph&rsquo;s power is that it is an empty space we fill with our own feeling.</p>
+        <p><b>And finally, what is <i>not</i> in the frame.</b> The depth of field is shallow; the tent canvas dissolves into soft grey. There is no camp, no other families, no field, no grower, no state. The photograph makes hardship extraordinarily visible and makes its cause invisible. It crops out everything that could be held responsible.</p>
+        <p>One last detail, and I think it is the sharpest. In the original negative, Thompson&rsquo;s thumb intrudes at the lower edge of the frame. Lange had it retouched out. The most famous documentary photograph in America is, in its canonical form, edited. <span class="cut">And Thompson said later that Lange never asked her name, and that she received nothing for it.</span></p>
+      </div>
+    </article>
+
+    <article class="sec" data-a="490" data-b="550">
+      <div class="tc">8:10<br>9:10</div>
+      <div>
+        <h2>The wider series</h2>
+        <p><b>The wider series proves this is construction rather than discovery &mdash; because we can watch Lange decide.</b></p>
+        <p>In the earlier frames, including the one I have chosen as my second image, the tent is fully visible, slanting across the frame. An unlit lantern sits in the foreground. There is open field behind. And the older daughter looks straight into the camera. These are documentary in the ordinary sense: they tell you where this family is and what they own.</p>
+        <p>Then, exposure by exposure, Lange moves closer. The field goes. The lantern goes. The girl&rsquo;s gaze goes. By the final frame, only faces remain. The series records a decision: <b>context subtracted in exchange for intensity.</b></p>
+        <p>I want to keep the lantern, though, because it answers Hughes. It is a lamp, and it is not lit. Hughes&rsquo;s mother describes &ldquo;goin&rsquo; in the dark / Where there ain&rsquo;t been no light.&rdquo; Lange photographs the unlit lamp at the edge of the frame. Neither of them shows us the top of the stairs.</p>
+      </div>
+    </article>
+
+    <article class="sec" data-a="550" data-b="600">
+      <div class="tc">9:10<br>10:00</div>
+      <div>
+        <h2>Comparison and conclusion</h2>
+        <p>So: <b>Hughes gives his mother a voice and no resolution. Lange gives her mother a face and no voice.</b> His poem ends on a line that refuses to arrive; her photograph ends on a gaze that refuses us.</p>
+        <p>Both chose a mother, because motherhood converts an economic statistic into an obligation. You can argue with a figure. You cannot argue with a woman holding a baby.</p>
+        <p>But they differ in self-awareness. Hughes writes the limit into his own body of work &mdash; &ldquo;Harlem&rdquo; is the explosion he built underneath &ldquo;Mother to Son.&rdquo; Lange&rsquo;s photograph has no &ldquo;Harlem.&rdquo; It offers endurance as the whole answer, and ninety years of reproduction have turned Florence Thompson into a symbol of the strength of a people who were, at the time, simply not being paid.</p>
+        <p>That is why my global issue is not &ldquo;people are resilient.&rdquo; It is that <b>resilience is the most beautiful and the most convenient story we can tell about poverty.</b> Beautiful, because it is true. Convenient, because admiring someone for surviving costs us nothing.</p>
+      </div>
+    </article>
+
+    <div class="notes">
+      <h3>Delivery</h3>
+      <ul>
+        <li><b>Pause</b> &mdash; a full second &mdash; after each bold signpost. They are your structure made audible, which is Criterion C.</li>
+        <li>Read the quoted lines of Hughes <b>in rhythm</b>, slower than your own speech. Let the examiner hear the poem, not your summary of it.</li>
+        <li>When you say &ldquo;the mother&rsquo;s head sits at the apex of a triangle,&rdquo; draw the triangle in the air. Examiners remember it.</li>
+        <li>If you lose your place, go to the nearest bold phrase and restart from there.</li>
+        <li>The sentence you must not rush is the last one.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= Q&A ================= -->
+  <section id="v-qa" hidden>
+    <div class="qa"><div class="q"><span class="n">01</span>Why these two works together?</div>
+      <p>Because they make the opposite bargain with their subject. Hughes gives his mother a voice and withholds a resolution; Lange gives her mother a face and withholds a voice. Putting them side by side shows that the limits of each representation come from the medium itself, not from a lack of sympathy.</p></div>
+
+    <div class="qa"><div class="q"><span class="n">02</span>Is Hughes optimistic?</div>
+      <p>No &mdash; he is determined, which is different. Every promise in the poem is negative: don&rsquo;t turn back, don&rsquo;t sit down, don&rsquo;t fall. He never says the staircase ends; the present participles make sure of that. And &ldquo;Harlem,&rdquo; thirty years later, is him asking what happens when it doesn&rsquo;t.</p></div>
+
+    <div class="qa"><div class="q"><span class="n">03</span>How can a 1922 poem and a 1951 poem count as one work?</div>
+      <p>Because the work is Hughes&rsquo;s poetry as a body, which is standard for a poet. And the gap is the point &mdash; it lets me show the same writer testing his own earlier answer. &ldquo;Harlem&rdquo; is the explosion he built under &ldquo;Mother to Son.&rdquo;</p></div>
+
+    <div class="qa"><div class="q"><span class="n">04</span>You called the photograph &ldquo;constructed.&rdquo; Does that make it dishonest?</div>
+      <p>No. All representation selects; the question is what the selection costs. Lange&rsquo;s choices produced real relief &mdash; twenty thousand pounds of food reached that camp. What I&rsquo;m arguing is that the same choices that made suffering visible made its causes invisible, and we should be able to hold both of those facts at once.</p></div>
+
+    <div class="qa"><div class="q"><span class="n">05</span>What would be lost if the photograph were in colour?</div>
+      <p>Two things. Monochrome reads as evidence &mdash; it carries the visual code of documentary objectivity, so we trust it more. And it abstracts: dirt, skin and torn cloth become tone, which is what allows the image to feel sacred rather than squalid. Colour would make her a specific poor woman in 1936; black and white makes her an emblem, which is exactly my concern.</p></div>
+
+    <div class="qa"><div class="q"><span class="n">06</span>Why does each artist choose a mother?</div>
+      <p>Because motherhood converts an economic statistic into an obligation &mdash; you can argue with a figure, but not with a woman holding a baby. It also smuggles in a second generation, which is what makes both works about the future of poverty, not just its present.</p></div>
+
+    <div class="qa"><div class="q"><span class="n">07</span>Does writing in dialect limit who the poem can reach?</div>
+      <p>It narrows the surface and widens the authority. Hughes was answering a convention &mdash; dialect had been the minstrel show&rsquo;s tool for making Black speech comic &mdash; so using it for wisdom is the argument, not an obstacle to it. He defended exactly this in &ldquo;The Negro Artist and the Racial Mountain&rdquo; in 1926.</p></div>
+
+    <div class="qa"><div class="q"><span class="n">08</span>Which work do you find more effective?</div>
+      <p>Lange is more effective at producing feeling; Hughes is more honest about what feeling can and can&rsquo;t do. The photograph got food to a camp in a week &mdash; the poem never did anything that measurable. But the photograph also allowed ninety years of people to admire Florence Thompson instead of asking who was underpaying her.</p></div>
+
+    <div class="qa"><div class="q"><span class="n">09</span>Is your global issue still relevant today?</div>
+      <p>It is almost entirely a description of how we currently represent poverty. Every fundraising campaign and every viral image of a worker doing three jobs uses the same move: make the individual admirable, and the structure disappears behind them. Resilience is the version of poverty that is comfortable to look at.</p></div>
+
+    <div class="qa"><div class="q"><span class="n">10</span>What is the effect of the children turning away?</div>
+      <p>Mechanically, it clears every competing point of eye contact, so the mother carries all of our attention. Interpretively, it anonymises them &mdash; they become any children. And it means nobody in that frame is permitted to look at us and accuse, which is a large part of why the image is bearable.</p></div>
+
+    <div class="qa"><div class="q"><span class="n">11</span>You mentioned the retouched thumb. Why does it matter?</div>
+      <p>Because it&rsquo;s small. Nobody falsified the poverty &mdash; Lange removed a distraction at the edge of the frame. That&rsquo;s what makes it the clearest possible example of my point: the image was shaped by ordinary craft decisions, and we received the result as unmediated truth.</p></div>
+
+    <div class="qa"><div class="q"><span class="n">12</span>Could you have used a different Hughes poem?</div>
+      <p>&ldquo;Harlem&rdquo; would have worked as the extract, but it would have flipped the oral &mdash; I&rsquo;d be analysing the failure of endurance rather than its cost. &ldquo;Mother to Son&rdquo; is better because it&rsquo;s the version that believes, which is what lets me measure the distance Hughes travels by 1951.</p></div>
+
+    <div class="trap"><div class="q">Trap &mdash; &ldquo;How many photographs are in the series?&rdquo;</div>
+      <p>Say: <i>&ldquo;Six negatives survive in the FSA collection, though Lange herself recalled making five.&rdquo;</i> Do not state one number flatly. The sources genuinely disagree, and showing you know that is worth more than certainty.</p></div>
+
+    <div class="trap"><div class="q">Trap &mdash; &ldquo;Which newspaper published it?&rdquo;</div>
+      <p>Say: <i>&ldquo;A San Francisco paper, most sources say the News.&rdquo;</i> Don&rsquo;t stake anything on the title.</p></div>
+
+    <div class="trap"><div class="q">Trap &mdash; &ldquo;Isn&rsquo;t it patronising to say the photo hides the cause? Lange was on their side.&rdquo;</div>
+      <p>Agree first, then hold the line: <i>&ldquo;Completely &mdash; she spent her career on it, and the picture produced real aid. My claim isn&rsquo;t about her intentions, it&rsquo;s about what the finished image does once it&rsquo;s detached from her and reproduced for ninety years.&rdquo;</i> Never defend the point by attacking Lange.</p></div>
+
+    <div class="trap"><div class="q">If you blank</div>
+      <p>Say: <b>&ldquo;Can I come back to the photograph for a moment?&rdquo;</b> Then describe what is physically in the frame. Description always restarts analysis, and the sheet is in front of you.</p></div>
+  </section>
+
+  <!-- ================= FACTS ================= -->
+  <section id="v-facts" hidden>
+    <div class="fx">
+      <h2>Langston Hughes</h2>
+      <div class="sub">&ldquo;Mother to Son&rdquo; &mdash; The Crisis, December 1922 &middot; The Weary Blues, 1926 &middot; 20 lines, free verse</div>
+      <p><b>Techniques, strongest first:</b></p>
+      <ol>
+        <li><b>Identical syntax for suffering and survival</b> &mdash; &ldquo;And splinters&rdquo; / &ldquo;And reachin&rsquo;.&rdquo; Lead with this; nobody else will have it.</li>
+        <li><b>&ldquo;Bare.&rdquo;</b> &mdash; shortest line, end-stopped; the form drops out from under you.</li>
+        <li><b>Present participles throughout</b> &mdash; continuous aspect denies arrival.</li>
+        <li><b>Three negative imperatives</b> (lines 14&ndash;17) &mdash; hope defined as refusal.</li>
+        <li><b>Circular repetition</b> of line 2 at line 20 &mdash; warning becomes credential.</li>
+        <li><b>Double negative</b> &ldquo;ain&rsquo;t been no&rdquo; &mdash; life defined by subtraction.</li>
+        <li><b>&ldquo;Crystal stair&rdquo;</b> = mansion staircase <i>and</i> Jacob&rsquo;s ladder &mdash; material and spiritual ascent denied together.</li>
+        <li><b>AAVE orthography</b> &mdash; inverts the minstrel-dialect tradition.</li>
+        <li><b>Dramatic monologue, no frame narrator</b> &mdash; she is not quoted, she is the poem.</li>
+      </ol>
+      <p style="margin-top:14px"><b>Context:</b> Harlem Renaissance &middot; the Great Migration (c. 6 million people leaving the rural South from 1916) &middot; Jim Crow &middot; the Red Summer riots of 1919. Cite <b>&ldquo;The Negro Artist and the Racial Mountain&rdquo; (1926)</b> by name if asked about dialect.</p>
+      <p><b>&ldquo;Dreams&rdquo; (1922):</b> &ldquo;Hold fast&rdquo; &mdash; a verb of grip. The bird is <i>grounded</i>, not killed: hardship ends movement, which is what the staircase was for.</p>
+      <p><b>&ldquo;Harlem&rdquo; (1951),</b> from <i>Montage of a Dream Deferred</i>: similes decaying through the senses &mdash; raisin, sore, rotten meat, syrupy sweet, heavy load &mdash; then <b>&ldquo;Or does it explode?&rdquo;</b>, the only image with no &ldquo;like.&rdquo; Gave Hansberry <i>A Raisin in the Sun</i> its title.</p>
+    </div>
+
+    <div class="fx">
+      <h2>Dorothea Lange</h2>
+      <div class="sub">Nipomo, California &middot; March 1936 &middot; Resettlement Administration (FSA from 1937) &middot; Library of Congress, FSA/OWI</div>
+      <ul>
+        <li>Late-winter rains destroyed the pea crop; there was no work at the camp.</li>
+        <li>Photographic unit directed by <b>Roy Stryker</b>; its purpose was to build congressional and public support for New Deal relief.</li>
+        <li>Subject: <b>Florence Owens Thompson</b> (1903&ndash;1983), Cherokee, born in Oklahoma, aged 32, photographed with three of her seven children. Not publicly identified for over forty years.</li>
+        <li>Published in a San Francisco paper within days; <b>20,000 pounds</b> of federal food aid sent to the camp. The family had already moved on.</li>
+        <li>The <b>thumb</b> on the tent pole at the lower edge was retouched out of the negative, by Lange&rsquo;s own decision, around two years later.</li>
+        <li>Thompson said later that Lange never asked her name and that she received nothing.</li>
+      </ul>
+      <div class="caption">Lange&rsquo;s filed caption:<br>&ldquo;Destitute pea pickers in California. Mother of seven children. Age thirty-two. Nipomo, California.&rdquo;</div>
+      <div class="warnbox">
+        <div class="h">Contested &mdash; do not state flatly</div>
+        <p><b>Number of exposures.</b> Six negatives survive; Lange&rsquo;s own 1960 recollection says five. Say both.</p>
+        <p><b>Which newspaper.</b> Most sources say the San Francisco News; some say the Chronicle. Say &ldquo;a San Francisco paper.&rdquo;</p>
+      </div>
+      <p><b>Visual techniques, strongest first:</b></p>
+      <ol>
+        <li><b>Triangular composition = Renaissance Madonna formula.</b> Lange trained as a studio portraitist: knowledge, not accident. Sanctifying her produces sympathy and removes her from politics.</li>
+        <li><b>Both older children turn away.</b> Clears competing eye contact, anonymises them, removes any accusing gaze.</li>
+        <li><b>Hand at the chin, partly covering the mouth.</b> Total interiority, no voice. We supply the thought.</li>
+        <li><b>Shallow depth of field.</b> No camp, no employer, no state &mdash; the cause is cropped out.</li>
+        <li><b>Monochrome</b> &mdash; reads as evidence, and abstracts squalor into tone.</li>
+        <li><b>The series runs wide to tight</b> &mdash; context subtracted in exchange for intensity.</li>
+        <li><b>The unlit lantern</b> in the wider frames &mdash; your bridge to &ldquo;where there ain&rsquo;t been no light.&rdquo;</li>
+        <li><b>Material detail:</b> chapped hands, torn sleeve, wedding ring, dirt on the baby.</li>
+      </ol>
+    </div>
+
+    <div class="fx" style="border:0">
+      <h2>The three sentences that carry the oral</h2>
+      <div class="lines">Hughes gives his mother a voice and no resolution. Lange gives her mother a face and no voice.</div>
+      <div class="lines">Hardship and persistence are written in the same grammar &mdash; in this poem, surviving does not look different from suffering.</div>
+      <div class="lines">Resilience is the most beautiful and the most convenient story we can tell about poverty: beautiful because it is true, convenient because admiring someone for surviving costs us nothing.</div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  var TOTAL=600, el=function(s){return document.querySelector(s)};
+  var tEl=el('#t'), wEl=el('#w'), pb=el('#pb'), go=el('#go'), rs=el('#rs'), lean=el('#lean');
+  var secs=[].slice.call(document.querySelectorAll('.sec'));
+  var t=0, timer=null;
+
+  function fmt(s){var m=Math.floor(s/60);return m+':'+String(s%60).padStart(2,'0')}
+
+  function paint(){
+    tEl.textContent=fmt(t);
+    var over=t>TOTAL;
+    tEl.classList.toggle('over',over);
+    pb.classList.toggle('over',over);
+    pb.style.width=Math.min(100,t/TOTAL*100)+'%';
+    var live=null;
+    secs.forEach(function(s){
+      var a=+s.dataset.a,b=+s.dataset.b;
+      var on = t>=a && t<b || (over && b===TOTAL);
+      s.classList.toggle('live',on);
+      if(on) live=s;
+    });
+    wEl.textContent = live ? live.querySelector('h2').textContent
+                           : (over?'Over time — land the last sentence':'Introduction');
+  }
+
+  function tick(){ t++; paint(); }
+
+  go.addEventListener('click',function(){
+    if(timer){clearInterval(timer);timer=null;go.textContent='Start';go.classList.remove('on');}
+    else{timer=setInterval(tick,1000);go.textContent='Pause';go.classList.add('on');}
+  });
+  rs.addEventListener('click',function(){
+    clearInterval(timer);timer=null;t=0;go.textContent='Start';go.classList.remove('on');paint();
+  });
+
+  function setLean(on){
+    document.body.classList.toggle('lean',on);
+    lean.classList.toggle('on',on);
+    try{localStorage.setItem('io-lean',on?'1':'0')}catch(e){}
+  }
+  lean.addEventListener('click',function(){setLean(!document.body.classList.contains('lean'))});
+  try{ if(localStorage.getItem('io-lean')==='1') setLean(true) }catch(e){}
+
+  var navBtns=[].slice.call(document.querySelectorAll('nav button'));
+  function show(v){
+    navBtns.forEach(function(b){b.classList.toggle('on',b.dataset.v===v)});
+    ['script','qa','facts'].forEach(function(k){ el('#v-'+k).hidden = (k!==v) });
+    try{localStorage.setItem('io-view',v)}catch(e){}
+  }
+  navBtns.forEach(function(b){b.addEventListener('click',function(){show(b.dataset.v)})});
+  try{ var v=localStorage.getItem('io-view'); if(v&&['script','qa','facts'].indexOf(v)>-1) show(v) }catch(e){}
+
+  paint();
+})();
+</script>
