@@ -1,3 +1,7 @@
+> ⚠️ **Écrit avant que les images réelles soient connues.** Ce fichier analyse le portrait serré
+> célèbre de Lange, qui n'est **pas** l'extrait retenu. L'extrait principal est le plan large
+> (tente, poteau, lanterne, champ). La version à jour est la page web, pas ce fichier.
+
 # What to submit as your two extracts
 
 IB requires **two extracts, each max 40 lines**, one from the literary work, one from the non-literary body of work. You bring a clean copy; you may annotate it.

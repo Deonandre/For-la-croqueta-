@@ -2,31 +2,37 @@
 
 👉 **https://claude.ai/artifact/GRtHGsPPQBU2NnubYPS3xR**
 
-Ouvre ce lien. Il contient tout : le script à dire, le chrono, les questions de l'examinateur et le vocabulaire expliqué en français.
+Quatre onglets : **Script** (chronométré), **Questions**, **Vocabulaire & faits**, **Critères IB**.
 
-## Trois choses à faire
+## ⚠️ Deux règles IB à connaître tout de suite
 
-1. **Imprime deux photos de Lange**, côte à côte sur une feuille :
-   - celle que tu as déjà (plan large : la tente, la lanterne éteinte, la fille qui regarde l'objectif)
-   - le portrait serré célèbre (la main au menton, les enfants de dos)
+1. **Tu n'as pas le droit d'emporter le script dans la salle.** Seulement **10 puces** — elles sont écrites, prêtes à recopier, dans l'onglet *Critères IB*.
+2. **Ta copie des extraits doit être propre, non annotée.** Le guide d'annotations dans `details/02-EXTRACTS.md` sert à réviser chez toi, pas le jour J.
 
-   Les deux sont gratuites sur **loc.gov** → cherche « Migrant Mother Nipomo Lange ».
-   Imprime aussi le poème entier (20 vers) comme extrait littéraire.
+Si ton professeur dit autre chose, c'est lui qui a raison — demande-lui.
 
-2. **Lis l'onglet Script à voix haute, trois fois**, avec le chrono. À 5:00 tu dois commencer la partie Lange.
+## Tes documents
 
-3. **Lis l'onglet Questions une fois** la veille.
+| | Quoi | Rôle |
+|---|---|---|
+| Littéraire | **« Mother to Son »** (20 vers) | extrait principal |
+| | « Dreams », « Harlem » | œuvre élargie, cités seulement |
+| **Image A** | plan large sous la tente : poteau, lanterne, champ | **image principale** |
+| Image B | la mère qui allaite, même tente | soutien |
+| Image C | l'autre mère avec ses enfants, lunettes rondes | soutien |
 
-## Ton argument, en une phrase
+Imprime A, B et C sur une seule feuille, dans cet ordre.
 
-Hughes et Lange rendent tous les deux la pauvreté plus supportable à regarder en la faisant passer par une mère qui tient bon. Mais Hughes inscrit dans son œuvre un avertissement — « Harlem », 1951 — et Lange non.
+## Ton argument en une phrase
+
+Hughes et Lange rendent tous les deux la pauvreté plus supportable à regarder en la faisant passer par une mère qui tient bon. Mais Hughes inscrit un avertissement dans son œuvre — « Harlem », 1951 — et Lange, image après image, retire les preuves qui permettraient de comprendre pourquoi cette femme est pauvre.
+
+## Trois choses à ne pas trancher
+
+- **Le nombre de prises de Lange** : elle a dit cinq, l'archive dit six, certains chercheurs comptent sept. Dis les trois.
+- **La date de la retouche du pouce** : les sources vont de « deux ans plus tard » à 1939. Dis « later in the thirties ».
+- **L'identité de l'image C** : non confirmée. Si tu ne peux pas la vérifier là où tu l'as téléchargée, dis seulement « another of Lange's photographs of a migrant mother with her children ». N'invente jamais un titre.
 
 ## Le dossier `details/`
 
-Tu n'en as pas besoin. C'est la version longue, si un jour tu veux creuser :
-`01-SCRIPT.md` (script en anglais plus soutenu), `02-EXTRACTS.md` (quoi imprimer, annotations),
-`03-QA-PREP.md` (questions), `04-EVIDENCE-BANK.md` (tous les faits et leurs sources).
-
-⚠️ Deux faits sont réellement contestés dans les sources et il ne faut pas les trancher :
-le **nombre de prises** de Lange (six négatifs subsistent, elle en a dit cinq) et **quel journal**
-de San Francisco a publié la photo. Dis les deux versions.
+Version longue, facultative. ⚠️ `01-SCRIPT.md` et `02-EXTRACTS.md` ont été écrits **avant** que je voie tes trois images : ils analysent le portrait serré célèbre, qui n'est pas ton extrait. **La page web est la version à jour.**

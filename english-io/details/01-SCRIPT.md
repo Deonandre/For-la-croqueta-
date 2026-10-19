@@ -1,3 +1,7 @@
+> ⚠️ **Écrit avant que les images réelles soient connues.** Ce fichier analyse le portrait serré
+> célèbre de Lange, qui n'est **pas** l'extrait retenu. L'extrait principal est le plan large
+> (tente, poteau, lanterne, champ). La version à jour est la page web, pas ce fichier.
+
 # Individual Oral — Speaking Script
 **Target: 10:00 ± 15 sec.** Full text ≈ 1,490 words at 145 wpm.
 Lines marked **[CUT IF LONG]** can be dropped to reach ≈ 9:10 without breaking the argument.
