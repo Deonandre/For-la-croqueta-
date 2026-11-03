@@ -143,10 +143,8 @@ def figures(c: pd.DataFrame, lags: list[dict], primary: dict,
     a2.set_ylabel("Mt CO$_2$ per year")
     a2.set_xlabel("Year")
     a2.yaxis.set_major_formatter(th)
-    fig.suptitle("Figure 1  Each variable on its own scale",
-                 x=0.012, ha="left", fontsize=10.5)
-    fig.tight_layout(rect=(0, 0, 1, 0.96))
-    fig.savefig(OUT / "fig1_series.png", dpi=200)
+    fig.tight_layout()
+    fig.savefig(OUT / "fig1_series.png", dpi=200, bbox_inches="tight")
     plt.close(fig)
 
     # Fig 2 -- primary scatter
@@ -157,23 +155,21 @@ def figures(c: pd.DataFrame, lags: list[dict], primary: dict,
     m, b = np.polyfit(s.pop_delta / 1e3, s.land_use_change_co2, 1)
     xs = np.linspace((s.pop_delta / 1e3).min(), (s.pop_delta / 1e3).max(), 50)
     ax.plot(xs, m * xs + b, color=C_LUC, lw=2, zorder=2)
-    ax.set_title("Figure 2  Land-use-change emissions against annual population growth",
-                 loc="left")
     ax.set_xlabel("Annual population increase (thousands of people)")
     ax.set_ylabel("CO$_2$ from land-use change (Mt yr$^{-1}$)")
     ax.text(0.03, 0.97,
             f"Spearman $r_s$ = {primary['spearman_rho']}  "
             f"(p = {fmt_p(primary['spearman_p'])}, n = {primary['n']})\n"
             f"Pearson $r$ = {primary['pearson_r']}   "
-            f"critical |r| = {primary['crit']}",
+            f"critical |r| = {primary['crit']:.3f}",
             transform=ax.transAxes, va="top", fontsize=8,
             bbox=dict(boxstyle="round,pad=0.45", fc="white", ec=C_GRID, lw=0.8))
     fig.tight_layout()
-    fig.savefig(OUT / "fig2_scatter.png", dpi=200)
+    fig.savefig(OUT / "fig2_scatter.png", dpi=200, bbox_inches="tight")
     plt.close(fig)
 
     # Fig 3 -- the decoupling result
-    fig, ax = plt.subplots(figsize=(7.0, 3.8))
+    fig, ax = plt.subplots(figsize=(7.0, 3.3))
     pc = c.land_use_change_co2 * 1e6 / c.population
     ax.plot(c.year, pc, color=C_LUC, lw=2)
     ax.fill_between(c.year, pc, color=C_LUC, alpha=0.10)
@@ -183,11 +179,10 @@ def figures(c: pd.DataFrame, lags: list[dict], primary: dict,
                     textcoords="offset points", fontsize=8, color=C_INK,
                     ha="left" if yr == c.year.min() else "right",
                     fontweight="bold", path_effects=halo)
-    ax.set_title("Figure 3  Land-use-change emissions per person, Cameroon", loc="left")
     ax.set_ylabel("t CO$_2$ per person per year")
     ax.set_xlabel("Year")
     fig.tight_layout()
-    fig.savefig(OUT / "fig3_percapita.png", dpi=200)
+    fig.savefig(OUT / "fig3_percapita.png", dpi=200, bbox_inches="tight")
     plt.close(fig)
 
     # Fig 4 -- sub-period sign reversal
@@ -206,10 +201,8 @@ def figures(c: pd.DataFrame, lags: list[dict], primary: dict,
                      f"(p = {fmt_p(res['spearman_p'])})", loc="left", fontsize=9)
         ax.set_xlabel("Annual population increase (thousands)")
     axs[0].set_ylabel("CO$_2$ from land-use change (Mt yr$^{-1}$)")
-    fig.suptitle("Figure 4  The relationship reverses sign between sub-periods",
-                 x=0.012, ha="left", fontsize=10.5)
-    fig.tight_layout(rect=(0, 0, 1, 0.94))
-    fig.savefig(OUT / "fig4_subperiods.png", dpi=200)
+    fig.tight_layout()
+    fig.savefig(OUT / "fig4_subperiods.png", dpi=200, bbox_inches="tight")
     plt.close(fig)
 
     # Fig 5 -- lag profile
@@ -220,18 +213,16 @@ def figures(c: pd.DataFrame, lags: list[dict], primary: dict,
     ax.axhline(0, color=C_MUTED, lw=1)
     ax.axhline(cr, color=C_LUC, lw=1.2, ls=(0, (5, 3)))
     ax.axhline(-cr, color=C_LUC, lw=1.2, ls=(0, (5, 3)))
-    ax.text(max(L), -cr, f"significance threshold (α = {ALPHA})  ", color=C_LUC,
-            fontsize=7.5, va="top", ha="right")
+    ax.text(max(L), cr, f"significance threshold (α = {ALPHA})  ", color=C_LUC,
+            fontsize=7.5, va="bottom", ha="right")
     ax.plot(L, R, color=C_POP, lw=2, marker="o", ms=7,
             markeredgecolor="white", markeredgewidth=1.4)
-    ax.set_title("Figure 5  Lagged correlation: population growth leading emissions",
-                 loc="left")
     ax.set_xlabel("Lag applied to population growth (years)")
     ax.set_ylabel("Spearman $r_s$")
     ax.set_xticks(L)
     ax.set_ylim(-1.05, 1.05)
     fig.tight_layout()
-    fig.savefig(OUT / "fig5_lag.png", dpi=200)
+    fig.savefig(OUT / "fig5_lag.png", dpi=200, bbox_inches="tight")
     plt.close(fig)
 
     # Fig 6 -- regional context, with de-collided end labels
@@ -267,12 +258,11 @@ def figures(c: pd.DataFrame, lags: list[dict], primary: dict,
                         fontsize=8, fontweight="bold" if is_cm else "normal",
                         color=C_LUC if is_cm else C_MUTED,
                         path_effects=halo, annotation_clip=False)
-        ax.set_title("Figure 6  Cameroon in regional context", loc="left")
         ax.set_ylabel("t CO$_2$ from land-use change per person")
         ax.set_xlabel("Year")
         ax.set_xlim(peers.year.min(), xmax + pad)
         fig.tight_layout()
-        fig.savefig(OUT / "fig6_peers.png", dpi=200)
+        fig.savefig(OUT / "fig6_peers.png", dpi=200, bbox_inches="tight")
         plt.close(fig)
     print(f"  figures written to {OUT}")
 
@@ -375,11 +365,11 @@ def main() -> None:
     (OUT / "appendix_b_spearman.md").write_text(
         "**Appendix B -- worked Spearman calculation (primary test)**\n\n"
         + md_table(s, floatfmt=",.1f")
-        + f"\n\nn = {n}   Sum d^2 = {sd2:,.1f}\n\n"
-        f"rs = 1 - (6 x {sd2:,.1f}) / ({n} x ({n}^2 - 1)) = "
+        + f"\n\nn = {n}   \u03a3d\u00b2 = {sd2:,.1f}\n\n"
+        f"r\u209b = 1 \u2212 (6 \u00d7 {sd2:,.1f}) / ({n} \u00d7 ({n}\u00b2 \u2212 1)) = "
         f"{1 - (6*sd2)/(n*(n**2-1)):.3f}\n\n"
-        f"Tie-corrected value used in the report: {primary['spearman_rho']}\n\n"
-        f"Critical |r|, alpha = {ALPHA}, n = {n}: {primary['crit']}\n")
+        f"Tie-corrected value used in the report: {primary['spearman_rho']:.3f}\n\n"
+        f"Critical |r| at alpha = {ALPHA}, n = {n}: {primary['crit']:.3f}\n")
 
     figures(c, lags, primary, early, late, peers)
 
