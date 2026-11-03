@@ -1,88 +1,112 @@
-# ESS Individual Investigation — Cocoa cultivation and tree-cover loss in Cameroon (2001–2023)
+# ESS Individual Investigation — Population growth and deforestation emissions in Cameroon (1961–2023)
 
-Everything needed to finish and submit this IA. **No data has been invented anywhere in this
-project.** Where a number is not yet known, a `{{placeholder}}` is left visible.
+**Research question:** To what extent is population growth associated with CO₂ emissions from
+land-use change in Cameroon between 1961 and 2023?
+
+**Status: complete and based entirely on real, verified data.** Every number traces to a file the
+script downloads. Nothing is estimated, interpolated or invented.
+
+## What to submit
+
+`output/IA_FINAL.docx` — or `IA_FINAL.md` if you prefer to edit the text first and rebuild.
+
+Before submitting, fill in three things: your **candidate code**, the **access date** in the Our
+World in Data reference, and the **page numbers** in the contents table.
 
 ## Files
 
 | File | What it is |
 |---|---|
-| `IA_Cocoa_Deforestation_Cameroon.md` | The report. Sections 1–4, 8, 9 are **finished**. Sections 5–7 hold `{{placeholders}}`. |
-| `DATA_VERIFICATION_REPORT.md` | Dataset verification, caveats, and exact download instructions. **Read this first.** |
-| `analysis/ess_analysis.py` | Runs every table, figure and statistic, then writes `IA_FINAL.md` with the numbers filled in. |
-| `scripts/wordcount.py` | IB-rules word counter (excludes headers, tables, figures, calculations, citations, references, appendices). |
+| `IA_FINAL.md` / `output/IA_FINAL.docx` / `.pdf` | **The report**, all numbers filled in. 2,877 countable words. |
+| `IA_Population_LandUse_Cameroon.md` | Source template with `{{placeholders}}`; regenerate `IA_FINAL.md` from it. |
+| `DATA_VERIFICATION_REPORT.md` | Every dataset tested, what was rejected and why, and the full provenance trail. |
+| `analysis/ess_analysis.py` | Downloads the data and produces every table, figure and statistic. |
+| `scripts/wordcount.py` | IB-rules word counter. |
 | `scripts/build_docx.sh` | Builds `.docx` and `.pdf`. |
-| `output/` | Generated tables, figures and documents. |
-| `data/` | **Put the two downloaded CSVs here.** |
+| `output/` | Tables 1–3, Figures 1–6, `appendix_b_spearman.md`, `results.json`. |
 
-## Three steps to finish
+Reproduce everything from scratch:
 
-1. Download the two CSVs — exact click-path in `DATA_VERIFICATION_REPORT.md` §3 — into `data/`.
-2. `python3 analysis/ess_analysis.py`  → writes `IA_FINAL.md` plus all tables and figures.
-3. `bash scripts/build_docx.sh IA_FINAL.md` → submission-ready document.
+```bash
+python3 analysis/ess_analysis.py && bash scripts/build_docx.sh IA_FINAL.md
+```
 
-Then fill in: candidate code, access dates, GFW dataset version, and the page numbers in the
-contents table.
+## Headline findings
+
+| Test | n | Spearman rₛ | p | Significant |
+|---|---|---|---|---|
+| Annual population growth vs land-use-change CO₂ | 62 | **−0.354** | 0.005 | yes |
+| Population (levels) vs land-use-change CO₂ | 63 | −0.386 | 0.002 | yes |
+| **First differences (both detrended)** | 62 | **−0.006** | 0.964 | **no** |
+| 1961–1990 only | 29 | −0.444 | 0.016 | yes |
+| 1991–2023 only | 33 | +0.324 | 0.066 | no |
+
+Population grew 5.4× (5.24 → 28.37 million) while land-use-change emissions *fell* 48%
+(44.7 → 23.1 Mt). Emissions per person dropped 90%, from 8.54 to 0.81 t CO₂. The significant
+negative correlation **disappears entirely once both series are detrended**, and the sub-periods
+have opposite signs — so the honest answer is that there is no stable year-to-year relationship,
+and the population-pressure hypothesis is not supported at national scale.
+
+That is a more interesting result than a tidy positive correlation, and it is defensible because
+the analysis shows *why* the headline coefficient is misleading.
 
 ## Word count
 
-`python3 scripts/wordcount.py` currently reports **2,884** against the IB maximum of 3,000.
-Even the most conservative count — keeping in-text citations *and* inline statistics, both of which
-IB excludes — is **2,970**, so there is margin either way. Adding the real numbers changes the count
-by only a few words, because figures and calculations are themselves excluded.
+`python3 scripts/wordcount.py IA_FINAL.md` → **2,877** against the IB maximum of 3,000. Even the
+most conservative count — keeping in-text citations *and* inline statistics, both of which IB
+excludes — is 2,945, so there is margin under either reading.
 
 ## Criterion-by-criterion self-assessment
 
-Honest assessment of where the report stands now. This is my judgement, not a predicted grade.
+My judgement of where the report stands, not a predicted grade.
 
 | Criterion | Marks | State | Comment |
 |---|---|---|---|
-| **A** Research question and inquiry | 4 | **Complete** | Question is focused and answerable; independent/dependent variables defined with units; spatial and temporal boundaries justified by data availability rather than asserted. Context establishes why the answer is not obvious in advance. |
-| **B** Strategy | 4 | **Complete** | Four perspectives (smallholders, state, conservation, consumers/regulators) are tied to environmental value systems, and three strategies are each given a genuine drawback. The land-sharing/land-sparing tension via Gockowski & Sonwa is the strongest element — it shows a conservation strategy that may be counterproductive. |
-| **C** Method | 4 | **Complete** | Reproducible: exact FAOSTAT codes, GFW widget settings, canopy threshold, scripted processing. Another student could repeat it exactly. Choice of Spearman over Pearson is justified from the data's properties, not asserted. |
-| **D** Treatment of data | 6 | **Framework only** | Tables, percentage changes, graphs, scatter and correlation are all built and tested, but **cannot be completed without the two CSVs**. This is the main outstanding gap. |
-| **E** Analysis and conclusion | 6 | **Reasoning complete, values pending** | Confounders, alternative explanations, the correlation-is-not-causation limit and the agroforestry detection problem are all argued. The conclusion sentence structure is written but needs real coefficients. |
-| **F** Evaluation | 6 | **Complete** | Limitations are specific to *these* datasets rather than generic: the 2011 GFW algorithm break, FAO imputation smoothing the series, national aggregation causing the ecological fallacy, low power at n ≈ 22, and the harvested-area/planted-area lag. Improvements are concrete and proportionate. |
+| **A** Research question and inquiry | 4 | Complete | Focused and genuinely answerable; variables defined with units; boundaries justified by data availability rather than asserted; the question is framed so that a negative result is still informative. |
+| **B** Strategy | 4 | Complete | Four perspectives tied to environmental value systems; three strategies each given a real drawback. Two stronger elements: the land-sparing/land-sharing tension (intensification may spare forest while reducing on-farm biodiversity), and the point that a population-pressure framing is itself a value position that shifts blame onto poor households. |
+| **C** Method | 4 | Complete | Fully reproducible from one command. Dataset *selection* is documented, including the rejection of the World Bank cropland series with the zero-change counts that justified it. Choice of Spearman is justified empirically by Shapiro–Wilk, not asserted. |
+| **D** Treatment of data | 6 | Complete | Complete 63-year series, decade means, per-capita derivation, six figures, Spearman and Pearson with *n*, *p* and critical values, normality testing, and a worked hand calculation in Appendix B. Figure 1 deliberately avoids a dual axis. |
+| **E** Analysis and conclusion | 6 | Complete | The analysis explains why the headline coefficient is misleading rather than reporting it uncritically: detrending removes it, the sign reverses between sub-periods, and Pearson and Spearman disagree because the relationship is monotonic but not linear. Conclusion answers the question directly and claims no causation. |
+| **F** Evaluation | 6 | Complete | Limitations specific to *these* data: emissions are bookkeeping-model output rather than measurement; the variable is a net flux so a fall has three different possible meanings; total population is a crude stand-in for rural population; national aggregation risks the ecological fallacy; thirteen correlations were run, so marginal p-values are discounted. Improvements are concrete and ranked. |
 
-### What is still weak
+### Remaining weaknesses
 
-- **D and E cannot be finished without the data.** Nothing else in the report is blocking.
-- The design is correlational at national scale, which **cannot** attribute loss to cocoa. The report
-  says so plainly rather than overclaiming — this protects E and F, but it does cap how strong the
-  conclusion can be. A sub-national design would be stronger; that is stated under Improvements.
-- Candidate code, access dates, GFW version string and page numbers are placeholders.
+- The dependent variable is **modelled, not measured**. This is stated plainly in §8, but it is a
+  real ceiling on how strong any conclusion can be.
+- **Total** population rather than rural population is the weakest methodological choice. It is
+  named in §8 as the single clearest improvement.
+- Correlational and national-scale, so it cannot attribute forest loss to any driver.
+- Candidate code, access date and page numbers still to be filled in by you.
 
 ## Academic integrity checklist
 
-- [x] No fabricated data, statistics or observations.
-- [x] No invented references — every source below was verified during preparation.
-- [x] All explanations written originally; no text copied from any website, article or past IA.
+- [x] No fabricated data, statistics or observations — every figure comes from the downloaded file.
+- [x] No invented references; all nine verified against indexing records (DOIs below).
+- [x] All prose written originally; nothing copied from any website, article or past IA.
 - [x] APA 7 in-text citations match the reference list one-to-one.
-- [x] Only sources actually consulted are listed.
-- [x] Tree-cover loss and deforestation kept strictly distinct throughout.
-- [x] Cocoa production and harvested area kept strictly distinct throughout.
-- [x] No causal claim made from correlation.
-- [ ] Final similarity check — run your school's tool. No one can guarantee a similarity percentage.
+- [x] Only sources actually used are listed.
+- [x] Land-use-change CO₂ and deforestation kept distinct throughout.
+- [x] Correlation never presented as causation.
+- [x] Every test run is reported, including the ones that weaken the headline result.
+- [ ] Final similarity check — run your school's tool. No one can guarantee a similarity score.
 
-### Reference verification status
+### Reference verification
 
-Each was checked against indexing records during preparation:
-
-| Source | Status |
+| Source | DOI |
 |---|---|
-| Hansen et al. (2013) *Science* 342(6160), 850–853 | verified · doi:10.1126/science.1244693 |
-| Curtis et al. (2018) *Science* 361(6407), 1108–1111 | verified · doi:10.1126/science.aau3445 |
-| Tyukavina et al. (2018) *Science Advances* 4(11), eaat2993 | verified · doi:10.1126/sciadv.aat2993 |
-| Ordway, Asner & Lambin (2017) *ERL* 12(4), 044015 | verified · doi:10.1088/1748-9326/aa6509 |
-| Gockowski & Sonwa (2011) *Environmental Management* 48(2), 307–321 | verified · doi:10.1007/s00267-010-9602-3 |
-| FAO (2020) *Global Forest Resources Assessment 2020* | verified · doi:10.4060/ca9825en |
-| Regulation (EU) 2023/1115 | verified · EUR-Lex |
-| FAOSTAT QCL; Global Forest Watch; World Bank Open Data | datasets — **you must add your own access date** |
+| Friedlingstein et al. (2025) *ESSD* 17(3), 965–1039 | 10.5194/essd-17-965-2025 |
+| Bolt & van Zanden (2025) *J. Econ. Surveys* 39(2), 631–671 | 10.1111/joes.12618 |
+| Hansen et al. (2013) *Science* 342(6160), 850–853 | 10.1126/science.1244693 |
+| Curtis et al. (2018) *Science* 361(6407), 1108–1111 | 10.1126/science.aau3445 |
+| Tyukavina et al. (2018) *Science Advances* 4(11), eaat2993 | 10.1126/sciadv.aat2993 |
+| Ordway, Asner & Lambin (2017) *ERL* 12(4), 044015 | 10.1088/1748-9326/aa6509 |
+| Gockowski & Sonwa (2011) *Env. Management* 48(2), 307–321 | 10.1007/s00267-010-9602-3 |
+| FAO (2020) *Global Forest Resources Assessment 2020* | 10.4060/ca9825en |
+| Regulation (EU) 2023/1115 | EUR-Lex |
 
 ## Figures
 
-Colours are `#1f6fb2` / `#d95f02`, checked with a colour-vision-deficiency validator
-(ΔE 22.3 protanopia, 31.3 normal vision, contrast ≥ 3:1) so the figures survive both colourblind
-readers and greyscale printing. Figure 1 deliberately uses **two stacked panels rather than a
-dual y-axis**, because two different scales on one axis can be made to show any relationship you
-like; Figure 1b indexes both series to a common base for honest visual comparison.
+Series colours are `#1f6fb2` and `#d95f02`, checked with a colour-vision-deficiency validator
+(ΔE 22.3 protanopia, 31.3 normal vision, contrast ≥ 3:1), so the figures survive colourblind readers
+and greyscale printing. Figure 1 uses two stacked panels rather than a dual y-axis: two scales on
+one axis can be rescaled to suggest almost any relationship.

@@ -1,2 +1,4 @@
 __pycache__/
 *.pyc
+# 14 MB upstream download; analysis/ess_analysis.py re-fetches it on demand.
+data/owid-co2-data.csv
